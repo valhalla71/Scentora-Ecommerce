@@ -41,6 +41,8 @@ Database:
 
 ✅ Footer component created
 
+✅ SiteShell component created
+
 ## Current Stage
 
 Frontend layout system.
@@ -51,6 +53,7 @@ Completed:
 - frontend/components/layout/container.tsx
 - frontend/components/layout/header.tsx
 - frontend/components/layout/footer.tsx
+- frontend/components/layout/site-shell.tsx
 
 Working correctly:
 - Build successful
@@ -59,7 +62,7 @@ Working correctly:
 
 ## Next Task
 
-Create SiteShell component only.
+Connect SiteShell to locale layout.
 
 ## Development Rules
 
