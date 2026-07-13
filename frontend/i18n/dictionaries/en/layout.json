@@ -1,0 +1,22 @@
+{
+  "nav": {
+    "primary": "Primary navigation",
+    "home": "Home",
+    "about": "About"
+  },
+  "footer": {
+    "tagline": "Curated fragrances for every moment.",
+    "legal": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "copyright": "© {year} Scentora. All rights reserved."
+  },
+  "theme": {
+    "light": "Switch to light mode",
+    "dark": "Switch to dark mode",
+    "system": "Use system theme"
+  },
+  "actions": {
+    "changeLanguage": "Change language"
+  }
+}
