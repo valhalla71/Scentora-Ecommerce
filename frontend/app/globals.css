@@ -49,11 +49,11 @@
 }
 
 /*
- * Locale-aware typography — Inter for LTR (English), Vazirmatn for RTL (Persian).
+ * Locale-aware typography — Geist for LTR (English), Vazirmatn for RTL (Persian).
  * Both font variables are loaded on <html>; active font is selected by direction.
  */
 html[dir="ltr"] {
-  --font-sans-active: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans-active: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
 }
 
 html[dir="rtl"] {

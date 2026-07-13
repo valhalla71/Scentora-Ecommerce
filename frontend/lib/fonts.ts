@@ -1,11 +1,11 @@
-import { Inter, Vazirmatn } from "next/font/google";
+import { Geist, Vazirmatn } from "next/font/google";
 
 import type { Locale } from "@/i18n/config";
 
 /** Primary sans-serif for English (LTR) content. */
-export const inter = Inter({
+export const geist = Geist({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-geist",
   display: "swap",
 });
 
@@ -17,10 +17,10 @@ export const vazirmatn = Vazirmatn({
 });
 
 /** Both font variables are applied on `<html>`; active font is selected via `[dir]`. */
-export const fontVariables = `${inter.variable} ${vazirmatn.variable}`;
+export const fontVariables = `${geist.variable} ${vazirmatn.variable}`;
 
 export function getLocaleFontFamily(locale: Locale): string {
   return locale === "fa"
     ? "var(--font-vazirmatn), ui-sans-serif, system-ui, sans-serif"
-    : "var(--font-inter), ui-sans-serif, system-ui, sans-serif";
+    : "var(--font-geist), ui-sans-serif, system-ui, sans-serif";
 }
