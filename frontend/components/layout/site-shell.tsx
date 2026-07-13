@@ -1,7 +1,7 @@
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
-import type { Dictionary } from "@/i18n/types";
 import type { Locale } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/types";
 
 type SiteShellProps = {
   locale: Locale;
@@ -9,9 +9,6 @@ type SiteShellProps = {
   children: React.ReactNode;
 };
 
-/**
- * Application chrome — wraps every locale-scoped page with Header and Footer.
- */
 export function SiteShell({ locale, dictionary, children }: SiteShellProps) {
   return (
     <>
