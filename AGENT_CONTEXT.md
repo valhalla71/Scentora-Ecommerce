@@ -43,9 +43,11 @@ Database:
 
 ✅ SiteShell component created
 
+✅ SiteShell connected to locale layout
+
 ## Current Stage
 
-Frontend layout system.
+Frontend homepage development.
 
 ## Current State
 
@@ -54,6 +56,7 @@ Completed:
 - frontend/components/layout/header.tsx
 - frontend/components/layout/footer.tsx
 - frontend/components/layout/site-shell.tsx
+- frontend/app/[locale]/layout.tsx uses SiteShell
 
 Working correctly:
 - Build successful
@@ -62,7 +65,7 @@ Working correctly:
 
 ## Next Task
 
-Connect SiteShell to locale layout.
+Create homepage hero section only.
 
 ## Development Rules
 
