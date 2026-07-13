@@ -1,9 +1,28 @@
-export default function HomePage() {
+import { notFound } from "next/navigation";
+
+import { CtaSection, FeaturesSection, HeroSection } from "@/components/home";
+import { isValidLocale, type Locale } from "@/i18n/config";
+import { getDictionary } from "@/i18n/get-dictionary";
+
+type HomePageProps = {
+  params: Promise<{ locale: string }>;
+};
+
+export default async function HomePage({ params }: HomePageProps) {
+  const { locale: rawLocale } = await params;
+
+  if (!isValidLocale(rawLocale)) {
+    notFound();
+  }
+
+  const locale = rawLocale as Locale;
+  const dictionary = await getDictionary(locale);
+
   return (
-    <main className="flex min-h-screen items-center justify-center">
-      <h1 className="text-4xl font-bold">
-        Welcome to Scentora
-      </h1>
-    </main>
+    <>
+      <HeroSection locale={locale} dictionary={dictionary} />
+      <FeaturesSection dictionary={dictionary} />
+      <CtaSection locale={locale} dictionary={dictionary} />
+    </>
   );
 }

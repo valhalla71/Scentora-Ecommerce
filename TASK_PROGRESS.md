@@ -7,15 +7,19 @@
 - Multilingual architecture added
 - Persian and English routing prepared
 - RTL/LTR foundation added
+- shadcn/ui installed
+- Fonts configured (Geist + Vazirmatn)
+- Brand theme created (luxury perfume palette)
+- Header and Footer built
+- Homepage created
 
 # Current Stage
 
-Frontend Design System
+Frontend Design System — Complete
 
 # Next Steps
 
-- Install shadcn/ui
-- Configure fonts
-- Create brand theme
-- Build Header and Footer
-- Create homepage
+- Product catalog pages
+- Authentication UI
+- Shopping cart flow
+- Backend API (NestJS + Prisma)

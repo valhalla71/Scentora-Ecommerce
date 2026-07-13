@@ -1,7 +1,9 @@
 import Link from "next/link";
-import { Languages, ShoppingCart, User } from "lucide-react";
+import { ShoppingCart, User } from "lucide-react";
 
+import { LocaleSwitcher } from "@/components/i18n/locale-switcher";
 import { Container } from "@/components/layout/container";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { Button } from "@/components/ui/button";
 import type { Dictionary } from "@/i18n/types";
 import type { Locale } from "@/i18n/config";
@@ -65,15 +67,16 @@ export function Header({ locale, dictionary }: HeaderProps) {
         </div>
 
         <div className="flex shrink-0 items-center gap-0.5">
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            aria-label={layout.actions.changeLanguage}
-            className="text-muted-foreground"
-          >
-            <Languages aria-hidden="true" />
-          </Button>
+          <LocaleSwitcher
+            currentLocale={locale}
+            label={layout.actions.changeLanguage}
+          />
+
+          <ThemeToggle
+            lightLabel={layout.theme.light}
+            darkLabel={layout.theme.dark}
+            systemLabel={layout.theme.system}
+          />
 
           <Button
             type="button"

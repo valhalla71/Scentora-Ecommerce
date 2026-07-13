@@ -1,0 +1,31 @@
+{
+  "hero": {
+    "eyebrow": "Luxury Fragrances",
+    "title": "Discover scents that define your story",
+    "description": "Explore a curated collection of fine perfumes — from timeless classics to modern masterpieces, chosen for every moment.",
+    "primaryCta": "Explore Collection",
+    "secondaryCta": "Learn More"
+  },
+  "features": {
+    "title": "Why Scentora",
+    "items": {
+      "curated": {
+        "title": "Curated Selection",
+        "description": "Every fragrance is hand-picked for quality, character, and lasting impression."
+      },
+      "authentic": {
+        "title": "Authentic Products",
+        "description": "Shop with confidence — only genuine perfumes from trusted sources."
+      },
+      "experience": {
+        "title": "Personalized Experience",
+        "description": "Find your signature scent with expert guidance and thoughtful recommendations."
+      }
+    }
+  },
+  "cta": {
+    "title": "Begin your fragrance journey",
+    "description": "Join thousands of scent enthusiasts who trust Scentora for their next favorite perfume.",
+    "button": "Start Exploring"
+  }
+}

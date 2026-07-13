@@ -29,10 +29,34 @@ export type LayoutDictionary = {
   };
 };
 
+export type HomeDictionary = {
+  hero: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    primaryCta: string;
+    secondaryCta: string;
+  };
+  features: {
+    title: string;
+    items: {
+      curated: { title: string; description: string };
+      authentic: { title: string; description: string };
+      experience: { title: string; description: string };
+    };
+  };
+  cta: {
+    title: string;
+    description: string;
+    button: string;
+  };
+};
+
 /** Shape of all translation namespaces loaded per locale. */
 export type Dictionary = {
   common: CommonDictionary;
   layout: LayoutDictionary;
+  home: HomeDictionary;
 };
 
 /** Props injected by the `[locale]` dynamic segment across layouts and pages. */

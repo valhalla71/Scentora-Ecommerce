@@ -1,13 +1,18 @@
 import "server-only";
 
 import type { Locale } from "./config";
-import type { CommonDictionary, Dictionary, LayoutDictionary } from "./types";
+import type {
+  CommonDictionary,
+  Dictionary,
+  HomeDictionary,
+  LayoutDictionary,
+} from "./types";
 
-const namespaces = ["common", "layout"] as const;
+const namespaces = ["common", "layout", "home"] as const;
 
 type Namespace = (typeof namespaces)[number];
 
-type NamespaceModule = CommonDictionary | LayoutDictionary;
+type NamespaceModule = CommonDictionary | LayoutDictionary | HomeDictionary;
 
 async function loadNamespace(
   locale: Locale,
@@ -21,6 +26,10 @@ async function loadNamespace(
     case "layout":
       return import(`./dictionaries/${locale}/layout.json`).then(
         (module) => module.default as LayoutDictionary,
+      );
+    case "home":
+      return import(`./dictionaries/${locale}/home.json`).then(
+        (module) => module.default as HomeDictionary,
       );
   }
 }
