@@ -23,6 +23,19 @@ export type CommonDictionary = {
     addToWishlist: string;
     relatedProducts: string;
   };
+  cart: {
+    title: string;
+    empty: string;
+    product: string;
+    quantity: string;
+    price: string;
+    subtotal: string;
+    tax: string;
+    total: string;
+    remove: string;
+    continueShopping: string;
+    checkout: string;
+  };
 };
 
 export type LayoutDictionary = {

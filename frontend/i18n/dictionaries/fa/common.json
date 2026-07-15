@@ -20,5 +20,18 @@
     "addToCart": "اضافه کردن به سبد",
     "addToWishlist": "اضافه کردن به لیست علاقه‌مندی",
     "relatedProducts": "محصولات مشابه"
+  },
+  "cart": {
+    "title": "سبد خریدتان",
+    "empty": "سبد خریدتان خالی است",
+    "product": "محصول",
+    "quantity": "تعداد",
+    "price": "قیمت",
+    "subtotal": "جمع خرید",
+    "tax": "مالیات",
+    "total": "مجموع",
+    "remove": "حذف",
+    "continueShopping": "ادامه خریدتان",
+    "checkout": "اقدام به نهایی سازی سفارش"
   }
 }

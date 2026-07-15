@@ -20,5 +20,18 @@
     "addToCart": "Add to Cart",
     "addToWishlist": "Add to Wishlist",
     "relatedProducts": "You Might Also Like"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "empty": "Your cart is empty",
+    "product": "Product",
+    "quantity": "Quantity",
+    "price": "Price",
+    "subtotal": "Subtotal",
+    "tax": "Tax",
+    "total": "Total",
+    "remove": "Remove",
+    "continueShopping": "Continue Shopping",
+    "checkout": "Proceed to Checkout"
   }
 }
