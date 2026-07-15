@@ -1,7 +1,24 @@
 # Scentora Agent Context
 
 ## Project
+
 Scentora is a portfolio-grade perfume e-commerce platform.
+
+
+# Business Identity
+
+Scentora is a luxury perfume ecommerce platform.
+
+Future decisions should consider:
+
+- Premium shopping experience
+- Perfume discovery
+- Recommendation systems
+- Customer personalization
+- Product storytelling
+- Brand presentation
+
+Avoid building a generic ecommerce system.
 
 ## Stack
 Frontend:
@@ -11,11 +28,13 @@ Frontend:
 - shadcn/ui
 
 Backend:
-- NestJS (not started)
+- NestJS
+- TypeScript
+- Prisma ORM
 
 Database:
 - PostgreSQL
-- Prisma (not started)
+- Prisma schema created
 
 ## Completed
 
@@ -95,7 +114,8 @@ Frontend:
 - Frozen
 
 Backend:
-- Starting
+- Foundation completed
+- Feature development in progress
 
 ## Current State
 
@@ -178,6 +198,213 @@ Frontend freeze status:
 
 
 
+# Backend Foundation Notes
+
+## Current Backend Status
+
+Backend foundation completed and tagged:
+
+- Tag: backend-foundation-complete
+- NestJS architecture created
+- Prisma ORM configured
+- PostgreSQL schema foundation created
+- Core ecommerce modules created
+- Common infrastructure created
+- Security foundation created
+
+Backend modules created:
+
+- auth
+- users
+- products
+- categories
+- brands
+- cart
+- orders
+- inventory
+- reviews
+- wishlist
+- health
+
+Infrastructure:
+
+- config module
+- prisma service
+- common filters
+- interceptors
+- pipes
+- guards
+- decorators
+- shared utilities
+
+Important:
+Backend foundation is not feature complete.
+Future development must extend the existing architecture.
+Do not rebuild existing modules.
+
+---
+
+# Pending Backend Roadmap
+
+## Database Development Rules
+
+Prisma migration:
+
+- Create proper migrations
+- Verify schema relations
+- Verify indexes
+- Verify constraints
+
+Important:
+Do not only modify schema.prisma.
+
+All database changes must consider:
+- Migration history
+- Existing relations
+- Data integrity
+- Future scalability
+
+## Authentication System
+
+Current:
+- Auth module foundation exists
+
+Required:
+
+- JWT authentication flow
+- Access token implementation
+- Refresh token implementation
+- Token rotation
+- Logout and token invalidation
+- Password hashing
+- Password validation rules
+- Forgot password flow
+- Password reset tokens
+- Email verification foundation
+- Session management
+
+---
+
+## User Management
+
+Required:
+
+- Complete user APIs
+- Profile management
+- Update profile
+- Change password
+- User preferences
+- Address CRUD
+- Default address management
+- User session handling
+
+---
+
+## Authorization
+
+Current:
+- Guards foundation exists
+
+Required:
+
+- Complete RBAC system
+- Permission checking
+- Role assignment
+- Admin authorization
+- Protected endpoint architecture
+
+---
+
+## Commerce Improvements
+
+Required:
+
+### Cart
+- Cart validation
+- Stock validation
+- Price validation
+- Advanced calculations
+
+### Inventory
+- Inventory transaction history
+- Stock movement tracking
+- Reservation system
+- Low stock handling
+
+### Orders
+- Complete order lifecycle
+- Status transition rules
+- Cancellation flow
+- Return/refund foundation
+- Order event tracking
+
+### Discounts
+- Coupon-order relationship
+- Discount calculation engine
+- Coupon validation
+- Usage limits
+- Expiration rules
+
+---
+
+# Scentora Specific Product Extensions
+
+Scentora is a perfume ecommerce platform.
+
+Current Product model is generic.
+Future extensions required:
+
+- Fragrance notes system
+- Top notes
+- Middle notes
+- Base notes
+- Concentration
+- Volume
+- Gender
+- Season
+- Occasion
+- Longevity
+- Sillage
+- Advanced perfume filtering
+
+Do not replace Product model.
+Extend existing design.
+
+---
+
+# Production Readiness Checklist
+
+Before production:
+
+Backend:
+- Unit tests
+- Integration tests
+- API tests
+- Database tests
+- Logging system
+- Monitoring
+- Performance optimization
+
+Infrastructure:
+- CI/CD
+- Deployment configuration
+- Production environment setup
+- Database backup strategy
+
+---
+
+# Development Strategy Update
+
+Project prefers:
+
+- Large domain-focused tasks
+- Complete related features together
+- Minimal architecture changes
+- No duplicate implementations
+- Verify existing architecture before adding new systems
+
+
+
 Working correctly:
 - Build successful
 - Git clean
@@ -185,20 +412,117 @@ Working correctly:
 
 ## Next Task
 
-Create backend foundation and database architecture.
+Authentication and User Management Complete Backend Epic
+
+Goal:
+Implement a complete production-ready authentication, authorization, and user management domain on top of the existing backend foundation.
+
+Important:
+Do not rebuild architecture.
+Use existing NestJS modules, Prisma setup, guards, services, and common infrastructure.
+Extend current implementation only.
 
 Scope:
-- NestJS backend setup
-- Prisma ORM setup
-- PostgreSQL setup
-- Complete database schema foundation
-- Backend modular architecture
-- Common infrastructure
-- Validation system
-- Error handling
-- API response patterns
-- Authentication architecture foundation
-- Commerce domain preparation
+
+Authentication:
+
+- Implement JWT authentication architecture
+- Create access token flow
+- Create refresh token flow
+- Implement refresh token rotation
+- Implement logout and token invalidation
+- Add secure password hashing
+- Add password validation rules
+- Implement register endpoint
+- Complete login endpoint
+- Add forgot password foundation
+- Add password reset token system
+- Add email verification foundation
+
+Database:
+
+Extend Prisma schema if required:
+
+- RefreshToken model
+- PasswordResetToken model
+- EmailVerificationToken model
+- Session model if architecture requires it
+
+Keep relations clean and scalable.
+
+Authorization:
+
+Implement complete authorization system:
+
+- JWT strategy
+- Auth guards
+- Role guards
+- Permission checking
+- Current user decorator
+- Protected routes foundation
+- Admin authorization foundation
+
+User Management:
+
+Create complete user domain:
+
+- User profile endpoints
+- Update profile
+- Change password
+- User preferences management
+- Address CRUD
+- Default address logic
+- User session management
+
+API Quality:
+
+Add:
+
+- DTO validation
+- Proper error handling
+- Consistent API responses
+- Swagger documentation updates
+- Pagination where needed
+
+Security:
+
+Follow production practices:
+
+- Never store plain passwords
+- Secure token handling
+- Validate all inputs
+- Protect sensitive endpoints
+
+Testing foundation:
+
+Create structure for:
+
+- Auth tests
+- User service tests
+- API integration tests
+
+Documentation:
+
+Update:
+
+- API documentation
+- Architecture documentation
+- Setup documentation
+
+Verification:
+
+Before finishing:
+
+- Run production build
+- Verify all routes
+- Verify Prisma schema consistency
+- Verify TypeScript errors
+- Provide implementation summary
+
+Do not create unnecessary files.
+Do not modify frontend.
+Use TypeScript only.
+Commit changes after completion.
 
 Rules:
 - No frontend changes
@@ -217,3 +541,39 @@ Rules:
 - Use existing components
 - TypeScript only
 - Commit after each completed domain task
+
+## Critical AI Development Rules
+
+Before creating any new module:
+
+1. Check existing architecture first.
+2. Extend existing modules whenever possible.
+3. Never duplicate business logic.
+4. Never create alternative implementations.
+5. Never replace Prisma models without migration planning.
+6. Never modify completed frontend architecture.
+7. Prefer completing existing domains over creating new domains.
+
+## Domain Completion Checklist
+
+Before marking any domain complete:
+
+Required:
+
+- Build verification
+- TypeScript check
+- Architecture review
+- Check missing dependencies
+- Check database relations
+- Check API consistency
+
+## Documentation Rule
+
+Create documentation only when it provides project value.
+
+Rules:
+
+- Do not create unnecessary markdown reports.
+- Prefer updating existing documentation files.
+- Avoid duplicate documentation.
+- Keep documentation focused on long-term project maintenance.
