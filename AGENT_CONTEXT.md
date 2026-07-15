@@ -107,7 +107,13 @@ Working correctly:
 
 ## Next Task
 
-Create orders page only.
+Create user account area pages.
+
+Scope:
+- Orders page
+- Order history UI
+- Account navigation
+- Use mock data only
 
 ## Development Rules
 
