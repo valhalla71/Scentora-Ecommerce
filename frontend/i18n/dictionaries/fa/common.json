@@ -19,7 +19,19 @@
     "baseNotes": "نت های پایه",
     "addToCart": "اضافه کردن به سبد",
     "addToWishlist": "اضافه کردن به لیست علاقه‌مندی",
-    "relatedProducts": "محصولات مشابه"
+    "relatedProducts": "محصولات مشابه",
+    "gallery": "گالری محصول",
+    "selectSize": "انتخاب اندازه",
+    "selectVariant": "انتخاب گونه",
+    "frequentlyBoughtTogether": "معمولاً با این خریده می‌شود",
+    "productFAQ": "سوالات متداول درباره محصول",
+    "askQuestion": "پرسیدن سوال",
+    "compare": "مقایسه",
+    "compareProducts": "مقایسه محصولات",
+    "longevity": "دوام عطر",
+    "sillage": "نشر عطر",
+    "seasonality": "بهترین فصل",
+    "volume": "حجم"
   },
   "cart": {
     "title": "سبد خریدتان",
@@ -32,7 +44,13 @@
     "total": "مجموع",
     "remove": "حذف",
     "continueShopping": "ادامه خریدتان",
-    "checkout": "اقدام به نهایی سازی سفارش"
+    "checkout": "اقدام به نهایی سازی سفارش",
+    "saveForLater": "ذخیره برای بعد",
+    "savedItems": "محصولات ذخیره شده",
+    "applyCoupon": "اعمال کوپن",
+    "couponCode": "کد کوپن",
+    "promoCode": "کد تبلیغاتی",
+    "discount": "تخفیف"
   },
   "auth": {
     "login": "ورود",
@@ -59,28 +77,32 @@
     "preferences": "تنظیمات",
     "newsletter": "اشتراک در خبرنامه",
     "language": "زبان",
-    "notifications": "اطلاعات ایمیلی",
+    "notifications": "اطلاع رسانی ایمیل",
     "recentOrders": "سفارشات اخیر",
     "orderNumber": "شماره سفارش",
     "date": "تاریخ",
     "total": "مجموع",
     "status": "وضعیت",
-    "addressBook": "دفترچه آدرس‌ها",
+    "addressBook": "دفترچه آدرس",
     "addAddress": "اضافه کردن آدرس",
     "logout": "خروج",
     "viewDetails": "مشاهده جزئیات",
     "edit": "ویرایش",
     "delete": "حذف",
-    "setAsDefault": "تعیین به عنوان پیش‌فرض"
+    "setAsDefault": "تنظیم به عنوان پیش فرض",
+    "notificationSettings": "تنظیمات اطلاع رسانی",
+    "emailPreferences": "تنظیمات ایمیل",
+    "smsPreferences": "تنظیمات پیامک",
+    "pushNotifications": "اطلاع رسانی فشاری"
   },
   "wishlist": {
     "title": "لیست علاقه‌مندی من",
     "empty": "لیست علاقه‌مندی شما خالی است",
-    "items": "محصول",
+    "items": "مورد",
     "addToCart": "اضافه کردن به سبد",
     "remove": "حذف از لیست علاقه‌مندی",
     "continueShopping": "ادامه خریدتان",
-    "totalItems": "تعداد کل محصولات"
+    "totalItems": "کل موارد"
   },
   "account": {
     "title": "حساب کاربری من",
@@ -89,27 +111,44 @@
       "orders": "سفارشات",
       "profile": "پروفایل",
       "wishlist": "لیست علاقه‌مندی",
-      "settings": "تنظیمات"
+      "settings": "تنظیمات",
+      "addresses": "آدرس ها",
+      "preferences": "تنظیمات",
+      "notifications": "اطلاع رسانی ها"
     },
-    "totalOrders": "تعداد کل سفارشات",
-    "totalSpent": "مجموع مخارج"
+    "totalOrders": "کل سفارشات",
+    "totalSpent": "مجموع خرج شده",
+    "rewardPoints": "امتیاز پاداش",
+    "memberSince": "عضو از",
+    "nextTierThreshold": "حد بندی سطح بعدی"
   },
   "orders": {
     "title": "تاریخچه سفارشات",
-    "empty": "سفارشی وجود ندارد",
+    "empty": "هنوز سفارشی ندارید",
     "orderId": "شماره سفارش",
     "date": "تاریخ",
     "status": "وضعیت",
-    "items": "محصولات",
+    "items": "موارد",
     "total": "مجموع",
     "viewDetails": "مشاهده جزئیات",
-    "pending": "در انتظار",
+    "pending": "درانتظار",
     "shipped": "ارسال شده",
     "delivered": "تحویل داده شده",
-    "cancelled": "لغو شده"
+    "cancelled": "لغو شده",
+    "processing": "در حال پردازش",
+    "outForDelivery": "در مسیر تحویل",
+    "filterBy": "فیلتر کنید",
+    "sortBy": "مرتب سازی",
+    "recentFirst": "جدیدترین اول",
+    "oldestFirst": "قدیمی ترین اول",
+    "trackOrder": "پیگیری سفارش",
+    "orderTracking": "پیگیری سفارش",
+    "estimatedDelivery": "تاریخ تحویل تخمینی",
+    "shippingAddress": "آدرس ارسال",
+    "invoiceDownload": "دانلود رسید"
   },
   "checkout": {
-    "title": "تسویه حساب",
+    "title": "صفحه پرداخت",
     "shippingInfo": "اطلاعات ارسال",
     "firstName": "نام",
     "lastName": "نام خانوادگی",
@@ -117,36 +156,48 @@
     "phone": "تلفن",
     "address": "آدرس",
     "city": "شهر",
+    "state": "استان",
     "zipCode": "کد پستی",
+    "country": "کشور",
     "shippingMethod": "روش ارسال",
     "standard": "استاندارد (5-7 روز)",
-    "express": "فوری (2-3 روز)",
+    "express": "سریع (2-3 روز)",
+    "overnight": "یک شبه",
+    "storePickup": "دریافت از فروشگاه",
     "paymentMethod": "روش پرداخت",
     "creditCard": "کارت اعتباری",
+    "debitCard": "کارت بدهی",
     "paypal": "پی‌پال",
-    "placeOrder": "تأیید سفارش",
+    "applePay": "Apple Pay",
+    "placeOrder": "ثبت سفارش",
     "backToCart": "بازگشت به سبد",
     "orderSummary": "خلاصه سفارش",
-    "items": "محصولات",
+    "items": "موارد",
     "subtotal": "جمع خرید",
     "shipping": "ارسال",
     "tax": "مالیات",
-    "total": "مجموع"
+    "total": "مجموع",
+    "progressStep1": "سبد",
+    "progressStep2": "ارسال",
+    "progressStep3": "پرداخت",
+    "progressStep4": "بررسی",
+    "selectShippingOption": "انتخاب گزینه ارسال",
+    "selectPaymentMethod": "انتخاب روش پرداخت"
   },
   "orderSuccess": {
     "title": "سفارش تأیید شد",
-    "confirmationMessage": "با تشکر برای خریدتان!",
+    "confirmationMessage": "از خریدتان سپاسگزاریم!",
     "orderNumber": "شماره سفارش",
     "orderDate": "تاریخ سفارش",
-    "estimatedDelivery": "تاریخ تحویل برآورد شده",
+    "estimatedDelivery": "تاریخ تحویل تخمینی",
     "shippingAddress": "آدرس ارسال",
     "trackOrder": "پیگیری سفارش",
     "continueShopping": "ادامه خریدتان"
   },
   "discovery": {
-    "search": "جستجو در عطرها...",
+    "search": "جستجوی عطرها…",
     "filters": "فیلترها",
-    "sort": "مرتب‌سازی بر اساس",
+    "sort": "مرتب سازی",
     "category": "دسته بندی",
     "price": "محدوده قیمت",
     "priceMin": "حداقل قیمت",
@@ -157,46 +208,46 @@
     "priceHighToLow": "قیمت: زیاد به کم",
     "rating": "بیشترین امتیاز",
     "noProducts": "محصولی یافت نشد",
-    "noProductsDescription": "سعی کنید فیلترها یا جستجوی خود را تغییر دهید",
+    "noProductsDescription": "سعی کنید فیلترها یا جستجوی خود را تنظیم کنید",
     "categories": {
       "all": "همه",
       "oriental": "شرقی",
       "fresh": "تازه",
       "floral": "گلی",
-      "amber": "کهربایی",
+      "amber": "کهربا",
       "woody": "چوبی"
     }
   },
   "reviews": {
     "title": "نظرات مشتریان",
     "rating": "امتیاز",
-    "sortBy": "مرتب‌سازی بر اساس",
+    "sortBy": "مرتب سازی",
     "newest": "جدیدترین",
-    "helpful": "بیشتر کمکی",
-    "noReviews": "هنوز نظری نوشته نشده است",
+    "helpful": "مفیدترین",
+    "notHelpful": "کمتر مفید",
+    "noReviews": "هنوز نظری ثبت نشده",
     "writeReview": "نوشتن نظر",
-    "helpful": "مفید",
-    "notHelpful": "غیرمفید",
-    "verified": "خریدی تأیید شده"
+    "verified": "خریدی تأیید شده",
+    "markHelpful": "مفید بودن"
   },
   "recommendations": {
-    "title": "محصولات پیشنهادی برای شما",
-    "relatedProducts": "محصولات مشابه"
+    "title": "برای شما توصیه شده",
+    "relatedProducts": "محصولات مرتبط"
   },
   "newsletter": {
-    "title": "اشتراک در خبرنامه ما",
-    "description": "مخصوص پیشنهادات و نکات عطر را به صندوق ورودی خود دریافت کنید",
+    "title": "اشتراک در خبرنامه",
+    "description": "پیشنهادهای منحصر به فرد و راهنمایی در مورد عطر را در صندوق ورودی خود دریافت کنید",
     "placeholder": "ایمیل خود را وارد کنید",
     "subscribe": "اشتراک",
-    "success": "از اشتراک شما متشکریم!"
+    "success": "از اشتراک شما سپاسگزاریم!"
   },
   "about": {
     "title": "درباره سنتورا",
     "mission": "ماموریت ما",
-    "values": "ارزش‌های ما",
+    "values": "ارزش های ما",
     "quality": "کیفیت",
     "authenticity": "اصالت",
-    "service": "خدمات فوق‌العاده"
+    "service": "خدمات فوق العاده"
   },
   "contact": {
     "title": "تماس با ما",
@@ -208,14 +259,72 @@
     "phone": "تلفن",
     "address": "آدرس"
   },
+  "blog": {
+    "title": "وبلاگ",
+    "allPosts": "تمام پست ها",
+    "category": "دسته بندی",
+    "readMore": "بیشتر بخوانید",
+    "readingTime": "دقیقه خواندن",
+    "author": "نویسنده",
+    "publishDate": "تاریخ انتشار",
+    "tags": "برچسب ها",
+    "relatedPosts": "مقالات مرتبط",
+    "noPosts": "مقالهای یافت نشد",
+    "shareArticle": "اشتراک مقاله"
+  },
+  "addresses": {
+    "title": "آدرس های ذخیره شده",
+    "addNew": "اضافه کردن آدرس جدید",
+    "edit": "ویرایش",
+    "delete": "حذف",
+    "setAsDefault": "تنظیم به عنوان پیش فرض",
+    "shippingAddress": "آدرس ارسال",
+    "billingAddress": "آدرس صورت حساب",
+    "type": "نوع آدرس",
+    "street": "نشانی خیابان",
+    "city": "شهر",
+    "state": "استان",
+    "zipCode": "کد پستی",
+    "country": "کشور",
+    "phone": "تلفن",
+    "noAddresses": "آدرس ذخیره شده‌ای نیست"
+  },
+  "preferences": {
+    "title": "تنظیمات",
+    "language": "زبان",
+    "currency": "ارز",
+    "theme": "تم",
+    "lightMode": "حالت روشن",
+    "darkMode": "حالت تیره",
+    "systemMode": "سیستم",
+    "save": "ذخیره تغییرات",
+    "saved": "تنظیمات ذخیره شد"
+  },
+  "shippingOptions": {
+    "title": "گزینه های ارسال",
+    "selectShippingMethod": "انتخاب روش ارسال",
+    "estimatedDelivery": "تاریخ تحویل تخمینی",
+    "days": "روز"
+  },
+  "paymentMethods": {
+    "title": "روش های پرداخت",
+    "addNew": "اضافه کردن روش پرداخت جدید",
+    "cardNumber": "شماره کارت",
+    "expiryDate": "تاریخ انقضا",
+    "cvv": "CVV",
+    "cardHolder": "نام صاحب کارت",
+    "setAsDefault": "تنظیم به عنوان پیش فرض",
+    "noMethods": "روش پرداختی ذخیره نشده",
+    "save": "ذخیره روش پرداخت"
+  },
   "admin": {
-    "title": "پنل مدیریتی",
+    "title": "پنل مدیریت",
     "dashboard": "داشبورد",
     "products": "محصولات",
     "inventory": "موجودی",
     "orders": "سفارشات",
     "users": "کاربران",
-    "analytics": "تجزیه و تحلیل",
+    "analytics": "تحلیل ها",
     "settings": "تنظیمات"
   },
   "metrics": {
@@ -231,12 +340,12 @@
     "create": "ایجاد محصول",
     "edit": "ویرایش محصول",
     "delete": "حذف",
-    "search": "جستجو در محصولات...",
+    "search": "جستجو در محصولات…",
     "name": "نام محصول",
     "price": "قیمت",
     "stock": "موجودی",
     "status": "وضعیت",
-    "actions": "اقدامات",
+    "actions": "عملیات",
     "category": "دسته بندی"
   },
   "inventory": {
@@ -245,7 +354,7 @@
     "quantity": "تعداد",
     "reorderLevel": "سطح سفارش مجدد",
     "status": "وضعیت",
-    "inStock": "در موجودی",
+    "inStock": "در دسترس",
     "lowStock": "موجودی کم",
     "outOfStock": "ناموجود"
   },
@@ -256,8 +365,8 @@
     "date": "تاریخ",
     "status": "وضعیت",
     "total": "مجموع",
-    "markShipped": "علامت‌گذاری به عنوان ارسال شده",
-    "markDelivered": "علامت‌گذاری به عنوان تحویل داده شده"
+    "markShipped": "علامت گذاری به عنوان ارسال شده",
+    "markDelivered": "علامت گذاری به عنوان تحویل داده شده"
   },
   "userManagement": {
     "title": "مدیریت کاربران",
@@ -268,14 +377,15 @@
     "inactive": "غیرفعال"
   },
   "analytics": {
-    "title": "تجزیه و تحلیل",
+    "title": "تحلیل ها",
     "topProducts": "محصولات برتر",
-    "customerInsights": "بصیرت‌های مشتری",
+    "customerInsights": "بینش مشتریان",
     "dateRange": "محدوده تاریخ"
   },
   "notifications": {
-    "title": "اطلاعات",
-    "markAsRead": "علامت‌گذاری به عنوان خوانده شده",
-    "clearAll": "پاک کردن همه"
+    "title": "اطلاع رسانی ها",
+    "markAsRead": "علامت گذاری به عنوان خوانده شده",
+    "clearAll": "پاک کردن همه",
+    "noNotifications": "اطلاع رسانی ای نیست"
   }
 }

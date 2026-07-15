@@ -19,7 +19,19 @@
     "baseNotes": "Base Notes",
     "addToCart": "Add to Cart",
     "addToWishlist": "Add to Wishlist",
-    "relatedProducts": "You Might Also Like"
+    "relatedProducts": "You Might Also Like",
+    "gallery": "Product Gallery",
+    "selectSize": "Select Size",
+    "selectVariant": "Select Variant",
+    "frequentlyBoughtTogether": "Frequently Bought Together",
+    "productFAQ": "Product FAQ",
+    "askQuestion": "Ask a Question",
+    "compare": "Compare",
+    "compareProducts": "Compare Products",
+    "longevity": "Longevity",
+    "sillage": "Sillage",
+    "seasonality": "Best Season",
+    "volume": "Volume"
   },
   "cart": {
     "title": "Shopping Cart",
@@ -32,7 +44,13 @@
     "total": "Total",
     "remove": "Remove",
     "continueShopping": "Continue Shopping",
-    "checkout": "Proceed to Checkout"
+    "checkout": "Proceed to Checkout",
+    "saveForLater": "Save for Later",
+    "savedItems": "Saved Items",
+    "applyCoupon": "Apply Coupon",
+    "couponCode": "Coupon Code",
+    "promoCode": "Promo Code",
+    "discount": "Discount"
   },
   "auth": {
     "login": "Login",
@@ -71,7 +89,11 @@
     "viewDetails": "View Details",
     "edit": "Edit",
     "delete": "Delete",
-    "setAsDefault": "Set as Default"
+    "setAsDefault": "Set as Default",
+    "notificationSettings": "Notification Settings",
+    "emailPreferences": "Email Preferences",
+    "smsPreferences": "SMS Preferences",
+    "pushNotifications": "Push Notifications"
   },
   "wishlist": {
     "title": "My Wishlist",
@@ -89,10 +111,16 @@
       "orders": "Orders",
       "profile": "Profile",
       "wishlist": "Wishlist",
-      "settings": "Settings"
+      "settings": "Settings",
+      "addresses": "Addresses",
+      "preferences": "Preferences",
+      "notifications": "Notifications"
     },
     "totalOrders": "Total Orders",
-    "totalSpent": "Total Spent"
+    "totalSpent": "Total Spent",
+    "rewardPoints": "Reward Points",
+    "memberSince": "Member Since",
+    "nextTierThreshold": "Next Tier Threshold"
   },
   "orders": {
     "title": "Order History",
@@ -106,7 +134,18 @@
     "pending": "Pending",
     "shipped": "Shipped",
     "delivered": "Delivered",
-    "cancelled": "Cancelled"
+    "cancelled": "Cancelled",
+    "processing": "Processing",
+    "outForDelivery": "Out for Delivery",
+    "filterBy": "Filter By",
+    "sortBy": "Sort By",
+    "recentFirst": "Most Recent",
+    "oldestFirst": "Oldest First",
+    "trackOrder": "Track Order",
+    "orderTracking": "Order Tracking",
+    "estimatedDelivery": "Estimated Delivery",
+    "shippingAddress": "Shipping Address",
+    "invoiceDownload": "Download Invoice"
   },
   "checkout": {
     "title": "Checkout",
@@ -117,13 +156,19 @@
     "phone": "Phone",
     "address": "Address",
     "city": "City",
+    "state": "State",
     "zipCode": "Zip Code",
+    "country": "Country",
     "shippingMethod": "Shipping Method",
     "standard": "Standard (5-7 days)",
     "express": "Express (2-3 days)",
+    "overnight": "Overnight (Next Day)",
+    "storePickup": "Store Pickup",
     "paymentMethod": "Payment Method",
     "creditCard": "Credit Card",
+    "debitCard": "Debit Card",
     "paypal": "PayPal",
+    "applePay": "Apple Pay",
     "placeOrder": "Place Order",
     "backToCart": "Back to Cart",
     "orderSummary": "Order Summary",
@@ -131,7 +176,13 @@
     "subtotal": "Subtotal",
     "shipping": "Shipping",
     "tax": "Tax",
-    "total": "Total"
+    "total": "Total",
+    "progressStep1": "Cart",
+    "progressStep2": "Shipping",
+    "progressStep3": "Payment",
+    "progressStep4": "Review",
+    "selectShippingOption": "Select Shipping Option",
+    "selectPaymentMethod": "Select Payment Method"
   },
   "orderSuccess": {
     "title": "Order Confirmed",
@@ -173,11 +224,11 @@
     "sortBy": "Sort By",
     "newest": "Newest",
     "helpful": "Most Helpful",
+    "notHelpful": "Not Helpful",
     "noReviews": "No reviews yet",
     "writeReview": "Write a Review",
-    "helpful": "Helpful",
-    "notHelpful": "Not Helpful",
-    "verified": "Verified Purchase"
+    "verified": "Verified Purchase",
+    "markHelpful": "Mark as Helpful"
   },
   "recommendations": {
     "title": "Recommended For You",
@@ -207,6 +258,64 @@
     "send": "Send Message",
     "phone": "Phone",
     "address": "Address"
+  },
+  "blog": {
+    "title": "Blog",
+    "allPosts": "All Posts",
+    "category": "Category",
+    "readMore": "Read More",
+    "readingTime": "min read",
+    "author": "By",
+    "publishDate": "Published",
+    "tags": "Tags",
+    "relatedPosts": "Related Articles",
+    "noPosts": "No blog posts found",
+    "shareArticle": "Share Article"
+  },
+  "addresses": {
+    "title": "Saved Addresses",
+    "addNew": "Add New Address",
+    "edit": "Edit",
+    "delete": "Delete",
+    "setAsDefault": "Set as Default",
+    "shippingAddress": "Shipping Address",
+    "billingAddress": "Billing Address",
+    "type": "Address Type",
+    "street": "Street Address",
+    "city": "City",
+    "state": "State",
+    "zipCode": "Zip Code",
+    "country": "Country",
+    "phone": "Phone",
+    "noAddresses": "No saved addresses"
+  },
+  "preferences": {
+    "title": "Preferences",
+    "language": "Language",
+    "currency": "Currency",
+    "theme": "Theme",
+    "lightMode": "Light Mode",
+    "darkMode": "Dark Mode",
+    "systemMode": "System",
+    "save": "Save Changes",
+    "saved": "Preferences saved"
+  },
+  "shippingOptions": {
+    "title": "Shipping Options",
+    "selectShippingMethod": "Select Shipping Method",
+    "estimatedDelivery": "Estimated Delivery",
+    "days": "days"
+  },
+  "paymentMethods": {
+    "title": "Payment Methods",
+    "addNew": "Add New Payment Method",
+    "cardNumber": "Card Number",
+    "expiryDate": "Expiry Date",
+    "cvv": "CVV",
+    "cardHolder": "Card Holder Name",
+    "setAsDefault": "Set as Default",
+    "noMethods": "No payment methods saved",
+    "save": "Save Payment Method"
   },
   "admin": {
     "title": "Admin Dashboard",
@@ -276,6 +385,7 @@
   "notifications": {
     "title": "Notifications",
     "markAsRead": "Mark as Read",
-    "clearAll": "Clear All"
+    "clearAll": "Clear All",
+    "noNotifications": "No notifications"
   }
 }

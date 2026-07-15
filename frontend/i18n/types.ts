@@ -22,6 +22,18 @@ export type CommonDictionary = {
     addToCart: string;
     addToWishlist: string;
     relatedProducts: string;
+    gallery: string;
+    selectSize: string;
+    selectVariant: string;
+    frequentlyBoughtTogether: string;
+    productFAQ: string;
+    askQuestion: string;
+    compare: string;
+    compareProducts: string;
+    longevity: string;
+    sillage: string;
+    seasonality: string;
+    volume: string;
   };
   cart: {
     title: string;
@@ -35,6 +47,12 @@ export type CommonDictionary = {
     remove: string;
     continueShopping: string;
     checkout: string;
+    saveForLater: string;
+    savedItems: string;
+    applyCoupon: string;
+    couponCode: string;
+    promoCode: string;
+    discount: string;
   };
   auth: {
     login: string;
@@ -74,6 +92,10 @@ export type CommonDictionary = {
     edit: string;
     delete: string;
     setAsDefault: string;
+    notificationSettings: string;
+    emailPreferences: string;
+    smsPreferences: string;
+    pushNotifications: string;
   };
   wishlist: {
     title: string;
@@ -92,9 +114,15 @@ export type CommonDictionary = {
       profile: string;
       wishlist: string;
       settings: string;
+      addresses: string;
+      preferences: string;
+      notifications: string;
     };
     totalOrders: string;
     totalSpent: string;
+    rewardPoints: string;
+    memberSince: string;
+    nextTierThreshold: string;
   };
   orders: {
     title: string;
@@ -109,6 +137,17 @@ export type CommonDictionary = {
     shipped: string;
     delivered: string;
     cancelled: string;
+    processing: string;
+    outForDelivery: string;
+    filterBy: string;
+    sortBy: string;
+    recentFirst: string;
+    oldestFirst: string;
+    trackOrder: string;
+    orderTracking: string;
+    estimatedDelivery: string;
+    shippingAddress: string;
+    invoiceDownload: string;
   };
   checkout: {
     title: string;
@@ -119,13 +158,19 @@ export type CommonDictionary = {
     phone: string;
     address: string;
     city: string;
+    state: string;
     zipCode: string;
+    country: string;
     shippingMethod: string;
     standard: string;
     express: string;
+    overnight: string;
+    storePickup: string;
     paymentMethod: string;
     creditCard: string;
+    debitCard: string;
     paypal: string;
+    applePay: string;
     placeOrder: string;
     backToCart: string;
     orderSummary: string;
@@ -134,6 +179,12 @@ export type CommonDictionary = {
     shipping: string;
     tax: string;
     total: string;
+    progressStep1: string;
+    progressStep2: string;
+    progressStep3: string;
+    progressStep4: string;
+    selectShippingOption: string;
+    selectPaymentMethod: string;
   };
   orderSuccess: {
     title: string;
@@ -175,9 +226,11 @@ export type CommonDictionary = {
     sortBy: string;
     newest: string;
     helpful: string;
+    notHelpful: string;
     noReviews: string;
     writeReview: string;
     verified: string;
+    markHelpful: string;
   };
   recommendations: {
     title: string;
@@ -207,6 +260,64 @@ export type CommonDictionary = {
     send: string;
     phone: string;
     address: string;
+  };
+  blog: {
+    title: string;
+    allPosts: string;
+    category: string;
+    readMore: string;
+    readingTime: string;
+    author: string;
+    publishDate: string;
+    tags: string;
+    relatedPosts: string;
+    noPosts: string;
+    shareArticle: string;
+  };
+  addresses: {
+    title: string;
+    addNew: string;
+    edit: string;
+    delete: string;
+    setAsDefault: string;
+    shippingAddress: string;
+    billingAddress: string;
+    type: string;
+    street: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    country: string;
+    phone: string;
+    noAddresses: string;
+  };
+  preferences: {
+    title: string;
+    language: string;
+    currency: string;
+    theme: string;
+    lightMode: string;
+    darkMode: string;
+    systemMode: string;
+    save: string;
+    saved: string;
+  };
+  shippingOptions: {
+    title: string;
+    selectShippingMethod: string;
+    estimatedDelivery: string;
+    days: string;
+  };
+  paymentMethods: {
+    title: string;
+    addNew: string;
+    cardNumber: string;
+    expiryDate: string;
+    cvv: string;
+    cardHolder: string;
+    setAsDefault: string;
+    noMethods: string;
+    save: string;
   };
   admin: {
     title: string;
@@ -277,6 +388,7 @@ export type CommonDictionary = {
     title: string;
     markAsRead: string;
     clearAll: string;
+    noNotifications: string;
   };
 };
 
