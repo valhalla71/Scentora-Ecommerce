@@ -1,13 +1,16 @@
 import { notFound } from "next/navigation";
 
 import { Container } from "@/components/layout/container";
+import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { spacing } from "@/lib/design-system/tokens";
 import { textVariants } from "@/lib/design-system/typography";
 import { getProductById, getRelatedProducts } from "@/lib/products";
 import { cn } from "@/lib/utils";
+import { Heart, Share2, ShoppingCart } from "lucide-react";
 
 type ProductDetailPageProps = {
   params: Promise<{ locale: string; id: string }>;
@@ -36,11 +39,31 @@ export default async function ProductDetailPage({
   return (
     <main style={{ paddingBlock: spacing.section.lg }}>
       <Container>
+        {/* Breadcrumb */}
+        <div className="mb-8">
+          <Breadcrumb
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Products", href: "/catalog" },
+              { label: product.category, href: `/catalog?category=${product.category}` },
+              { label: product.name },
+            ]}
+          />
+        </div>
+
+        {/* Product Section */}
         <div className="grid gap-8 lg:grid-cols-2 lg:gap-12 mb-16">
+          {/* Product Image */}
           <div className="flex items-center justify-center">
-            <div className="aspect-square w-full rounded-2xl bg-muted" />
+            <div className="aspect-square w-full rounded-2xl bg-gradient-to-br from-muted to-muted/60 relative group">
+              <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
+                Product Image
+              </div>
+              <Badge className="absolute top-4 left-4">New</Badge>
+            </div>
           </div>
 
+          {/* Product Info */}
           <div className="flex flex-col justify-start">
             <div className="mb-6">
               <p
@@ -56,7 +79,8 @@ export default async function ProductDetailPage({
                 {product.name}
               </h1>
 
-              <div className="mb-6 flex items-center gap-2">
+              {/* Rating */}
+              <div className="mb-6 flex items-center gap-3">
                 <div className="flex items-center gap-1">
                   {[...Array(5)].map((_, i) => (
                     <span
@@ -70,7 +94,7 @@ export default async function ProductDetailPage({
                     </span>
                   ))}
                 </div>
-                <span className={textVariants({ variant: "bodySm" })}>
+                <span className={cn(textVariants({ variant: "bodySm" }), "font-medium")}>
                   {product.rating}
                 </span>
                 <span
@@ -83,14 +107,23 @@ export default async function ProductDetailPage({
                 </span>
               </div>
 
-              <p
-                className={cn(
-                  textVariants({ variant: "h2" }),
-                  "mb-6 font-semibold text-primary",
-                )}
-              >
-                {product.price}
-              </p>
+              {/* Price & Availability */}
+              <div className="mb-6 space-y-3">
+                <p
+                  className={cn(
+                    textVariants({ variant: "h2" }),
+                    "font-semibold text-primary",
+                  )}
+                >
+                  {product.price}
+                </p>
+                <div className="flex items-center gap-2">
+                  <Badge variant="success">In Stock</Badge>
+                  <span className={cn(textVariants({ variant: "bodySm" }), "text-muted-foreground")}>
+                    {product.stock} available
+                  </span>
+                </div>
+              </div>
 
               <p
                 className={cn(
@@ -102,15 +135,22 @@ export default async function ProductDetailPage({
               </p>
             </div>
 
+            {/* Actions */}
             <div className="mb-8 flex gap-3">
-              <Button variant="default" size="lg" className="flex-1">
+              <Button variant="default" size="lg" className="flex-1 gap-2">
+                <ShoppingCart className="w-4 h-4" />
                 {productStrings.addToCart}
               </Button>
-              <Button variant="outline" size="lg" className="flex-1">
+              <Button variant="outline" size="lg" className="gap-2">
+                <Heart className="w-4 h-4" />
                 {productStrings.addToWishlist}
+              </Button>
+              <Button variant="outline" size="icon">
+                <Share2 className="w-4 h-4" />
               </Button>
             </div>
 
+            {/* Fragrance Notes */}
             <div className="space-y-6 border-t border-border/60 pt-8">
               <div>
                 <h3
@@ -167,6 +207,7 @@ export default async function ProductDetailPage({
           </div>
         </div>
 
+        {/* Related Products */}
         {relatedProducts.length > 0 && (
           <div>
             <h2
@@ -182,9 +223,13 @@ export default async function ProductDetailPage({
               {relatedProducts.map((relatedProduct) => (
                 <article
                   key={relatedProduct.id}
-                  className="group flex flex-col rounded-xl border border-border/60 bg-card p-6 shadow-sm transition-shadow hover:shadow-md"
+                  className="group flex flex-col rounded-xl border border-border/60 bg-card p-6 shadow-sm transition-all hover:shadow-md hover:border-primary/40"
                 >
-                  <div className="mb-4 aspect-square rounded-lg bg-muted" />
+                  <div className="mb-4 aspect-square rounded-lg bg-muted relative overflow-hidden">
+                    <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
+                      Product Image
+                    </div>
+                  </div>
 
                   <h3 className={cn(textVariants({ variant: "h4" }), "mb-2")}>
                     {relatedProduct.name}
@@ -206,8 +251,9 @@ export default async function ProductDetailPage({
                   <Button
                     variant="default"
                     size="sm"
-                    className="mt-auto"
+                    className="mt-auto w-full gap-2"
                   >
+                    <ShoppingCart className="w-4 h-4" />
                     {productStrings.addToCart}
                   </Button>
                 </article>

@@ -125,3 +125,40 @@ export function EmptyStateSearchResults() {
     />
   )
 }
+
+import { Home } from "lucide-react"
+import Link from "next/link"
+
+type NotFoundPageProps = {
+  title?: string;
+  description?: string;
+  homeLink?: string;
+  homeLinkLabel?: string;
+};
+
+export function NotFoundPage({
+  title = "Page Not Found",
+  description = "The page you're looking for doesn't exist or has been moved.",
+  homeLink = "/",
+  homeLinkLabel = "Go back home",
+}: NotFoundPageProps) {
+  return (
+    <div className={cn(
+      "flex flex-col items-center justify-center rounded-lg border border-border/40 bg-card p-12 text-center min-h-96"
+    )}>
+      <div className="mb-4 text-6xl">404</div>
+      <h1 className={cn(textVariants({ variant: "h2" }), "mb-2")}>
+        {title}
+      </h1>
+      <p className={cn(textVariants({ variant: "body" }), "mb-8 text-muted-foreground max-w-sm")}>
+        {description}
+      </p>
+      <Link href={homeLink}>
+        <Button variant="default" className="gap-2">
+          <Home className="w-4 h-4" />
+          {homeLinkLabel}
+        </Button>
+      </Link>
+    </div>
+  )
+}
