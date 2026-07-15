@@ -57,6 +57,8 @@ Database:
 
 ✅ Catalog page created
 
+✅ Product detail page created
+
 ## Current Stage
 
 Frontend ecommerce pages development.
@@ -75,6 +77,8 @@ Completed:
 - frontend/components/home/cta-section.tsx
 - frontend/app/[locale]/(routes)/page.tsx uses HeroSection, FeaturesSection, ProductShowcase, TestimonialsSection, and CTASection
 - frontend/app/[locale]/(routes)/catalog/
+- frontend/app/[locale]/(routes)/catalog/[id]/
+- frontend/lib/products.ts
 
 Working correctly:
 - Build successful
@@ -83,7 +87,7 @@ Working correctly:
 
 ## Next Task
 
-Create product detail page only.
+Create shopping cart page only.
 
 ## Development Rules
 
