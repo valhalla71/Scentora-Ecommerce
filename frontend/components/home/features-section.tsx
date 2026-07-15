@@ -45,7 +45,7 @@ export function FeaturesSection({ dictionary }: FeaturesSectionProps) {
             return (
               <li
                 key={key}
-                className="rounded-xl border border-border/60 bg-card p-6 shadow-sm transition-shadow hover:shadow-md"
+                className="rounded-xl border border-border/60 bg-card p-6 text-start shadow-sm transition-shadow hover:shadow-md"
               >
                 <div className="mb-4 flex size-10 items-center justify-center rounded-lg bg-accent/15 text-accent">
                   <Icon className="size-5" aria-hidden="true" />
