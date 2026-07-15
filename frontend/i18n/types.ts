@@ -45,6 +45,11 @@ export type HomeDictionary = {
       experience: { title: string; description: string };
     };
   };
+  showcase: {
+    title: string;
+    description: string;
+    viewAll: string;
+  };
   cta: {
     title: string;
     description: string;

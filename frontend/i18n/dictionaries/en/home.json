@@ -23,6 +23,11 @@
       }
     }
   },
+  "showcase": {
+    "title": "Featured Perfumes",
+    "description": "Handpicked fragrances that capture the essence of luxury",
+    "viewAll": "View All Perfumes"
+  },
   "cta": {
     "title": "Begin your fragrance journey",
     "description": "Join thousands of scent enthusiasts who trust Scentora for their next favorite perfume.",
