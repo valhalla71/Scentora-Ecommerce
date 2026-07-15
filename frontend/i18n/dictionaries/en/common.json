@@ -81,5 +81,31 @@
     "remove": "Remove from Wishlist",
     "continueShopping": "Continue Shopping",
     "totalItems": "Total Items"
+  },
+  "account": {
+    "title": "My Account",
+    "welcome": "Welcome back",
+    "sections": {
+      "orders": "Orders",
+      "profile": "Profile",
+      "wishlist": "Wishlist",
+      "settings": "Settings"
+    },
+    "totalOrders": "Total Orders",
+    "totalSpent": "Total Spent"
+  },
+  "orders": {
+    "title": "Order History",
+    "empty": "No orders yet",
+    "orderId": "Order ID",
+    "date": "Date",
+    "status": "Status",
+    "items": "Items",
+    "total": "Total",
+    "viewDetails": "View Details",
+    "pending": "Pending",
+    "shipped": "Shipped",
+    "delivered": "Delivered",
+    "cancelled": "Cancelled"
   }
 }

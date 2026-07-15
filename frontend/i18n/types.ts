@@ -84,6 +84,32 @@ export type CommonDictionary = {
     continueShopping: string;
     totalItems: string;
   };
+  account: {
+    title: string;
+    welcome: string;
+    sections: {
+      orders: string;
+      profile: string;
+      wishlist: string;
+      settings: string;
+    };
+    totalOrders: string;
+    totalSpent: string;
+  };
+  orders: {
+    title: string;
+    empty: string;
+    orderId: string;
+    date: string;
+    status: string;
+    items: string;
+    total: string;
+    viewDetails: string;
+    pending: string;
+    shipped: string;
+    delivered: string;
+    cancelled: string;
+  };
 };
 
 export type LayoutDictionary = {

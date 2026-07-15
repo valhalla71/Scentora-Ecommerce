@@ -81,5 +81,31 @@
     "remove": "حذف از لیست علاقه‌مندی",
     "continueShopping": "ادامه خریدتان",
     "totalItems": "تعداد کل محصولات"
+  },
+  "account": {
+    "title": "حساب کاربری من",
+    "welcome": "خوش آمدید",
+    "sections": {
+      "orders": "سفارشات",
+      "profile": "پروفایل",
+      "wishlist": "لیست علاقه‌مندی",
+      "settings": "تنظیمات"
+    },
+    "totalOrders": "تعداد کل سفارشات",
+    "totalSpent": "مجموع مخارج"
+  },
+  "orders": {
+    "title": "تاریخچه سفارشات",
+    "empty": "سفارشی وجود ندارد",
+    "orderId": "شماره سفارش",
+    "date": "تاریخ",
+    "status": "وضعیت",
+    "items": "محصولات",
+    "total": "مجموع",
+    "viewDetails": "مشاهده جزئیات",
+    "pending": "در انتظار",
+    "shipped": "ارسال شده",
+    "delivered": "تحویل داده شده",
+    "cancelled": "لغو شده"
   }
 }
