@@ -107,5 +107,40 @@
     "shipped": "Shipped",
     "delivered": "Delivered",
     "cancelled": "Cancelled"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "shippingInfo": "Shipping Information",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "city": "City",
+    "zipCode": "Zip Code",
+    "shippingMethod": "Shipping Method",
+    "standard": "Standard (5-7 days)",
+    "express": "Express (2-3 days)",
+    "paymentMethod": "Payment Method",
+    "creditCard": "Credit Card",
+    "paypal": "PayPal",
+    "placeOrder": "Place Order",
+    "backToCart": "Back to Cart",
+    "orderSummary": "Order Summary",
+    "items": "Items",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "tax": "Tax",
+    "total": "Total"
+  },
+  "orderSuccess": {
+    "title": "Order Confirmed",
+    "confirmationMessage": "Thank you for your purchase!",
+    "orderNumber": "Order Number",
+    "orderDate": "Order Date",
+    "estimatedDelivery": "Estimated Delivery",
+    "shippingAddress": "Shipping Address",
+    "trackOrder": "Track Order",
+    "continueShopping": "Continue Shopping"
   }
 }

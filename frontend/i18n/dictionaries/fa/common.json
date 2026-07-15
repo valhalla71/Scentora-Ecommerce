@@ -107,5 +107,40 @@
     "shipped": "ارسال شده",
     "delivered": "تحویل داده شده",
     "cancelled": "لغو شده"
+  },
+  "checkout": {
+    "title": "تسویه حساب",
+    "shippingInfo": "اطلاعات ارسال",
+    "firstName": "نام",
+    "lastName": "نام خانوادگی",
+    "email": "ایمیل",
+    "phone": "تلفن",
+    "address": "آدرس",
+    "city": "شهر",
+    "zipCode": "کد پستی",
+    "shippingMethod": "روش ارسال",
+    "standard": "استاندارد (5-7 روز)",
+    "express": "فوری (2-3 روز)",
+    "paymentMethod": "روش پرداخت",
+    "creditCard": "کارت اعتباری",
+    "paypal": "پی‌پال",
+    "placeOrder": "تأیید سفارش",
+    "backToCart": "بازگشت به سبد",
+    "orderSummary": "خلاصه سفارش",
+    "items": "محصولات",
+    "subtotal": "جمع خرید",
+    "shipping": "ارسال",
+    "tax": "مالیات",
+    "total": "مجموع"
+  },
+  "orderSuccess": {
+    "title": "سفارش تأیید شد",
+    "confirmationMessage": "با تشکر برای خریدتان!",
+    "orderNumber": "شماره سفارش",
+    "orderDate": "تاریخ سفارش",
+    "estimatedDelivery": "تاریخ تحویل برآورد شده",
+    "shippingAddress": "آدرس ارسال",
+    "trackOrder": "پیگیری سفارش",
+    "continueShopping": "ادامه خریدتان"
   }
 }

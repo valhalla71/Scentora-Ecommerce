@@ -110,6 +110,41 @@ export type CommonDictionary = {
     delivered: string;
     cancelled: string;
   };
+  checkout: {
+    title: string;
+    shippingInfo: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    address: string;
+    city: string;
+    zipCode: string;
+    shippingMethod: string;
+    standard: string;
+    express: string;
+    paymentMethod: string;
+    creditCard: string;
+    paypal: string;
+    placeOrder: string;
+    backToCart: string;
+    orderSummary: string;
+    items: string;
+    subtotal: string;
+    shipping: string;
+    tax: string;
+    total: string;
+  };
+  orderSuccess: {
+    title: string;
+    confirmationMessage: string;
+    orderNumber: string;
+    orderDate: string;
+    estimatedDelivery: string;
+    shippingAddress: string;
+    trackOrder: string;
+    continueShopping: string;
+  };
 };
 
 export type LayoutDictionary = {
