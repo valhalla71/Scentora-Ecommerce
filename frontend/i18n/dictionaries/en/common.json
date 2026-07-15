@@ -207,5 +207,75 @@
     "send": "Send Message",
     "phone": "Phone",
     "address": "Address"
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "dashboard": "Dashboard",
+    "products": "Products",
+    "inventory": "Inventory",
+    "orders": "Orders",
+    "users": "Users",
+    "analytics": "Analytics",
+    "settings": "Settings"
+  },
+  "metrics": {
+    "totalSales": "Total Sales",
+    "totalOrders": "Total Orders",
+    "totalUsers": "Total Users",
+    "revenue": "Revenue",
+    "conversionRate": "Conversion Rate",
+    "averageOrderValue": "Average Order Value"
+  },
+  "productManagement": {
+    "title": "Product Management",
+    "create": "Create Product",
+    "edit": "Edit Product",
+    "delete": "Delete",
+    "search": "Search products...",
+    "name": "Product Name",
+    "price": "Price",
+    "stock": "Stock",
+    "status": "Status",
+    "actions": "Actions",
+    "category": "Category"
+  },
+  "inventory": {
+    "title": "Inventory Management",
+    "productName": "Product Name",
+    "quantity": "Quantity",
+    "reorderLevel": "Reorder Level",
+    "status": "Status",
+    "inStock": "In Stock",
+    "lowStock": "Low Stock",
+    "outOfStock": "Out of Stock"
+  },
+  "orderManagement": {
+    "title": "Order Management",
+    "orderId": "Order ID",
+    "customer": "Customer",
+    "date": "Date",
+    "status": "Status",
+    "total": "Total",
+    "markShipped": "Mark Shipped",
+    "markDelivered": "Mark Delivered"
+  },
+  "userManagement": {
+    "title": "User Management",
+    "userId": "User ID",
+    "joinDate": "Join Date",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "analytics": {
+    "title": "Analytics",
+    "topProducts": "Top Products",
+    "customerInsights": "Customer Insights",
+    "dateRange": "Date Range"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "markAsRead": "Mark as Read",
+    "clearAll": "Clear All"
   }
 }

@@ -119,7 +119,7 @@ export function getRecommendedProducts(
   return mockRecommendations.filter((p) => p.category === category).slice(0, limit);
 }
 
-export interface RecommendedProduct {
+interface RecommendedProduct {
   id: string;
   name: string;
   price: string;
@@ -127,7 +127,7 @@ export interface RecommendedProduct {
   rating: number;
 }
 
-const mockRecommendations: RecommendedProduct[] = [
+export const mockRecommendations: RecommendedProduct[] = [
   {
     id: "2",
     name: "Rose Garden",

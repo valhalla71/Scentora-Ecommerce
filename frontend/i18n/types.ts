@@ -208,6 +208,76 @@ export type CommonDictionary = {
     phone: string;
     address: string;
   };
+  admin: {
+    title: string;
+    dashboard: string;
+    products: string;
+    inventory: string;
+    orders: string;
+    users: string;
+    analytics: string;
+    settings: string;
+  };
+  metrics: {
+    totalSales: string;
+    totalOrders: string;
+    totalUsers: string;
+    revenue: string;
+    conversionRate: string;
+    averageOrderValue: string;
+  };
+  productManagement: {
+    title: string;
+    create: string;
+    edit: string;
+    delete: string;
+    search: string;
+    name: string;
+    price: string;
+    stock: string;
+    status: string;
+    actions: string;
+    category: string;
+  };
+  inventory: {
+    title: string;
+    productName: string;
+    quantity: string;
+    reorderLevel: string;
+    status: string;
+    inStock: string;
+    lowStock: string;
+    outOfStock: string;
+  };
+  orderManagement: {
+    title: string;
+    orderId: string;
+    customer: string;
+    date: string;
+    status: string;
+    total: string;
+    markShipped: string;
+    markDelivered: string;
+  };
+  userManagement: {
+    title: string;
+    userId: string;
+    joinDate: string;
+    status: string;
+    active: string;
+    inactive: string;
+  };
+  analytics: {
+    title: string;
+    topProducts: string;
+    customerInsights: string;
+    dateRange: string;
+  };
+  notifications: {
+    title: string;
+    markAsRead: string;
+    clearAll: string;
+  };
 };
 
 export type LayoutDictionary = {

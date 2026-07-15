@@ -207,5 +207,75 @@
     "send": "ارسال پیام",
     "phone": "تلفن",
     "address": "آدرس"
+  },
+  "admin": {
+    "title": "پنل مدیریتی",
+    "dashboard": "داشبورد",
+    "products": "محصولات",
+    "inventory": "موجودی",
+    "orders": "سفارشات",
+    "users": "کاربران",
+    "analytics": "تجزیه و تحلیل",
+    "settings": "تنظیمات"
+  },
+  "metrics": {
+    "totalSales": "کل فروش",
+    "totalOrders": "کل سفارشات",
+    "totalUsers": "کل کاربران",
+    "revenue": "درآمد",
+    "conversionRate": "نرخ تبدیل",
+    "averageOrderValue": "میانگین مقدار سفارش"
+  },
+  "productManagement": {
+    "title": "مدیریت محصولات",
+    "create": "ایجاد محصول",
+    "edit": "ویرایش محصول",
+    "delete": "حذف",
+    "search": "جستجو در محصولات...",
+    "name": "نام محصول",
+    "price": "قیمت",
+    "stock": "موجودی",
+    "status": "وضعیت",
+    "actions": "اقدامات",
+    "category": "دسته بندی"
+  },
+  "inventory": {
+    "title": "مدیریت موجودی",
+    "productName": "نام محصول",
+    "quantity": "تعداد",
+    "reorderLevel": "سطح سفارش مجدد",
+    "status": "وضعیت",
+    "inStock": "در موجودی",
+    "lowStock": "موجودی کم",
+    "outOfStock": "ناموجود"
+  },
+  "orderManagement": {
+    "title": "مدیریت سفارشات",
+    "orderId": "شماره سفارش",
+    "customer": "مشتری",
+    "date": "تاریخ",
+    "status": "وضعیت",
+    "total": "مجموع",
+    "markShipped": "علامت‌گذاری به عنوان ارسال شده",
+    "markDelivered": "علامت‌گذاری به عنوان تحویل داده شده"
+  },
+  "userManagement": {
+    "title": "مدیریت کاربران",
+    "userId": "شناسه کاربر",
+    "joinDate": "تاریخ پیوستن",
+    "status": "وضعیت",
+    "active": "فعال",
+    "inactive": "غیرفعال"
+  },
+  "analytics": {
+    "title": "تجزیه و تحلیل",
+    "topProducts": "محصولات برتر",
+    "customerInsights": "بصیرت‌های مشتری",
+    "dateRange": "محدوده تاریخ"
+  },
+  "notifications": {
+    "title": "اطلاعات",
+    "markAsRead": "علامت‌گذاری به عنوان خوانده شده",
+    "clearAll": "پاک کردن همه"
   }
 }
