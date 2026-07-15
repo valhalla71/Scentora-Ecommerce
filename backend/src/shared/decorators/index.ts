@@ -1,4 +1,4 @@
-import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { createParamDecorator, ExecutionContext, SetMetadata } from '@nestjs/common';
 
 export const CurrentUser = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
@@ -7,9 +7,12 @@ export const CurrentUser = createParamDecorator(
   },
 );
 
+export const Public = () => SetMetadata('isPublic', true);
+
+export const Roles = (...roles: string[]) => SetMetadata('roles', roles);
+
 export const ApiPagination = () => {
   return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
-    // Decorator for pagination documentation
     return descriptor;
   };
 };

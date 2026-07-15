@@ -17,6 +17,9 @@ async function main() {
     prisma.orderItem.deleteMany(),
     prisma.order.deleteMany(),
     prisma.address.deleteMany(),
+    prisma.emailVerificationToken.deleteMany(),
+    prisma.passwordResetToken.deleteMany(),
+    prisma.refreshToken.deleteMany(),
     prisma.userPreference.deleteMany(),
     prisma.rolePermission.deleteMany(),
     prisma.userRole.deleteMany(),
@@ -123,7 +126,7 @@ async function main() {
   });
 
   // Seed Admin User
-  const hashedPassword = await bcrypt.hash('admin@123', 10);
+  const hashedPassword = await bcrypt.hash('Admin@123', 10);
   const adminUser = await prisma.user.create({
     data: {
       email: 'admin@scentora.com',
@@ -220,7 +223,7 @@ async function main() {
   const sampleUser = await prisma.user.create({
     data: {
       email: 'user@example.com',
-      password: await bcrypt.hash('user@123', 10),
+      password: await bcrypt.hash('User@123', 10),
       firstName: 'John',
       lastName: 'Doe',
       phone: '+9876543210',

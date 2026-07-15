@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
 import configuration from '@config/configuration';
 import { CommonModule } from '@common/common.module';
+import { JwtAuthGuard } from '@shared/guards/jwt-auth.guard';
 import { HealthModule } from '@modules/health/health.module';
 import { UsersModule } from '@modules/users/users.module';
 import { AuthModule } from '@modules/auth/auth.module';
@@ -32,6 +34,12 @@ import { ReviewsModule } from '@modules/reviews/reviews.module';
     OrdersModule,
     InventoryModule,
     ReviewsModule,
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
   ],
 })
 export class AppModule {}
