@@ -142,5 +142,29 @@
     "shippingAddress": "آدرس ارسال",
     "trackOrder": "پیگیری سفارش",
     "continueShopping": "ادامه خریدتان"
+  },
+  "discovery": {
+    "search": "جستجو در عطرها...",
+    "filters": "فیلترها",
+    "sort": "مرتب‌سازی بر اساس",
+    "category": "دسته بندی",
+    "price": "محدوده قیمت",
+    "priceMin": "حداقل قیمت",
+    "priceMax": "حداکثر قیمت",
+    "clearFilters": "پاک کردن فیلترها",
+    "newest": "جدیدترین",
+    "priceLowToHigh": "قیمت: کم به زیاد",
+    "priceHighToLow": "قیمت: زیاد به کم",
+    "rating": "بیشترین امتیاز",
+    "noProducts": "محصولی یافت نشد",
+    "noProductsDescription": "سعی کنید فیلترها یا جستجوی خود را تغییر دهید",
+    "categories": {
+      "all": "همه",
+      "oriental": "شرقی",
+      "fresh": "تازه",
+      "floral": "گلی",
+      "amber": "کهربایی",
+      "woody": "چوبی"
+    }
   }
 }

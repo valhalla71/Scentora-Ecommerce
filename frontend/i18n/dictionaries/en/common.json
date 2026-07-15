@@ -142,5 +142,29 @@
     "shippingAddress": "Shipping Address",
     "trackOrder": "Track Order",
     "continueShopping": "Continue Shopping"
+  },
+  "discovery": {
+    "search": "Search perfumes...",
+    "filters": "Filters",
+    "sort": "Sort By",
+    "category": "Category",
+    "price": "Price Range",
+    "priceMin": "Min Price",
+    "priceMax": "Max Price",
+    "clearFilters": "Clear Filters",
+    "newest": "Newest",
+    "priceLowToHigh": "Price: Low to High",
+    "priceHighToLow": "Price: High to Low",
+    "rating": "Highest Rated",
+    "noProducts": "No products found",
+    "noProductsDescription": "Try adjusting your filters or search query",
+    "categories": {
+      "all": "All",
+      "oriental": "Oriental",
+      "fresh": "Fresh",
+      "floral": "Floral",
+      "amber": "Amber",
+      "woody": "Woody"
+    }
   }
 }

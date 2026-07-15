@@ -145,6 +145,30 @@ export type CommonDictionary = {
     trackOrder: string;
     continueShopping: string;
   };
+  discovery: {
+    search: string;
+    filters: string;
+    sort: string;
+    category: string;
+    price: string;
+    priceMin: string;
+    priceMax: string;
+    clearFilters: string;
+    newest: string;
+    priceLowToHigh: string;
+    priceHighToLow: string;
+    rating: string;
+    noProducts: string;
+    noProductsDescription: string;
+    categories: {
+      all: string;
+      oriental: string;
+      fresh: string;
+      floral: string;
+      amber: string;
+      woody: string;
+    };
+  };
 };
 
 export type LayoutDictionary = {
