@@ -1,0 +1,19 @@
+---
+description: Scentora development rules
+alwaysApply: true
+---
+
+Project: Scentora perfume ecommerce platform.
+
+Rules:
+- Work on one task at a time.
+- Modify only required files.
+- Do not inspect unrelated files.
+- Do not refactor existing architecture.
+- Do not create unnecessary files.
+- Follow existing component patterns.
+- Use TypeScript only.
+- Keep changes minimal.
+- After completing a task report only:
+  - changed files
+  - build status
