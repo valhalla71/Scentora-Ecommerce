@@ -50,6 +50,14 @@ export type HomeDictionary = {
     description: string;
     viewAll: string;
   };
+  testimonials: {
+    title: string;
+    items: Array<{
+      text: string;
+      author: string;
+      role: string;
+    }>;
+  };
   cta: {
     title: string;
     description: string;

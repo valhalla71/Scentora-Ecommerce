@@ -28,6 +28,26 @@
     "description": "Handpicked fragrances that capture the essence of luxury",
     "viewAll": "View All Perfumes"
   },
+  "testimonials": {
+    "title": "What Our Customers Say",
+    "items": [
+      {
+        "text": "Scentora has transformed how I discover perfumes. The curated selection is unmatched.",
+        "author": "Sarah Mitchell",
+        "role": "Fragrance Enthusiast"
+      },
+      {
+        "text": "Authentic products and exceptional service. I trust Scentora for every purchase.",
+        "author": "James Chen",
+        "role": "Regular Customer"
+      },
+      {
+        "text": "The personalized recommendations helped me find my signature scent. Highly recommended!",
+        "author": "Emma Roberts",
+        "role": "Verified Buyer"
+      }
+    ]
+  },
   "cta": {
     "title": "Begin your fragrance journey",
     "description": "Join thousands of scent enthusiasts who trust Scentora for their next favorite perfume.",
