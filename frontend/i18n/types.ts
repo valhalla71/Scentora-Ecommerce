@@ -4,6 +4,11 @@ export type CommonDictionary = {
   siteName: string;
   loading: string;
   error: string;
+  catalog: {
+    title: string;
+    description: string;
+    addToCart: string;
+  };
 };
 
 export type LayoutDictionary = {

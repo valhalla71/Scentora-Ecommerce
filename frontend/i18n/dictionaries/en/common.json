@@ -1,5 +1,10 @@
 {
   "siteName": "Scentora",
   "loading": "Loading…",
-  "error": "Something went wrong"
+  "error": "Something went wrong",
+  "catalog": {
+    "title": "Perfume Catalog",
+    "description": "Browse our complete collection of luxurious fragrances",
+    "addToCart": "Add to Cart"
+  }
 }
