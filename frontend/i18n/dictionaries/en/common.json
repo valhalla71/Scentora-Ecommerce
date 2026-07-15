@@ -72,5 +72,14 @@
     "edit": "Edit",
     "delete": "Delete",
     "setAsDefault": "Set as Default"
+  },
+  "wishlist": {
+    "title": "My Wishlist",
+    "empty": "Your wishlist is empty",
+    "items": "items",
+    "addToCart": "Add to Cart",
+    "remove": "Remove from Wishlist",
+    "continueShopping": "Continue Shopping",
+    "totalItems": "Total Items"
   }
 }

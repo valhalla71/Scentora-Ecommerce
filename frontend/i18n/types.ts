@@ -75,6 +75,15 @@ export type CommonDictionary = {
     delete: string;
     setAsDefault: string;
   };
+  wishlist: {
+    title: string;
+    empty: string;
+    items: string;
+    addToCart: string;
+    remove: string;
+    continueShopping: string;
+    totalItems: string;
+  };
 };
 
 export type LayoutDictionary = {
