@@ -33,5 +33,20 @@
     "remove": "Remove",
     "continueShopping": "Continue Shopping",
     "checkout": "Proceed to Checkout"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "fullName": "Full Name",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "dontHaveAccount": "Don't have an account?",
+    "alreadyHaveAccount": "Already have an account?",
+    "signUp": "Sign Up",
+    "signIn": "Sign In",
+    "terms": "I agree to the Terms and Conditions"
   }
 }

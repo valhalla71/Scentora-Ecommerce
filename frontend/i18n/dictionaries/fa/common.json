@@ -33,5 +33,20 @@
     "remove": "حذف",
     "continueShopping": "ادامه خریدتان",
     "checkout": "اقدام به نهایی سازی سفارش"
+  },
+  "auth": {
+    "login": "ورود",
+    "register": "ثبت نام",
+    "email": "ایمیل",
+    "password": "رمز عبور",
+    "confirmPassword": "تأیید رمز عبور",
+    "fullName": "نام کامل",
+    "rememberMe": "مرا به یاد بسپار",
+    "forgotPassword": "رمز عبور را فراموش کردید؟",
+    "dontHaveAccount": "حساب کاربری ندارید؟",
+    "alreadyHaveAccount": "قبلاً حساب کاربری دارید؟",
+    "signUp": "ثبت نام",
+    "signIn": "ورود",
+    "terms": "موافقت با شرایط و ضوابط"
   }
 }

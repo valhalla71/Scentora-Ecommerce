@@ -36,6 +36,21 @@ export type CommonDictionary = {
     continueShopping: string;
     checkout: string;
   };
+  auth: {
+    login: string;
+    register: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+    fullName: string;
+    rememberMe: string;
+    forgotPassword: string;
+    dontHaveAccount: string;
+    alreadyHaveAccount: string;
+    signUp: string;
+    signIn: string;
+    terms: string;
+  };
 };
 
 export type LayoutDictionary = {
