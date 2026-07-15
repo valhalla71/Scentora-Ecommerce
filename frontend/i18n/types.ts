@@ -51,6 +51,30 @@ export type CommonDictionary = {
     signIn: string;
     terms: string;
   };
+  profile: {
+    title: string;
+    personalInfo: string;
+    name: string;
+    email: string;
+    phone: string;
+    editProfile: string;
+    preferences: string;
+    newsletter: string;
+    language: string;
+    notifications: string;
+    recentOrders: string;
+    orderNumber: string;
+    date: string;
+    total: string;
+    status: string;
+    addressBook: string;
+    addAddress: string;
+    logout: string;
+    viewDetails: string;
+    edit: string;
+    delete: string;
+    setAsDefault: string;
+  };
 };
 
 export type LayoutDictionary = {

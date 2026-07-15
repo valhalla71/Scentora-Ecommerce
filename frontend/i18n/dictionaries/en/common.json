@@ -48,5 +48,29 @@
     "signUp": "Sign Up",
     "signIn": "Sign In",
     "terms": "I agree to the Terms and Conditions"
+  },
+  "profile": {
+    "title": "My Profile",
+    "personalInfo": "Personal Information",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "editProfile": "Edit Profile",
+    "preferences": "Preferences",
+    "newsletter": "Subscribe to newsletter",
+    "language": "Language",
+    "notifications": "Email notifications",
+    "recentOrders": "Recent Orders",
+    "orderNumber": "Order Number",
+    "date": "Date",
+    "total": "Total",
+    "status": "Status",
+    "addressBook": "Address Book",
+    "addAddress": "Add Address",
+    "logout": "Logout",
+    "viewDetails": "View Details",
+    "edit": "Edit",
+    "delete": "Delete",
+    "setAsDefault": "Set as Default"
   }
 }

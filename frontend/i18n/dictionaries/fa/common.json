@@ -48,5 +48,29 @@
     "signUp": "ثبت نام",
     "signIn": "ورود",
     "terms": "موافقت با شرایط و ضوابط"
+  },
+  "profile": {
+    "title": "پروفایل من",
+    "personalInfo": "اطلاعات شخصی",
+    "name": "نام",
+    "email": "ایمیل",
+    "phone": "تلفن",
+    "editProfile": "ویرایش پروفایل",
+    "preferences": "تنظیمات",
+    "newsletter": "اشتراک در خبرنامه",
+    "language": "زبان",
+    "notifications": "اطلاعات ایمیلی",
+    "recentOrders": "سفارشات اخیر",
+    "orderNumber": "شماره سفارش",
+    "date": "تاریخ",
+    "total": "مجموع",
+    "status": "وضعیت",
+    "addressBook": "دفترچه آدرس‌ها",
+    "addAddress": "اضافه کردن آدرس",
+    "logout": "خروج",
+    "viewDetails": "مشاهده جزئیات",
+    "edit": "ویرایش",
+    "delete": "حذف",
+    "setAsDefault": "تعیین به عنوان پیش‌فرض"
   }
 }
