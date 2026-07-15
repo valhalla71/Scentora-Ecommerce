@@ -611,7 +611,32 @@ Before creating any new module:
 6. Never modify completed frontend architecture.
 7. Prefer completing existing domains over creating new domains.
 
+## Implementation Reality Rule
+
+Do not mark a feature complete based only on database models.
+
+A domain is complete only when:
+
+- Database models exist
+- Business logic exists
+- API endpoints exist
+- Validation exists
+- Verification exists
+
+Database schema additions alone do not represent feature completion.
+
 ## Domain Completion Checklist
+
+## Build Verification Rule
+
+No domain implementation is considered complete until:
+
+- npm run build succeeds
+- TypeScript errors are resolved
+- Prisma migration status is clean
+- Git changes are reviewed
+
+Do not mark implementation complete with failing build.
 
 Before marking any domain complete:
 
@@ -623,6 +648,9 @@ Required:
 - Check missing dependencies
 - Check database relations
 - Check API consistency
+- Verify implemented business flows
+- Verify database models are actually used by services/controllers
+- Verify claimed features exist beyond schema definitions
 
 ## Documentation Rule
 
