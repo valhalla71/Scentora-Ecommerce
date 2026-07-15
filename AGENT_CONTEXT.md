@@ -67,6 +67,8 @@ Database:
 
 ✅ Wishlist page created
 
+✅ Header authentication links integrated
+
 ## Current Stage
 
 Frontend ecommerce pages development.
@@ -96,6 +98,7 @@ Completed:
 - frontend/lib/user.ts
 - frontend/app/[locale]/(routes)/wishlist/
 - frontend/lib/wishlist.ts
+- frontend/components/layout/header.tsx updated
 
 Working correctly:
 - Build successful
@@ -104,7 +107,7 @@ Working correctly:
 
 ## Next Task
 
-Connect authentication links to header only.
+Create orders page only.
 
 ## Development Rules
 
