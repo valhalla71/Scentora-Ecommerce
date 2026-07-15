@@ -59,6 +59,8 @@ Database:
 
 ✅ Product detail page created
 
+✅ Shopping cart page created
+
 ## Current Stage
 
 Frontend ecommerce pages development.
@@ -79,6 +81,8 @@ Completed:
 - frontend/app/[locale]/(routes)/catalog/
 - frontend/app/[locale]/(routes)/catalog/[id]/
 - frontend/lib/products.ts
+- frontend/app/[locale]/(routes)/cart/
+- frontend/lib/cart.ts
 
 Working correctly:
 - Build successful
@@ -87,7 +91,7 @@ Working correctly:
 
 ## Next Task
 
-Create shopping cart page only.
+Create authentication pages only.
 
 ## Development Rules
 
