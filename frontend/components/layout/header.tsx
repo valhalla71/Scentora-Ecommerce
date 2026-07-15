@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { ShoppingCart, User, Menu, X, Search } from "lucide-react";
 import { useState } from "react";
@@ -41,11 +43,10 @@ export function Header({ locale, dictionary }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { layout, common } = dictionary;
   const labels = actionLabels[locale];
-  const isRTL = locale === "fa";
 
   const navItems = [
     { href: "/", label: layout.nav.home },
-    { href: "/catalog", label: "Products" },
+    { href: "/catalog", label: layout.nav.catalog },
     { href: "/about", label: layout.nav.about },
   ] as const;
 
@@ -162,7 +163,7 @@ export function Header({ locale, dictionary }: HeaderProps) {
               type="button"
               variant="ghost"
               size="icon"
-              aria-label="Toggle menu"
+              aria-label={layout.actions.toggleMenu}
               className="lg:hidden"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >

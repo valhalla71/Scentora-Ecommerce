@@ -2,6 +2,7 @@
   "nav": {
     "primary": "ناوبری اصلی",
     "home": "خانه",
+    "catalog": "کاتالوگ",
     "about": "درباره ما"
   },
   "footer": {
@@ -17,6 +18,7 @@
     "system": "استفاده از تم سیستم"
   },
   "actions": {
-    "changeLanguage": "تغییر زبان"
+    "changeLanguage": "تغییر زبان",
+    "toggleMenu": "تغییر منو"
   }
 }

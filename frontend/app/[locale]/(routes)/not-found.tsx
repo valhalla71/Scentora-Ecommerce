@@ -5,8 +5,20 @@ import { Container } from "@/components/layout/container";
 import { Button } from "@/components/ui/button";
 import { textVariants } from "@/lib/design-system/typography";
 import { cn } from "@/lib/utils";
+import { getDictionary } from "@/i18n/get-dictionary";
+import { defaultLocale, type Locale } from "@/i18n/config";
+import { localizeHref } from "@/i18n/navigation";
 
-export default function NotFound() {
+type NotFoundProps = {
+  params: Promise<{ locale?: string }>;
+};
+
+export default async function NotFound({ params }: NotFoundProps) {
+  const { locale: rawLocale } = await params;
+  const locale = (rawLocale || defaultLocale) as Locale;
+  const dictionary = await getDictionary(locale);
+  const { title, description, goHome, browseProducts } = dictionary.common.errors.notFound;
+
   return (
     <main className="flex items-center justify-center min-h-screen py-12">
       <Container className="max-w-md">
@@ -16,23 +28,23 @@ export default function NotFound() {
           </div>
           
           <h1 className={cn(textVariants({ variant: "h1" }), "mb-3 text-balance")}>
-            Page Not Found
+            {title}
           </h1>
           
           <p className={cn(textVariants({ variant: "body" }), "mb-8 text-muted-foreground")}>
-            The page you're looking for doesn't exist or has been moved.
+            {description}
           </p>
           
           <div className="flex flex-col gap-3 w-full">
-            <Link href="/" className="w-full">
+            <Link href={localizeHref("/", locale)} className="w-full">
               <Button className="w-full gap-2">
                 <Home className="w-4 h-4" />
-                Go Home
+                {goHome}
               </Button>
             </Link>
-            <Link href="/catalog" className="w-full">
+            <Link href={localizeHref("/catalog", locale)} className="w-full">
               <Button variant="outline" className="w-full">
-                Browse Products
+                {browseProducts}
               </Button>
             </Link>
           </div>

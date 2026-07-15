@@ -2,6 +2,7 @@
   "nav": {
     "primary": "Primary navigation",
     "home": "Home",
+    "catalog": "Catalog",
     "about": "About"
   },
   "footer": {
@@ -17,6 +18,7 @@
     "system": "Use system theme"
   },
   "actions": {
-    "changeLanguage": "Change language"
+    "changeLanguage": "Change language",
+    "toggleMenu": "Toggle menu"
   }
 }

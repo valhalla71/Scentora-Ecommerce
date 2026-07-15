@@ -3,12 +3,9 @@ import { notFound } from "next/navigation";
 
 import { AppProviders } from "@/components/providers/app-providers";
 import { SiteShell } from "@/components/layout/site-shell";
-import { getLocaleHtmlAttributes } from "@/components/i18n/locale-html-attributes";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { isValidLocale, locales, type Locale } from "@/i18n/config";
-import { fontVariables } from "@/lib/fonts";
-
-import "../globals.css";
+import { getLocaleHtmlAttributes } from "@/components/i18n/locale-html-attributes";
 
 export const metadata: Metadata = {
   title: {
@@ -39,22 +36,12 @@ export default async function LocaleLayout({
 
   const locale = rawLocale as Locale;
   const dictionary = await getDictionary(locale);
-  const htmlAttributes = getLocaleHtmlAttributes({ locale });
 
   return (
-    <html
-      lang={htmlAttributes.lang}
-      dir={htmlAttributes.dir}
-      className={`${fontVariables} h-full antialiased`}
-      suppressHydrationWarning
-    >
-      <body className="min-h-full flex flex-col">
-        <AppProviders locale={locale}>
-          <SiteShell locale={locale} dictionary={dictionary}>
-            {children}
-          </SiteShell>
-        </AppProviders>
-      </body>
-    </html>
+    <AppProviders locale={locale}>
+      <SiteShell locale={locale} dictionary={dictionary}>
+        {children}
+      </SiteShell>
+    </AppProviders>
   );
 }

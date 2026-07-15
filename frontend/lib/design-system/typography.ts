@@ -12,6 +12,7 @@ export const textVariants = cva("", {
       h2: "text-2xl font-semibold tracking-tight sm:text-3xl",
       h3: "text-xl font-semibold tracking-tight sm:text-2xl",
       h4: "text-lg font-semibold tracking-tight",
+      h5: "text-base font-semibold tracking-tight",
       body: "text-base leading-7",
       bodySm: "text-sm leading-6",
       caption: "text-xs leading-5 text-muted-foreground",

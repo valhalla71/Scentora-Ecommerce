@@ -390,12 +390,21 @@ export type CommonDictionary = {
     clearAll: string;
     noNotifications: string;
   };
+  errors: {
+    notFound: {
+      title: string;
+      description: string;
+      goHome: string;
+      browseProducts: string;
+    };
+  };
 };
 
 export type LayoutDictionary = {
   nav: {
     primary: string;
     home: string;
+    catalog: string;
     about: string;
   };
   footer: {
@@ -412,6 +421,7 @@ export type LayoutDictionary = {
   };
   actions: {
     changeLanguage: string;
+    toggleMenu: string;
   };
 };
 
