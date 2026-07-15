@@ -69,7 +69,7 @@ Working correctly:
 
 ## Next Task
 
-Create homepage features section only.
+Connect homepage sections to page.
 
 ## Development Rules
 
