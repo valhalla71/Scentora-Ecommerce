@@ -63,6 +63,8 @@ Database:
 
 ✅ Authentication pages created
 
+✅ User profile page created
+
 ## Current Stage
 
 Frontend ecommerce pages development.
@@ -88,6 +90,8 @@ Completed:
 - frontend/app/[locale]/(routes)/login/
 - frontend/app/[locale]/(routes)/register/
 - frontend/components/auth/
+- frontend/app/[locale]/(routes)/profile/
+- frontend/lib/user.ts
 
 Working correctly:
 - Build successful
@@ -96,7 +100,7 @@ Working correctly:
 
 ## Next Task
 
-Create user profile page only.
+Create wishlist page only.
 
 ## Development Rules
 
