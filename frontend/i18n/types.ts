@@ -169,6 +169,45 @@ export type CommonDictionary = {
       woody: string;
     };
   };
+  reviews: {
+    title: string;
+    rating: string;
+    sortBy: string;
+    newest: string;
+    helpful: string;
+    noReviews: string;
+    writeReview: string;
+    verified: string;
+  };
+  recommendations: {
+    title: string;
+    relatedProducts: string;
+  };
+  newsletter: {
+    title: string;
+    description: string;
+    placeholder: string;
+    subscribe: string;
+    success: string;
+  };
+  about: {
+    title: string;
+    mission: string;
+    values: string;
+    quality: string;
+    authenticity: string;
+    service: string;
+  };
+  contact: {
+    title: string;
+    name: string;
+    email: string;
+    subject: string;
+    message: string;
+    send: string;
+    phone: string;
+    address: string;
+  };
 };
 
 export type LayoutDictionary = {

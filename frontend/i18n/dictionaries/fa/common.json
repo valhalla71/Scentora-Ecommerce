@@ -166,5 +166,46 @@
       "amber": "کهربایی",
       "woody": "چوبی"
     }
+  },
+  "reviews": {
+    "title": "نظرات مشتریان",
+    "rating": "امتیاز",
+    "sortBy": "مرتب‌سازی بر اساس",
+    "newest": "جدیدترین",
+    "helpful": "بیشتر کمکی",
+    "noReviews": "هنوز نظری نوشته نشده است",
+    "writeReview": "نوشتن نظر",
+    "helpful": "مفید",
+    "notHelpful": "غیرمفید",
+    "verified": "خریدی تأیید شده"
+  },
+  "recommendations": {
+    "title": "محصولات پیشنهادی برای شما",
+    "relatedProducts": "محصولات مشابه"
+  },
+  "newsletter": {
+    "title": "اشتراک در خبرنامه ما",
+    "description": "مخصوص پیشنهادات و نکات عطر را به صندوق ورودی خود دریافت کنید",
+    "placeholder": "ایمیل خود را وارد کنید",
+    "subscribe": "اشتراک",
+    "success": "از اشتراک شما متشکریم!"
+  },
+  "about": {
+    "title": "درباره سنتورا",
+    "mission": "ماموریت ما",
+    "values": "ارزش‌های ما",
+    "quality": "کیفیت",
+    "authenticity": "اصالت",
+    "service": "خدمات فوق‌العاده"
+  },
+  "contact": {
+    "title": "تماس با ما",
+    "name": "نام",
+    "email": "ایمیل",
+    "subject": "موضوع",
+    "message": "پیام",
+    "send": "ارسال پیام",
+    "phone": "تلفن",
+    "address": "آدرس"
   }
 }

@@ -166,5 +166,46 @@
       "amber": "Amber",
       "woody": "Woody"
     }
+  },
+  "reviews": {
+    "title": "Customer Reviews",
+    "rating": "Rating",
+    "sortBy": "Sort By",
+    "newest": "Newest",
+    "helpful": "Most Helpful",
+    "noReviews": "No reviews yet",
+    "writeReview": "Write a Review",
+    "helpful": "Helpful",
+    "notHelpful": "Not Helpful",
+    "verified": "Verified Purchase"
+  },
+  "recommendations": {
+    "title": "Recommended For You",
+    "relatedProducts": "Related Products"
+  },
+  "newsletter": {
+    "title": "Subscribe to Our Newsletter",
+    "description": "Get exclusive offers and perfume tips delivered to your inbox",
+    "placeholder": "Enter your email",
+    "subscribe": "Subscribe",
+    "success": "Thank you for subscribing!"
+  },
+  "about": {
+    "title": "About Scentora",
+    "mission": "Our Mission",
+    "values": "Our Values",
+    "quality": "Quality",
+    "authenticity": "Authenticity",
+    "service": "Exceptional Service"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "name": "Name",
+    "email": "Email",
+    "subject": "Subject",
+    "message": "Message",
+    "send": "Send Message",
+    "phone": "Phone",
+    "address": "Address"
   }
 }

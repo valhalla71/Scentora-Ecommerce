@@ -75,7 +75,7 @@ export default function CatalogContent({
         />
 
         <CategoryNav
-          categories={PRODUCT_CATEGORIES}
+          categories={PRODUCT_CATEGORIES as unknown as string[]}
           activeCategory={categoryFilter}
           onCategoryChange={setCategoryFilter}
           allLabel={discovery.categories.all}
@@ -86,7 +86,7 @@ export default function CatalogContent({
         <aside className="hidden lg:block">
           <div className="sticky top-20">
             <ProductFilters
-              categories={PRODUCT_CATEGORIES}
+              categories={PRODUCT_CATEGORIES as unknown as string[]}
               minPrice={MIN_PRICE}
               maxPrice={MAX_PRICE}
               filters={filters}
