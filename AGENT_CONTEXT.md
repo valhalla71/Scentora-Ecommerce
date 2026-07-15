@@ -45,6 +45,8 @@ Database:
 
 ✅ SiteShell connected to locale layout
 
+✅ Homepage hero section created
+
 ## Current Stage
 
 Frontend homepage development.
@@ -57,6 +59,8 @@ Completed:
 - frontend/components/layout/footer.tsx
 - frontend/components/layout/site-shell.tsx
 - frontend/app/[locale]/layout.tsx uses SiteShell
+- frontend/components/home/hero-section.tsx
+- frontend/app/[locale]/(routes)/page.tsx uses HeroSection
 
 Working correctly:
 - Build successful
@@ -65,7 +69,7 @@ Working correctly:
 
 ## Next Task
 
-Create homepage hero section only.
+Create homepage features section only.
 
 ## Development Rules
 

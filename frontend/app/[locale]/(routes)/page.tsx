@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 
-import { CtaSection, FeaturesSection, HeroSection } from "@/components/home";
+import { HeroSection } from "@/components/home";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 
@@ -18,11 +18,5 @@ export default async function HomePage({ params }: HomePageProps) {
   const locale = rawLocale as Locale;
   const dictionary = await getDictionary(locale);
 
-  return (
-    <>
-      <HeroSection locale={locale} dictionary={dictionary} />
-      <FeaturesSection dictionary={dictionary} />
-      <CtaSection locale={locale} dictionary={dictionary} />
-    </>
-  );
+  return <HeroSection locale={locale} dictionary={dictionary} />;
 }
