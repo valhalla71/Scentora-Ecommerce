@@ -18,10 +18,20 @@ type HeaderProps = {
 
 const actionLabels: Record<
   Locale,
-  { cart: string; account: string }
+  { cart: string; account: string; login: string; register: string }
 > = {
-  en: { cart: "Shopping cart", account: "Account" },
-  fa: { cart: "سبد خرید", account: "حساب کاربری" },
+  en: {
+    cart: "Shopping cart",
+    account: "Account",
+    login: "Login",
+    register: "Register",
+  },
+  fa: {
+    cart: "سبد خرید",
+    account: "حساب کاربری",
+    login: "ورود",
+    register: "ثبت نام",
+  },
 };
 
 export function Header({ locale, dictionary }: HeaderProps) {
@@ -67,6 +77,22 @@ export function Header({ locale, dictionary }: HeaderProps) {
         </div>
 
         <div className="flex shrink-0 items-center gap-0.5">
+          <div className="hidden items-center gap-1 md:flex">
+            <Link
+              href={localizeHref("/login", locale)}
+              className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            >
+              {labels.login}
+            </Link>
+
+            <Link
+              href={localizeHref("/register", locale)}
+              className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            >
+              {labels.register}
+            </Link>
+          </div>
+
           <LocaleSwitcher
             currentLocale={locale}
             label={layout.actions.changeLanguage}
