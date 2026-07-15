@@ -21,34 +21,38 @@ export function CtaSection({ locale, dictionary }: CtaSectionProps) {
   return (
     <section
       aria-labelledby="cta-heading"
-      style={{ paddingBlock: spacing.section.md }}
+      className="relative overflow-hidden border-t border-border/40"
+      style={{ paddingBlock: spacing.section.lg }}
     >
-      <Container>
-        <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-primary px-6 py-12 text-center text-primary-foreground sm:px-12 sm:py-16">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_80%_20%,var(--accent)_0%,transparent_60%)] opacity-20"
-          />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_50%,var(--accent)_0%,transparent_60%)] opacity-[0.08]"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -start-32 bottom-1/4 size-96 rounded-full bg-primary/5 blur-3xl"
+      />
 
-          <div className="relative mx-auto max-w-2xl">
-            <h2
-              id="cta-heading"
-              className={cn(textVariants({ variant: "h2" }), "text-balance")}
-            >
-              {cta.title}
-            </h2>
-            <p
-              className={cn(
-                textVariants({ variant: "body" }),
-                "mt-4 text-pretty text-primary-foreground/80",
-              )}
-            >
-              {cta.description}
-            </p>
+      <Container className="relative">
+        <div className="mx-auto max-w-2xl text-center">
+          <h2
+            id="cta-heading"
+            className={cn(textVariants({ variant: "h2" }), "text-balance")}
+          >
+            {cta.title}
+          </h2>
 
+          <p
+            className={cn(
+              textVariants({ variant: "body" }),
+              "mx-auto mt-6 text-pretty text-muted-foreground",
+            )}
+          >
+            {cta.description}
+          </p>
+
+          <div className="mt-10 flex justify-center">
             <Button
-              className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90"
-              size="lg"
               render={
                 <Link href={localizeHref("/catalog", locale)}>
                   {cta.button}
@@ -58,6 +62,7 @@ export function CtaSection({ locale, dictionary }: CtaSectionProps) {
                   />
                 </Link>
               }
+              size="lg"
             />
           </div>
         </div>
