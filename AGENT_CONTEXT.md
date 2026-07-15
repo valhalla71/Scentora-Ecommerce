@@ -47,6 +47,8 @@ Database:
 
 ✅ Homepage hero section created
 
+✅ Homepage features section created
+
 ## Current Stage
 
 Frontend homepage development.
@@ -60,6 +62,7 @@ Completed:
 - frontend/components/layout/site-shell.tsx
 - frontend/app/[locale]/layout.tsx uses SiteShell
 - frontend/components/home/hero-section.tsx
+- frontend/components/home/features-section.tsx
 - frontend/app/[locale]/(routes)/page.tsx uses HeroSection
 
 Working correctly:
