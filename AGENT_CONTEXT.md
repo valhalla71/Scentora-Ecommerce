@@ -63,7 +63,7 @@ Completed:
 - frontend/app/[locale]/layout.tsx uses SiteShell
 - frontend/components/home/hero-section.tsx
 - frontend/components/home/features-section.tsx
-- frontend/app/[locale]/(routes)/page.tsx uses HeroSection
+- frontend/app/[locale]/(routes)/page.tsx uses HeroSection and FeaturesSection
 
 Working correctly:
 - Build successful
@@ -72,7 +72,7 @@ Working correctly:
 
 ## Next Task
 
-Connect homepage sections to page.
+Create homepage product showcase section only.
 
 ## Development Rules
 
