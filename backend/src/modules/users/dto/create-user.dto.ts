@@ -8,24 +8,25 @@ import {
   IsEnum,
   IsBoolean,
 } from 'class-validator';
+import { Type } from 'class-transformer';
 import { AddressType } from '@prisma/client';
 
 export class CreateUserDto {
   @IsEmail()
-  email: string;
+  email!: string;
 
   @IsString()
   @MinLength(8)
   @MaxLength(50)
-  password: string;
+  password!: string;
 
   @IsString()
   @MaxLength(100)
-  firstName: string;
+  firstName!: string;
 
   @IsString()
   @MaxLength(100)
-  lastName: string;
+  lastName!: string;
 
   @IsOptional()
   @IsPhoneNumber()
@@ -67,33 +68,33 @@ export class UpdatePreferencesDto {
 export class CreateAddressDto {
   @IsString()
   @MaxLength(255)
-  fullName: string;
+  fullName!: string;
 
   @IsString()
   @MaxLength(20)
-  phone: string;
+  phone!: string;
 
   @IsString()
-  address: string;
-
-  @IsString()
-  @MaxLength(100)
-  city: string;
+  address!: string;
 
   @IsString()
   @MaxLength(100)
-  state: string;
+  city!: string;
+
+  @IsString()
+  @MaxLength(100)
+  state!: string;
 
   @IsString()
   @MaxLength(20)
-  zipCode: string;
+  zipCode!: string;
 
   @IsString()
   @MaxLength(100)
-  country: string;
+  country!: string;
 
   @IsEnum(AddressType)
-  type: AddressType;
+  type!: AddressType;
 
   @IsOptional()
   @IsBoolean()
@@ -145,12 +146,14 @@ export class UpdateAddressDto {
 }
 
 export class UserResponseDto {
-  id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
+  id!: string;
+  email!: string;
+  firstName!: string;
+  lastName!: string;
   phone?: string;
-  status: string;
-  createdAt: Date;
-  updatedAt: Date;
+  status!: string;
+  @Type(() => Date)
+  createdAt!: Date;
+  @Type(() => Date)
+  updatedAt!: Date;
 }
