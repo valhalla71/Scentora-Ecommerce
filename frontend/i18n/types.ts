@@ -9,6 +9,20 @@ export type CommonDictionary = {
     description: string;
     addToCart: string;
   };
+  product: {
+    price: string;
+    category: string;
+    rating: string;
+    reviews: string;
+    description: string;
+    notes: string;
+    topNotes: string;
+    heartNotes: string;
+    baseNotes: string;
+    addToCart: string;
+    addToWishlist: string;
+    relatedProducts: string;
+  };
 };
 
 export type LayoutDictionary = {

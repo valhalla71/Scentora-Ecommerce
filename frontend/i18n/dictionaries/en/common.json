@@ -6,5 +6,19 @@
     "title": "Perfume Catalog",
     "description": "Browse our complete collection of luxurious fragrances",
     "addToCart": "Add to Cart"
+  },
+  "product": {
+    "price": "Price",
+    "category": "Category",
+    "rating": "Rating",
+    "reviews": "reviews",
+    "description": "Description",
+    "notes": "Fragrance Notes",
+    "topNotes": "Top Notes",
+    "heartNotes": "Heart Notes",
+    "baseNotes": "Base Notes",
+    "addToCart": "Add to Cart",
+    "addToWishlist": "Add to Wishlist",
+    "relatedProducts": "You Might Also Like"
   }
 }

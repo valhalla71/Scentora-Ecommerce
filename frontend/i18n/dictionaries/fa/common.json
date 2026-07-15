@@ -6,5 +6,19 @@
     "title": "کاتالوگ عطر",
     "description": "مجموعه کامل عطرهای لوکس خود را مرور کنید",
     "addToCart": "اضافه کردن به سبد"
+  },
+  "product": {
+    "price": "قیمت",
+    "category": "دسته بندی",
+    "rating": "امتیاز",
+    "reviews": "نظر",
+    "description": "توضیحات",
+    "notes": "نت های عطر",
+    "topNotes": "نت های سر",
+    "heartNotes": "نت های قلب",
+    "baseNotes": "نت های پایه",
+    "addToCart": "اضافه کردن به سبد",
+    "addToWishlist": "اضافه کردن به لیست علاقه‌مندی",
+    "relatedProducts": "محصولات مشابه"
   }
 }
