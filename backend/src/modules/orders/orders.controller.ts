@@ -4,6 +4,7 @@ import { OrdersService } from './orders.service';
 import { JwtAuthGuard } from '@shared/guards/jwt-auth.guard';
 import { CurrentUser } from '@shared/decorators';
 import { PaginationDto } from '@shared/dto/common.dto';
+import { CreateOrderDto } from './dto/create-order.dto';
 
 @ApiTags('Orders')
 @Controller('orders')
@@ -14,20 +15,40 @@ export class OrdersController {
 
   @Get()
   @ApiOperation({ summary: 'Get user orders' })
-  getUserOrders(@CurrentUser() user: any, @Query() pagination: PaginationDto) {
+  getUserOrders(
+    @CurrentUser() user: any,
+    @Query() pagination: PaginationDto,
+  ) {
     const skip = (pagination.page - 1) * pagination.limit;
-    return this.ordersService.getUserOrders(user.id, skip, pagination.limit);
+
+    return this.ordersService.getUserOrders(
+      user.id,
+      skip,
+      pagination.limit,
+    );
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get order by ID' })
-  getOrderById(@CurrentUser() user: any, @Param('id') orderId: string) {
-    return this.ordersService.getOrderById(orderId, user.id);
+  getOrderById(
+    @CurrentUser() user: any,
+    @Param('id') orderId: string,
+  ) {
+    return this.ordersService.getOrderById(
+      orderId,
+      user.id,
+    );
   }
 
   @Post()
-  @ApiOperation({ summary: 'Create order' })
-  createOrder(@CurrentUser() user: any, @Body() orderData: any) {
-    return this.ordersService.createOrder(user.id, orderData);
+  @ApiOperation({ summary: 'Create order from cart' })
+  createOrder(
+    @CurrentUser() user: any,
+    @Body() createOrderDto: CreateOrderDto,
+  ) {
+    return this.ordersService.createOrder(
+      user.id,
+      createOrderDto,
+    );
   }
 }

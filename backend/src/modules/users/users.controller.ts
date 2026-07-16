@@ -4,7 +4,8 @@ import { UsersService } from './users.service';
 import { CreateUserDto, UpdateUserDto, UpdatePreferencesDto, CreateAddressDto, UpdateAddressDto, UserResponseDto } from './dto/create-user.dto';
 import { PaginationDto } from '@shared/dto/common.dto';
 import { JwtAuthGuard } from '@shared/guards/jwt-auth.guard';
-import { CurrentUser, Public } from '@shared/decorators';
+import { RolesGuard } from '@shared/guards/roles.guard';
+import { CurrentUser, Public, Roles } from '@shared/decorators';
 
 @ApiTags('Users')
 @Controller('users')
@@ -20,7 +21,10 @@ export class UsersController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Get all users' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get all users (Admin only)' })
   @ApiResponse({ status: 200, description: 'Users retrieved successfully' })
   findAll(@Query() pagination: PaginationDto) {
     const skip = (pagination.page - 1) * pagination.limit;
@@ -126,20 +130,22 @@ export class UsersController {
   }
 
   @Put(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Update user' })
+  @ApiOperation({ summary: 'Update user (Admin only)' })
   @ApiResponse({ status: 200, description: 'User updated successfully' })
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto);
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto, @CurrentUser() user: any) {
+    return this.usersService.updateAsAdmin(id, updateUserDto, user.id);
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Delete user' })
+  @ApiOperation({ summary: 'Delete user (Admin only)' })
   @ApiResponse({ status: 200, description: 'User deleted successfully' })
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(id);
+  remove(@Param('id') id: string, @CurrentUser() user: any) {
+    return this.usersService.removeAsAdmin(id, user.id);
   }
 }

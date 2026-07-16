@@ -14,6 +14,7 @@ import { ProductsService } from './products.service';
 import { CreateProductDto, UpdateProductDto } from './dto/create-product.dto';
 import { PaginationDto } from '@shared/dto/common.dto';
 import { JwtAuthGuard } from '@shared/guards/jwt-auth.guard';
+import { Public, Roles } from '@shared/decorators';
 
 @ApiTags('Products')
 @Controller('products')
@@ -22,6 +23,7 @@ export class ProductsController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
+  @Roles('ADMIN')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Create a new product' })
   @ApiResponse({ status: 201, description: 'Product created successfully' })
@@ -30,6 +32,7 @@ export class ProductsController {
   }
 
   @Get()
+  @Public()
   @ApiOperation({ summary: 'Get all products' })
   @ApiResponse({ status: 200, description: 'Products retrieved successfully' })
   findAll(@Query() pagination: PaginationDto) {
@@ -38,6 +41,7 @@ export class ProductsController {
   }
 
   @Get('search')
+  @Public()
   @ApiOperation({ summary: 'Search products' })
   @ApiResponse({ status: 200, description: 'Search results' })
   search(@Query('q') query: string, @Query() pagination: PaginationDto) {
@@ -46,6 +50,7 @@ export class ProductsController {
   }
 
   @Get(':id')
+  @Public()
   @ApiOperation({ summary: 'Get product by ID' })
   @ApiResponse({ status: 200, description: 'Product retrieved successfully' })
   findOne(@Param('id') id: string) {
@@ -53,6 +58,7 @@ export class ProductsController {
   }
 
   @Get('slug/:slug')
+  @Public()
   @ApiOperation({ summary: 'Get product by slug' })
   @ApiResponse({ status: 200, description: 'Product retrieved successfully' })
   findBySlug(@Param('slug') slug: string) {
@@ -61,6 +67,7 @@ export class ProductsController {
 
   @Put(':id')
   @UseGuards(JwtAuthGuard)
+  @Roles('ADMIN')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update product' })
   @ApiResponse({ status: 200, description: 'Product updated successfully' })
@@ -70,6 +77,7 @@ export class ProductsController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
+  @Roles('ADMIN')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete product' })
   @ApiResponse({ status: 204, description: 'Product deleted successfully' })

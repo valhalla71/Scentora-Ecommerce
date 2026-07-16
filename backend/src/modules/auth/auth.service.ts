@@ -94,11 +94,25 @@ export class AuthService {
   }
 
   async generateTokens(user: any) {
+    const userWithRoles = await this.prisma.user.findUnique({
+      where: { id: user.id },
+      include: {
+        roles: {
+          include: {
+            role: true,
+          },
+        },
+      },
+    });
+
+    const roles = userWithRoles?.roles.map((ur) => ur.role.name) || [];
+
     const payload = {
       id: user.id,
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
+      roles,
     };
 
     const accessToken = this.jwtService.sign(payload, {

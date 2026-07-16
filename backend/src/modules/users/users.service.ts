@@ -1,8 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from '@config/prisma.service';
-import { CreateUserDto, UpdateUserDto, UpdatePreferencesDto, CreateAddressDto, UpdateAddressDto } from './dto/create-user.dto';
-import { ConflictException, NotFoundException, ForbiddenException } from '@shared/exceptions/custom.exceptions';
+import {
+  CreateUserDto,
+  UpdateUserDto,
+  UpdatePreferencesDto,
+  CreateAddressDto,
+  UpdateAddressDto,
+} from './dto/create-user.dto';
+import {
+  ConflictException,
+  NotFoundException,
+  ForbiddenException,
+} from '@shared/exceptions/custom.exceptions';
 
 @Injectable()
 export class UsersService {
@@ -19,7 +29,7 @@ export class UsersService {
 
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
 
-    const user = await this.prisma.user.create({
+    return this.prisma.user.create({
       data: {
         email: createUserDto.email,
         password: hashedPassword,
@@ -54,8 +64,6 @@ export class UsersService {
         updatedAt: true,
       },
     });
-
-    return user;
   }
 
   async findAll(skip: number, take: number) {
@@ -126,13 +134,14 @@ export class UsersService {
     }
 
     const { password, ...userWithoutPassword } = user;
+
     return userWithoutPassword;
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
     await this.findById(id);
 
-    const updated = await this.prisma.user.update({
+    return this.prisma.user.update({
       where: { id },
       data: updateUserDto,
       select: {
@@ -146,17 +155,34 @@ export class UsersService {
         updatedAt: true,
       },
     });
-
-    return updated;
   }
 
-  async updatePreferences(userId: string, updatePreferencesDto: UpdatePreferencesDto) {
-    const preferences = await this.prisma.userPreference.update({
+  /**
+   * Admin user update
+   * Protected by ADMIN role in controller
+   */
+  async updateAsAdmin(
+    id: string,
+    updateUserDto: UpdateUserDto,
+    adminId: string,
+  ) {
+    if (id === adminId) {
+      throw new ForbiddenException(
+        'Cannot modify your own admin account through admin management',
+      );
+    }
+
+    return this.update(id, updateUserDto);
+  }
+
+  async updatePreferences(
+    userId: string,
+    updatePreferencesDto: UpdatePreferencesDto,
+  ) {
+    return this.prisma.userPreference.update({
       where: { userId },
       data: updatePreferencesDto,
     });
-
-    return preferences;
   }
 
   async getPreferences(userId: string) {
@@ -171,27 +197,26 @@ export class UsersService {
     return preferences;
   }
 
-  async createAddress(userId: string, createAddressDto: CreateAddressDto) {
+  async createAddress(
+    userId: string,
+    createAddressDto: CreateAddressDto,
+  ) {
     await this.findById(userId);
 
-    const address = await this.prisma.address.create({
+    return this.prisma.address.create({
       data: {
         ...createAddressDto,
         userId,
       },
     });
-
-    return address;
   }
 
   async getAddresses(userId: string) {
     await this.findById(userId);
 
-    const addresses = await this.prisma.address.findMany({
+    return this.prisma.address.findMany({
       where: { userId },
     });
-
-    return addresses;
   }
 
   async getAddressById(userId: string, addressId: string) {
@@ -200,21 +225,25 @@ export class UsersService {
     });
 
     if (!address || address.userId !== userId) {
-      throw new ForbiddenException('You do not have access to this address');
+      throw new ForbiddenException(
+        'You do not have access to this address',
+      );
     }
 
     return address;
   }
 
-  async updateAddress(userId: string, addressId: string, updateAddressDto: UpdateAddressDto) {
-    const address = await this.getAddressById(userId, addressId);
+  async updateAddress(
+    userId: string,
+    addressId: string,
+    updateAddressDto: UpdateAddressDto,
+  ) {
+    await this.getAddressById(userId, addressId);
 
-    const updated = await this.prisma.address.update({
+    return this.prisma.address.update({
       where: { id: addressId },
       data: updateAddressDto,
     });
-
-    return updated;
   }
 
   async deleteAddress(userId: string, addressId: string) {
@@ -224,30 +253,57 @@ export class UsersService {
       where: { id: addressId },
     });
 
-    return { message: 'Address deleted successfully' };
+    return {
+      message: 'Address deleted successfully',
+    };
   }
 
   async setDefaultAddress(userId: string, addressId: string) {
     const address = await this.getAddressById(userId, addressId);
 
     await this.prisma.address.updateMany({
-      where: { userId, type: address.type },
-      data: { isDefault: false },
+      where: {
+        userId,
+        type: address.type,
+      },
+      data: {
+        isDefault: false,
+      },
     });
 
-    const updated = await this.prisma.address.update({
+    return this.prisma.address.update({
       where: { id: addressId },
-      data: { isDefault: true },
+      data: {
+        isDefault: true,
+      },
     });
-
-    return updated;
   }
 
   async remove(id: string) {
     await this.findById(id);
+
     await this.prisma.user.update({
       where: { id },
-      data: { deletedAt: new Date() },
+      data: {
+        deletedAt: new Date(),
+      },
     });
+
+    return {
+      message: 'User deleted successfully',
+    };
+  }
+
+  /**
+   * Admin delete user
+   */
+  async removeAsAdmin(id: string, adminId: string) {
+    if (id === adminId) {
+      throw new ForbiddenException(
+        'Cannot delete your own account',
+      );
+    }
+
+    return this.remove(id);
   }
 }

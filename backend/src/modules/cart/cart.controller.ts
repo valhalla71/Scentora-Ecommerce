@@ -3,6 +3,7 @@ import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { CartService } from './cart.service';
 import { JwtAuthGuard } from '@shared/guards/jwt-auth.guard';
 import { CurrentUser } from '@shared/decorators';
+import { AddCartItemDto } from './dto/add-cart-item.dto';
 
 @ApiTags('Cart')
 @Controller('cart')
@@ -21,14 +22,21 @@ export class CartController {
   @ApiOperation({ summary: 'Add item to cart' })
   addToCart(
     @CurrentUser() user: any,
-    @Body() body: { productId: string; quantity: number },
+    @Body() addCartItemDto: AddCartItemDto,
   ) {
-    return this.cartService.addToCart(user.id, body.productId, body.quantity);
+    return this.cartService.addToCart(
+      user.id,
+      addCartItemDto.productId,
+      addCartItemDto.quantity,
+    );
   }
 
   @Delete('items/:productId')
   @ApiOperation({ summary: 'Remove item from cart' })
-  removeFromCart(@CurrentUser() user: any, @Param('productId') productId: string) {
+  removeFromCart(
+    @CurrentUser() user: any,
+    @Param('productId') productId: string,
+  ) {
     return this.cartService.removeFromCart(user.id, productId);
   }
 
