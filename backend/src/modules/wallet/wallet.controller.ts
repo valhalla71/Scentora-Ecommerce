@@ -15,7 +15,7 @@ export class WalletController {
   @Get()
   @ApiOperation({ summary: 'Get user wallet' })
   getWallet(@CurrentUser() user: any) {
-    return this.walletService.getWallet(user.id);
+    return this.walletService.getOrCreateWallet(user.id);
   }
 
   @Get('balance')
