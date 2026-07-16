@@ -76,9 +76,23 @@ enum PaymentMethod {
 
 enum PaymentStatus {
   PENDING
-  COMPLETED
+  PROCESSING
+  SUCCESS
   FAILED
+  CANCELLED
   REFUNDED
+}
+
+enum PaymentType {
+  GATEWAY
+  WALLET
+  MIXED
+}
+
+enum WalletTransactionType {
+  CREDIT
+  DEBIT
+  REFUND
 }
 
 enum ShippingMethod {
@@ -92,29 +106,31 @@ enum ShippingMethod {
 // ============================================================================
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique @db.VarChar(255)
-  password  String   @db.Text
-  firstName String?  @db.VarChar(100)
-  lastName  String?  @db.VarChar(100)
-  phone     String?  @db.VarChar(20)
+  id        String     @id @default(cuid())
+  email     String     @unique @db.VarChar(255)
+  password  String     @db.Text
+  firstName String?    @db.VarChar(100)
+  lastName  String?    @db.VarChar(100)
+  phone     String?    @db.VarChar(20)
   status    UserStatus @default(ACTIVE)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
   deletedAt DateTime?
 
   // Relations
-  roles              UserRole[]
-  preferences        UserPreference?
-  refreshTokens      RefreshToken[]
-  passwordResetTokens PasswordResetToken[]
+  roles                   UserRole[]
+  preferences             UserPreference?
+  refreshTokens           RefreshToken[]
+  passwordResetTokens     PasswordResetToken[]
   emailVerificationTokens EmailVerificationToken[]
-  addresses          Address[]
-  orders             Order[]
-  carts              Cart[]
-  wishlists          Wishlist[]
-  reviews            Review[]
-  notifications      Notification[]
+  addresses               Address[]
+  orders                  Order[]
+  carts                   Cart[]
+  wishlists               Wishlist[]
+  reviews                 Review[]
+  notifications           Notification[]
+  wallet                  Wallet?
+  payments                Payment[]
 
   @@index([email])
   @@index([status])
@@ -136,16 +152,16 @@ model Role {
 }
 
 model Permission {
-  id        String   @id @default(cuid())
-  name      String   @unique @db.VarChar(100)
-  resource  String   @db.VarChar(100)
-  action    String   @db.VarChar(100)
-  description String? @db.Text
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(cuid())
+  name        String   @unique @db.VarChar(100)
+  resource    String   @db.VarChar(100)
+  action      String   @db.VarChar(100)
+  description String?  @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   // Relations
-  roles     RolePermission[]
+  roles RolePermission[]
 
   @@unique([resource, action])
   @@index([resource])
@@ -158,8 +174,8 @@ model UserRole {
   createdAt DateTime @default(now())
 
   // Relations
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  role      Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
 
   @@unique([userId, roleId])
   @@index([roleId])
@@ -172,8 +188,8 @@ model RolePermission {
   createdAt    DateTime @default(now())
 
   // Relations
-  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
-  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
 
   @@unique([roleId, permissionId])
   @@index([permissionId])
@@ -189,49 +205,49 @@ model UserPreference {
   updatedAt          DateTime @updatedAt
 
   // Relations
-  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model RefreshToken {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   userId    String
-  token     String   @unique @db.Text
+  token     String    @unique @db.Text
   expiresAt DateTime
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
   revokedAt DateTime?
 
   // Relations
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([token])
 }
 
 model PasswordResetToken {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   userId    String
-  token     String   @unique @db.Text
+  token     String    @unique @db.Text
   expiresAt DateTime
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
   usedAt    DateTime?
 
   // Relations
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([token])
 }
 
 model EmailVerificationToken {
-  id        String   @id @default(cuid())
-  userId    String
-  token     String   @unique @db.Text
-  expiresAt DateTime
-  createdAt DateTime @default(now())
+  id         String    @id @default(cuid())
+  userId     String
+  token      String    @unique @db.Text
+  expiresAt  DateTime
+  createdAt  DateTime  @default(now())
   verifiedAt DateTime?
 
   // Relations
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([token])
@@ -242,29 +258,29 @@ model EmailVerificationToken {
 // ============================================================================
 
 model Product {
-  id          String   @id @default(cuid())
-  name        String   @db.VarChar(255)
-  slug        String   @unique @db.VarChar(255)
-  description String?  @db.Text
-  price       Decimal  @db.Decimal(10, 2)
-  cost        Decimal  @db.Decimal(10, 2)
+  id          String        @id @default(cuid())
+  name        String        @db.VarChar(255)
+  slug        String        @unique @db.VarChar(255)
+  description String?       @db.Text
+  price       Decimal       @db.Decimal(10, 2)
+  cost        Decimal       @db.Decimal(10, 2)
   categoryId  String
   brandId     String
   status      ProductStatus @default(ACTIVE)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
   deletedAt   DateTime?
 
   // Relations
-  category    Category        @relation(fields: [categoryId], references: [id], onDelete: Restrict)
-  brand       Brand           @relation(fields: [brandId], references: [id], onDelete: Restrict)
-  images      ProductImage[]
-  attributes  ProductAttribute[]
-  inventory   Inventory?
-  cartItems   CartItem[]
+  category      Category           @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  brand         Brand              @relation(fields: [brandId], references: [id], onDelete: Restrict)
+  images        ProductImage[]
+  attributes    ProductAttribute[]
+  inventory     Inventory?
+  cartItems     CartItem[]
   wishlistItems WishlistItem[]
-  orderItems  OrderItem[]
-  reviews     Review[]
+  orderItems    OrderItem[]
+  reviews       Review[]
 
   @@index([categoryId])
   @@index([brandId])
@@ -283,7 +299,7 @@ model Category {
   updatedAt   DateTime @updatedAt
 
   // Relations
-  products    Product[]
+  products Product[]
 
   @@index([slug])
 }
@@ -298,7 +314,7 @@ model Brand {
   updatedAt   DateTime @updatedAt
 
   // Relations
-  products    Product[]
+  products Product[]
 
   @@index([slug])
 }
@@ -313,7 +329,7 @@ model ProductImage {
   createdAt DateTime @default(now())
 
   // Relations
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@index([productId])
   @@index([isPrimary])
@@ -327,7 +343,7 @@ model ProductAttribute {
   createdAt DateTime @default(now())
 
   // Relations
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@index([productId])
 }
@@ -345,7 +361,7 @@ model Inventory {
   updatedAt DateTime @updatedAt
 
   // Relations
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@index([productId])
 }
@@ -355,15 +371,15 @@ model Inventory {
 // ============================================================================
 
 model Cart {
-  id        String   @id @default(cuid())
+  id        String     @id @default(cuid())
   userId    String
   status    CartStatus @default(ACTIVE)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 
   // Relations
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  items     CartItem[]
+  user  User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items CartItem[]
 
   @@index([userId])
   @@index([status])
@@ -377,8 +393,8 @@ model CartItem {
   addedAt   DateTime @default(now())
 
   // Relations
-  cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  cart    Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@unique([cartId, productId])
   @@index([cartId])
@@ -392,22 +408,22 @@ model Wishlist {
   updatedAt DateTime @updatedAt
 
   // Relations
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  items     WishlistItem[]
+  user  User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items WishlistItem[]
 
   @@unique([userId])
   @@index([userId])
 }
 
 model WishlistItem {
-  id          String   @id @default(cuid())
-  wishlistId  String
-  productId   String
-  addedAt     DateTime @default(now())
+  id         String   @id @default(cuid())
+  wishlistId String
+  productId  String
+  addedAt    DateTime @default(now())
 
   // Relations
-  wishlist    Wishlist @relation(fields: [wishlistId], references: [id], onDelete: Cascade)
-  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  wishlist Wishlist @relation(fields: [wishlistId], references: [id], onDelete: Cascade)
+  product  Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@unique([wishlistId, productId])
   @@index([wishlistId])
@@ -419,23 +435,23 @@ model WishlistItem {
 // ============================================================================
 
 model Order {
-  id            String   @id @default(cuid())
-  userId        String
-  orderNumber   String   @unique @db.VarChar(50)
-  status        OrderStatus @default(PENDING)
-  subtotal      Decimal  @db.Decimal(10, 2)
-  tax           Decimal  @db.Decimal(10, 2)
-  shippingCost  Decimal  @db.Decimal(10, 2)
-  total         Decimal  @db.Decimal(10, 2)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  deletedAt     DateTime?
+  id           String      @id @default(cuid())
+  userId       String
+  orderNumber  String      @unique @db.VarChar(50)
+  status       OrderStatus @default(PENDING)
+  subtotal     Decimal     @db.Decimal(10, 2)
+  tax          Decimal     @db.Decimal(10, 2)
+  shippingCost Decimal     @db.Decimal(10, 2)
+  total        Decimal     @db.Decimal(10, 2)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  deletedAt    DateTime?
 
   // Relations
-  user          User     @relation(fields: [userId], references: [id], onDelete: Restrict)
-  items         OrderItem[]
-  payment       Payment?
-  shipping      Shipping?
+  user     User        @relation(fields: [userId], references: [id], onDelete: Restrict)
+  items    OrderItem[]
+  payment  Payment?
+  shipping Shipping?
 
   @@index([userId])
   @@index([orderNumber])
@@ -453,30 +469,30 @@ model OrderItem {
   createdAt DateTime @default(now())
 
   // Relations
-  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Restrict)
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Restrict)
 
   @@index([orderId])
   @@index([productId])
 }
 
 model Address {
-  id        String   @id @default(cuid())
+  id        String      @id @default(cuid())
   userId    String
   type      AddressType
-  fullName  String   @db.VarChar(255)
-  phone     String   @db.VarChar(20)
-  address   String   @db.Text
-  city      String   @db.VarChar(100)
-  state     String   @db.VarChar(100)
-  zipCode   String   @db.VarChar(20)
-  country   String   @db.VarChar(100)
-  isDefault Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  fullName  String      @db.VarChar(255)
+  phone     String      @db.VarChar(20)
+  address   String      @db.Text
+  city      String      @db.VarChar(100)
+  state     String      @db.VarChar(100)
+  zipCode   String      @db.VarChar(20)
+  country   String      @db.VarChar(100)
+  isDefault Boolean     @default(false)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 
   // Relations
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([type])
@@ -487,21 +503,21 @@ model Address {
 // ============================================================================
 
 model Review {
-  id        String   @id @default(cuid())
+  id        String       @id @default(cuid())
   productId String
   userId    String
-  rating    Int      @db.SmallInt
-  title     String   @db.VarChar(255)
-  content   String   @db.Text
-  helpful   Int      @default(0)
+  rating    Int          @db.SmallInt
+  title     String       @db.VarChar(255)
+  content   String       @db.Text
+  helpful   Int          @default(0)
   status    ReviewStatus @default(PENDING)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
   deletedAt DateTime?
 
   // Relations
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([productId])
   @@index([userId])
@@ -510,16 +526,16 @@ model Review {
 }
 
 model Notification {
-  id        String   @id @default(cuid())
+  id        String           @id @default(cuid())
   userId    String
   type      NotificationType
-  title     String   @db.VarChar(255)
-  message   String   @db.Text
-  read      Boolean  @default(false)
-  createdAt DateTime @default(now())
+  title     String           @db.VarChar(255)
+  message   String           @db.Text
+  read      Boolean          @default(false)
+  createdAt DateTime         @default(now())
 
   // Relations
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([read])
@@ -530,51 +546,118 @@ model Notification {
 // ============================================================================
 
 model Coupon {
-  id           String   @id @default(cuid())
-  code         String   @unique @db.VarChar(50)
-  type         CouponType
-  value        Decimal  @db.Decimal(10, 2)
-  minPurchase  Decimal? @db.Decimal(10, 2)
-  maxUses      Int?
-  usedCount    Int      @default(0)
-  expiresAt    DateTime
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id          String     @id @default(cuid())
+  code        String     @unique @db.VarChar(50)
+  type        CouponType
+  value       Decimal    @db.Decimal(10, 2)
+  minPurchase Decimal?   @db.Decimal(10, 2)
+  maxUses     Int?
+  usedCount   Int        @default(0)
+  expiresAt   DateTime
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 
   @@index([code])
   @@index([expiresAt])
 }
 
 model Payment {
-  id            String   @id @default(cuid())
-  orderId       String   @unique
-  method        PaymentMethod
-  status        PaymentStatus @default(PENDING)
-  transactionId String?  @db.VarChar(255)
-  amount        Decimal  @db.Decimal(10, 2)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id               String         @id @default(cuid())
+  orderId          String         @unique
+  userId           String
+  paymentType      PaymentType
+  paymentMethod    PaymentMethod?
+  status           PaymentStatus  @default(PENDING)
+  amount           Decimal        @db.Decimal(10, 2)
+  walletAmountUsed Decimal        @default(0) @db.Decimal(10, 2)
+  gatewayAmount    Decimal        @default(0) @db.Decimal(10, 2)
+  gatewayReference String?        @db.VarChar(255)
+  failureReason    String?        @db.Text
+  retryCount       Int            @default(0)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
 
   // Relations
-  order         Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  order        Order                @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  user         User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions PaymentTransaction[]
 
   @@index([orderId])
+  @@index([userId])
   @@index([status])
+  @@index([paymentType])
 }
 
 model Shipping {
-  id            String   @id @default(cuid())
-  orderId       String   @unique
-  method        ShippingMethod
-  cost          Decimal  @db.Decimal(10, 2)
-  estimatedDate DateTime?
-  actualDate    DateTime?
-  trackingNumber String? @db.VarChar(100)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id             String         @id @default(cuid())
+  orderId        String         @unique
+  method         ShippingMethod
+  cost           Decimal        @db.Decimal(10, 2)
+  estimatedDate  DateTime?
+  actualDate     DateTime?
+  trackingNumber String?        @db.VarChar(100)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
 
   // Relations
-  order         Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@index([orderId])
+}
+
+// ============================================================================
+// WALLET MODULE
+// ============================================================================
+
+model Wallet {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  balance   Decimal  @default(0) @db.Decimal(10, 2)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user         User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions WalletTransaction[]
+
+  @@index([userId])
+}
+
+model WalletTransaction {
+  id               String                @id @default(cuid())
+  walletId         String
+  type             WalletTransactionType
+  amount           Decimal               @db.Decimal(10, 2)
+  description      String?               @db.Text
+  relatedPaymentId String?               @db.VarChar(255)
+  createdAt        DateTime              @default(now())
+
+  // Relations
+  wallet Wallet @relation(fields: [walletId], references: [id], onDelete: Cascade)
+
+  @@index([walletId])
+  @@index([type])
+  @@index([createdAt])
+}
+
+// ============================================================================
+// PAYMENT TRANSACTION MODULE
+// ============================================================================
+
+model PaymentTransaction {
+  id              String   @id @default(cuid())
+  paymentId       String
+  type            String   @db.VarChar(100)
+  status          String   @db.VarChar(50)
+  amount          Decimal  @db.Decimal(10, 2)
+  gatewayResponse String?  @db.Text
+  description     String?  @db.Text
+  createdAt       DateTime @default(now())
+
+  // Relations
+  payment Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+
+  @@index([paymentId])
+  @@index([type])
+  @@index([status])
 }
