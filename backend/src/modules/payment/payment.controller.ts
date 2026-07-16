@@ -1,7 +1,17 @@
-import { Controller, Post, Get, Param, Body, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Param,
+  Body,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { PaymentService } from './payment.service';
-import { CreatePaymentDto, ProcessPaymentDto } from './dto/create-payment.dto';
+import {
+  CreatePaymentDto,
+  ProcessPaymentDto,
+} from './dto/create-payment.dto';
 import { JwtAuthGuard } from '@shared/guards/jwt-auth.guard';
 import { CurrentUser } from '@shared/decorators';
 
@@ -18,7 +28,10 @@ export class PaymentController {
     @CurrentUser() user: any,
     @Body() createPaymentDto: CreatePaymentDto,
   ) {
-    return this.paymentService.createPayment(user.id, createPaymentDto);
+    return this.paymentService.createPayment(
+      user.id,
+      createPaymentDto,
+    );
   }
 
   @Post('process')
@@ -27,8 +40,15 @@ export class PaymentController {
     @CurrentUser() user: any,
     @Body() processPaymentDto: ProcessPaymentDto,
   ) {
-    return this.paymentService.processPayment(user.id, processPaymentDto);
+    return this.paymentService.processPayment(
+      user.id,
+      processPaymentDto,
+    );
   }
+
+
+  // IMPORTANT:
+  // Static routes must be before dynamic :id routes
 
   @Get('order/:orderId/history')
   @ApiOperation({ summary: 'Get payment history for order' })
@@ -36,8 +56,12 @@ export class PaymentController {
     @CurrentUser() user: any,
     @Param('orderId') orderId: string,
   ) {
-    return this.paymentService.getOrderPaymentHistory(orderId, user.id);
+    return this.paymentService.getOrderPaymentHistory(
+      orderId,
+      user.id,
+    );
   }
+
 
   @Get('order/:orderId')
   @ApiOperation({ summary: 'Get payment for order' })
@@ -45,8 +69,12 @@ export class PaymentController {
     @CurrentUser() user: any,
     @Param('orderId') orderId: string,
   ) {
-    return this.paymentService.getOrderPayment(orderId, user.id);
+    return this.paymentService.getOrderPayment(
+      orderId,
+      user.id,
+    );
   }
+
 
   @Get(':id')
   @ApiOperation({ summary: 'Get payment by ID' })
@@ -54,8 +82,12 @@ export class PaymentController {
     @CurrentUser() user: any,
     @Param('id') paymentId: string,
   ) {
-    return this.paymentService.getPaymentById(paymentId, user.id);
+    return this.paymentService.getPaymentById(
+      paymentId,
+      user.id,
+    );
   }
+
 
   @Post(':id/retry')
   @ApiOperation({ summary: 'Retry failed payment' })
@@ -63,8 +95,12 @@ export class PaymentController {
     @CurrentUser() user: any,
     @Param('id') paymentId: string,
   ) {
-    return this.paymentService.retryPayment(paymentId, user.id);
+    return this.paymentService.retryPayment(
+      paymentId,
+      user.id,
+    );
   }
+
 
   @Post(':id/cancel')
   @ApiOperation({ summary: 'Cancel pending payment' })
@@ -72,6 +108,9 @@ export class PaymentController {
     @CurrentUser() user: any,
     @Param('id') paymentId: string,
   ) {
-    return this.paymentService.cancelPayment(paymentId, user.id);
+    return this.paymentService.cancelPayment(
+      paymentId,
+      user.id,
+    );
   }
 }

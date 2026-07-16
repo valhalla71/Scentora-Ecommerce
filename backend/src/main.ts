@@ -4,6 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
+import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -11,7 +12,8 @@ async function bootstrap() {
 
   const port = configService.get<number>('PORT') || 3001;
   const apiPrefix = configService.get<string>('API_PREFIX') || '/api/v1';
-  const corsOrigin = configService.get<string>('CORS_ORIGIN') || 'http://localhost:3000';
+  const corsOrigin =
+    configService.get<string>('CORS_ORIGIN') || 'http://localhost:3000';
 
   // Global middleware
   app.use(helmet());
@@ -37,6 +39,9 @@ async function bootstrap() {
     }),
   );
 
+  // Global exception filter
+  app.useGlobalFilters(new AllExceptionsFilter());
+
   // Swagger documentation
   const config = new DocumentBuilder()
     .setTitle('Scentora API')
@@ -57,8 +62,12 @@ async function bootstrap() {
   SwaggerModule.setup('api/docs', app, document);
 
   await app.listen(port, () => {
-    console.log(`🚀 Scentora API running on http://localhost:${port}${apiPrefix}`);
-    console.log(`📚 Swagger docs available at http://localhost:${port}/api/docs`);
+    console.log(
+      `🚀 Scentora API running on http://localhost:${port}${apiPrefix}`,
+    );
+    console.log(
+      `📚 Swagger docs available at http://localhost:${port}/api/docs`,
+    );
   });
 }
 
