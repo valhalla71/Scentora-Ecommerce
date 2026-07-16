@@ -47,23 +47,42 @@ Avoid building a generic ecommerce system.
 
 
 ---
-
 # Current Active Phase
 
 Current development phase:
 
-## Backend Stabilization & Architecture Repair
+## Backend Commerce Completion & Architecture Improvement
 
 
-The objective of this phase is ONLY:
+The objective of this phase:
 
-- Backend audit
-- Security verification
-- Authorization correction
-- API consistency preparation
-- Error handling review
-- Database safety review
+- Complete remaining commerce domains
+- Improve production readiness
+- Review architecture gaps
+- Verify existing flows
+- Prepare backend for future frontend integration
 
+
+Current focus:
+
+- Shipping module
+- Order fulfillment flow
+- Inventory reservation architecture
+- Remaining commerce improvements
+
+
+Important:
+
+Do not rewrite completed modules.
+
+Extend existing architecture only.
+
+Preserve:
+
+- Domain boundaries
+- Existing APIs
+- Database integrity
+- Current business logic
 
 Do NOT start:
 
@@ -148,6 +167,23 @@ This means:
 - PostgreSQL connected
 - Core modules created
 - Shared infrastructure exists
+
+
+Completed commerce domains:
+
+- Cart
+- Orders
+- Inventory Integration
+- Payment Foundation
+- Wallet Foundation
+
+
+Runtime verification completed:
+
+- Cart APIs tested
+- Order creation tested
+- Payment flows tested
+- Wallet operations tested
 
 
 This does NOT mean:
@@ -445,49 +481,89 @@ The goal is a stable production-ready architecture without unnecessary rewrites.
 
 # Commerce Domain Progress
 
-Current completed backend domains:
+Completed backend domains:
 
 - Auth foundation
 - Users
 - Products
 - Categories
 - Brands
-- Cart module
-- Orders foundation
-- Inventory integration
+- Cart
+- Orders Foundation
+- Inventory Integration
+- Payment Foundation
+- Wallet Foundation
 
 
 Verified:
 
+Cart:
+
 - Cart flow tested
+- Product relation verified
+
+
+Orders:
+
 - Order creation tested
 - Order items creation tested
-- Inventory availability check tested
-- Inventory decrease after order creation tested
+- Price snapshot verified
+- Order status flow tested
+
+
+Inventory:
+
+- Stock validation tested
+- Stock decrease behavior verified
+
+
+Payment:
+
+Verified payment types:
+
+- Gateway payment
+- Wallet payment
+- Mixed payment
+
+
+Verified:
+
+- Payment creation
+- Payment processing
+- Payment status updates
+- Wallet deduction
+- Wallet transaction history
+
+
+Current architecture limitation:
+
+Inventory currently decreases during order creation.
+
+Future improvement:
+
+Inventory reservation system.
+
+Target flow:
+
+Create Order
+↓
+Reserve Inventory
+↓
+Payment Pending
+↓
+Payment Success
+↓
+Decrease Stock
+
+
+Payment Failed:
+
+Release Reservation
 
 
 Current next domain:
 
-Payment Foundation
+Shipping Module + Order Fulfillment Review
 
 
-Payment requirements:
 
-Scentora payment system must support:
-
-1. Direct Gateway Payment
-
-2. Direct Wallet Payment
-
-3. Mixed Payment:
-- Use available wallet balance
-- Pay remaining amount through gateway
-
-
-Payment implementation rules:
-
-- Do not implement real payment gateway yet.
-- Design domain architecture first.
-- Verify existing Order and Payment relations before schema changes.
-- Preserve existing module boundaries.
-- Avoid rewriting completed Cart, Orders, and Inventory modules.
