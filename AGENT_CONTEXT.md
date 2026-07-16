@@ -440,3 +440,54 @@ Security > Stability > Compatibility > Clean code > Features
 
 
 The goal is a stable production-ready architecture without unnecessary rewrites.
+
+---
+
+# Commerce Domain Progress
+
+Current completed backend domains:
+
+- Auth foundation
+- Users
+- Products
+- Categories
+- Brands
+- Cart module
+- Orders foundation
+- Inventory integration
+
+
+Verified:
+
+- Cart flow tested
+- Order creation tested
+- Order items creation tested
+- Inventory availability check tested
+- Inventory decrease after order creation tested
+
+
+Current next domain:
+
+Payment Foundation
+
+
+Payment requirements:
+
+Scentora payment system must support:
+
+1. Direct Gateway Payment
+
+2. Direct Wallet Payment
+
+3. Mixed Payment:
+- Use available wallet balance
+- Pay remaining amount through gateway
+
+
+Payment implementation rules:
+
+- Do not implement real payment gateway yet.
+- Design domain architecture first.
+- Verify existing Order and Payment relations before schema changes.
+- Preserve existing module boundaries.
+- Avoid rewriting completed Cart, Orders, and Inventory modules.
