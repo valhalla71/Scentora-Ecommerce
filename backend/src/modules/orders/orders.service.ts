@@ -2,10 +2,14 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '@config/prisma.service';
 import { OrderStatus, CartStatus } from '@prisma/client';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { InventoryService } from '../inventory/inventory.service';
 
 @Injectable()
 export class OrdersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private inventoryService: InventoryService,
+  ) {}
 
   async getUserOrders(userId: string, skip: number, take: number) {
     const [orders, total] = await Promise.all([
@@ -55,7 +59,6 @@ export class OrdersService {
     });
   }
 
-
   async createOrder(
     userId: string,
     createOrderDto: CreateOrderDto,
@@ -74,13 +77,17 @@ export class OrdersService {
       },
     });
 
-
     if (!cart || cart.items.length === 0) {
-      throw new NotFoundException(
-        'Cart is empty',
-      );
+      throw new NotFoundException('Cart is empty');
     }
 
+    // Check inventory availability before creating order
+    for (const item of cart.items) {
+      await this.inventoryService.checkAvailability(
+        item.productId,
+        item.quantity,
+      );
+    }
 
     const subtotal = cart.items.reduce(
       (sum, item) =>
@@ -88,69 +95,65 @@ export class OrdersService {
       0,
     );
 
-
     const tax = 0;
-
     const shippingCost = 0;
 
-    const total =
-      subtotal + tax + shippingCost;
+    const total = subtotal + tax + shippingCost;
 
+    const orderNumber = `ORD-${Date.now()}`;
 
-    const orderNumber =
-      `ORD-${Date.now()}`;
+    return this.prisma.$transaction(async (tx) => {
+      const order = await tx.order.create({
+        data: {
+          userId,
+          orderNumber,
+          subtotal,
+          tax,
+          shippingCost,
+          total,
+          status: OrderStatus.PENDING,
 
+          items: {
+            create: cart.items.map((item) => ({
+              productId: item.productId,
+              quantity: item.quantity,
+              price: item.product.price,
+              total:
+                Number(item.product.price) *
+                item.quantity,
+            })),
+          },
+        },
 
-    return this.prisma.$transaction(
-      async (tx) => {
-
-        const order = await tx.order.create({
-          data: {
-            userId,
-            orderNumber,
-            subtotal,
-            tax,
-            shippingCost,
-            total,
-            status: OrderStatus.PENDING,
-
-            items: {
-              create: cart.items.map((item) => ({
-                productId: item.productId,
-                quantity: item.quantity,
-                price: item.product.price,
-                total:
-                  Number(item.product.price) *
-                  item.quantity,
-              })),
+        include: {
+          items: {
+            include: {
+              product: true,
             },
           },
+        },
+      });
 
-          include: {
-            items: {
-              include: {
-                product: true,
-              },
-            },
-          },
-        });
+      // Reduce inventory after successful order creation
+      for (const item of cart.items) {
+        await this.inventoryService.decreaseStock(
+          item.productId,
+          item.quantity,
+        );
+      }
 
+      await tx.cart.update({
+        where: {
+          id: cart.id,
+        },
+        data: {
+          status: CartStatus.CONVERTED,
+        },
+      });
 
-        await tx.cart.update({
-          where: {
-            id: cart.id,
-          },
-          data: {
-            status: CartStatus.CONVERTED,
-          },
-        });
-
-
-        return order;
-      },
-    );
+      return order;
+    });
   }
-
 
   async updateOrderStatus(
     orderId: string,

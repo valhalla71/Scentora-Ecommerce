@@ -3,10 +3,12 @@ import { OrdersService } from './orders.service';
 import { OrdersController } from './orders.controller';
 import { PrismaService } from '@config/prisma.service';
 import { AuthModule } from '../auth/auth.module';
+import { InventoryModule } from '../inventory/inventory.module';
 
 @Module({
   imports: [
     AuthModule,
+    InventoryModule,
   ],
   providers: [
     OrdersService,

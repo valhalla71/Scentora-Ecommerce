@@ -554,3 +554,185 @@ Completed:
    - OrderItems creation
    - Cart status change ACTIVE → CONVERTED
 4. Continue Payment module implementation.
+
+2026-07-16 - Order Module Foundation Completed
+
+Completed:
+- CreateOrderDto added.
+- OrdersController updated to use DTO.
+- Order creation flow tested successfully.
+
+Verified Order Flow:
+- POST /api/v1/orders
+  - Creates order successfully.
+  - Generates order number.
+  - Creates OrderItem records from cart items.
+  - Calculates subtotal and total correctly.
+
+Order Verification:
+- Product relation included.
+- Quantity transferred correctly.
+- Price snapshot stored correctly.
+- Order status starts as PENDING.
+
+Cart Conversion:
+- Cart successfully changes to CONVERTED after checkout.
+- CartItem no longer appears in active cart.
+
+Testing Results:
+- JWT authentication with Orders module ✅
+- User → Cart → Order relation ✅
+- Cart to Order conversion flow ✅
+- OrderItem creation ✅
+- Price snapshot behavior ✅
+
+Current Status:
+Cart and Order backend flow completed and verified through Swagger.
+
+2026-07-16 - Order Module + Inventory Integration Completed
+
+Completed:
+
+Order Module Backend:
+- Order creation flow implemented and tested.
+- Orders are created from user's active cart.
+- Empty cart validation added.
+- Order items are generated automatically from cart items.
+- Order total calculation is handled on backend.
+- Cart status changes from ACTIVE to CONVERTED after successful order creation.
+
+Verified Order Flow:
+
+POST /api/v1/orders
+
+Test Result:
+- Order creation successful.
+- Order items creation successful.
+- Product relation inside OrderItem verified.
+- Cart conversion verified.
+
+Example:
+Product:
+J'adore Eau de Parfum
+
+Quantity:
+2
+
+Total:
+300
+
+
+Inventory Integration:
+
+Completed:
+- Inventory module connected to Orders module.
+- Inventory availability checking added before order creation.
+- Stock validation before checkout implemented.
+- Automatic stock reduction after successful order creation implemented.
+
+Verified Inventory Flow:
+
+Before Order:
+
+productId:
+cmrmtae2w0019momggub76njx
+
+quantity:
+100
+
+reserved:
+0
+
+
+After Order:
+
+quantity:
+98
+
+reserved:
+0
+
+
+Result:
+- Inventory decrease works correctly.
+- Order and Inventory relation works correctly.
+
+
+Current Checkout Architecture:
+
+Current MVP Flow:
+
+User
+↓
+Active Cart
+↓
+Cart Items
+↓
+Create Order
+↓
+Check Inventory Availability
+↓
+Create Order Items
+↓
+Decrease Inventory
+↓
+Convert Cart
+
+
+Future Payment Architecture Requirement:
+
+Scentora payment system must support three optional payment methods:
+
+1. Direct Gateway Payment
+
+2. Direct Wallet Payment
+
+3. Mixed Payment:
+- Use available wallet balance.
+- Pay remaining amount through gateway.
+
+
+Future payment flow should move toward:
+
+Create Order
+↓
+Reserve Inventory
+↓
+Payment Pending
+↓
+Payment Success
+↓
+Decrease Stock
+
+
+Payment Failed:
+
+Payment Failed
+↓
+Release Reserved Stock
+
+
+Current implementation decreases stock immediately because Payment Module is not implemented yet.
+
+
+Current Backend Status:
+
+Completed Modules:
+
+- Auth
+- Users
+- Products
+- Categories
+- Brands
+- Cart
+- Orders Foundation
+- Inventory Integration
+
+
+Pending Modules:
+
+- Payment Module
+- Wallet Module
+- Shipping Module
+- Order Payment Confirmation Flow
+- Inventory Reservation System
