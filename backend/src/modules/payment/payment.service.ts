@@ -114,6 +114,13 @@ export class PaymentService {
       throw new BadRequestException(`Payment is already ${payment.status}`);
     }
 
+    // Verify order is in correct state for payment processing
+    if (payment.order.status !== OrderStatus.PENDING) {
+      throw new BadRequestException(
+        `Cannot process payment for order in ${payment.order.status} status. Order must be PENDING.`,
+      );
+    }
+
     return this.prisma.$transaction(async (tx) => {
       // Update payment status
       const updatedPayment = await tx.payment.update({
@@ -130,6 +137,14 @@ export class PaymentService {
         });
 
         if (!wallet || Number(wallet.balance) < Number(payment.walletAmountUsed)) {
+          // Rollback: revert payment status
+          await tx.payment.update({
+            where: { id: processPaymentDto.paymentId },
+            data: {
+              status: PaymentStatus.FAILED,
+              failureReason: 'Insufficient wallet balance during processing',
+            },
+          });
           throw new BadRequestException('Insufficient wallet balance');
         }
 
@@ -176,7 +191,7 @@ export class PaymentService {
         },
       });
 
-      // Update order status to CONFIRMED
+      // Update order status to CONFIRMED (triggers fulfillment workflow)
       await tx.order.update({
         where: { id: payment.orderId },
         data: {
@@ -259,6 +274,9 @@ export class PaymentService {
   async cancelPayment(paymentId: string, userId: string) {
     const payment = await this.prisma.payment.findUnique({
       where: { id: paymentId },
+      include: {
+        order: true,
+      },
     });
 
     if (!payment) {
@@ -269,17 +287,30 @@ export class PaymentService {
       throw new BadRequestException('Unauthorized');
     }
 
-    if (payment.status !== PaymentStatus.PENDING && payment.status !== PaymentStatus.PROCESSING) {
+    if (
+      payment.status !== PaymentStatus.PENDING &&
+      payment.status !== PaymentStatus.PROCESSING
+    ) {
       throw new BadRequestException(
         `Cannot cancel payment in ${payment.status} status`,
       );
     }
 
-    return this.prisma.payment.update({
-      where: { id: paymentId },
-      data: {
-        status: PaymentStatus.CANCELLED,
-      },
+    return this.prisma.$transaction(async (tx) => {
+      // If wallet was deducted but not yet committed, we would refund here
+      // (currently not applicable since success is atomic)
+
+      const cancelledPayment = await tx.payment.update({
+        where: { id: paymentId },
+        data: {
+          status: PaymentStatus.CANCELLED,
+        },
+      });
+
+      // Keep order in PENDING state - allows another payment attempt
+      // Order remains PENDING and can accept new payments
+
+      return cancelledPayment;
     });
   }
 

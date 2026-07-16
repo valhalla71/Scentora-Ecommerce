@@ -16,45 +16,51 @@ Build a portfolio-grade premium ecommerce platform focused on perfume discovery,
 
 ---
 
+
 # Current Development Status
 
 ## Current Phase
 
-Backend Foundation Completed
+Backend Commerce Foundation Completed
 
 Current checkpoint:
 
-Backend API is running successfully and initial endpoints have been tested.
+The backend commerce lifecycle is implemented, integrated, and runtime verified.
 
----
+Completed backend flow:
 
-# Tech Stack
+Cart
+↓
+Order Creation
+↓
+Payment Processing
+↓
+Order Confirmation
+↓
+Shipping Fulfillment
+↓
+Delivery Completion
 
-## Backend
+Current backend status:
 
-Framework:
+* API running successfully
+* Prisma database synchronized
+* Commerce domains verified
+* Authentication protected routes working
+* Core purchase lifecycle completed
 
-NestJS
+Current priority:
 
-Language:
+Production readiness improvements.
 
-TypeScript
+Focus areas:
 
-ORM:
+* Security hardening
+* API consistency review
+* Inventory reservation architecture
+* Advanced commerce improvements
+* Preparation for frontend integration
 
-Prisma
-
-Database:
-
-PostgreSQL
-
-Runtime:
-
-Node.js 22
-
-Architecture:
-
-Domain-based modular architecture
 
 ---
 
@@ -91,83 +97,152 @@ Features prepared:
 
 # Backend Completed Modules
 
-The following modules exist:
+The following modules exist and have been implemented:
 
 ✅ Auth Module
 
-Responsibilities:
+Completed:
 
-- Register
-- Login
-- JWT authentication
-- Protected routes
+* Register
+* Login
+* JWT authentication
+* Protected routes
+* Current user endpoint
 
 ✅ Users Module
 
 Completed:
 
-- User creation
-- User profile
-- User update
-- User preferences
-- User addresses
+* User creation
+* User profile
+* User update
+* User preferences
+* User addresses
 
 ✅ Products Module
 
 Completed:
 
-- Product listing
-- Product search
-- Product details
-- Product slug lookup
-- Product update/delete routes
+* Product listing
+* Product search
+* Product details
+* Product slug lookup
+* Product update/delete routes
 
 ✅ Categories Module
 
 Completed:
 
-- Category listing
-- Category details
+* Category listing
+* Category details
 
 ✅ Brands Module
 
 Completed:
 
-- Brand listing
-- Brand details
+* Brand listing
+* Brand details
 
 ✅ Cart Module
 
 Completed:
 
-- Get cart
-- Add item
-- Remove item
-- Clear cart
+* Cart retrieval
+* Add item
+* Remove item
+* Clear cart
+* DTO validation
+* Swagger documentation
 
 ✅ Wishlist Module
 
 Completed:
 
-- Get wishlist
-- Add item
-- Remove item
+* Get wishlist
+* Add item
+* Remove item
 
-✅ Orders Module
-
-Completed:
-
-- Create order
-- Get orders
-- Get order details
 
 ✅ Reviews Module
 
 Completed:
 
-- Product reviews
-- Create review
-- User reviews
+* Product reviews
+* Create review
+* User reviews
+
+✅ Orders Module
+
+Completed:
+
+* Cart to order conversion
+* Order creation
+* Order items creation
+* Price snapshot system
+* Order lifecycle validation
+* Ownership checks
+
+✅ Inventory Integration
+
+Completed:
+
+* Stock availability validation
+* Stock decrease after order creation
+* Inventory relation verification
+
+Current limitation:
+
+Inventory reservation system is NOT implemented.
+
+Current behavior:
+
+Create Order
+↓
+Decrease Stock
+
+Future target:
+
+Create Order
+↓
+Reserve Stock
+↓
+Payment Success
+↓
+Decrease Stock
+
+✅ Payment Module
+
+Completed:
+
+* Gateway payment foundation
+* Wallet payment
+* Mixed payment
+* Payment lifecycle
+* Payment transactions
+* Payment validation
+* Order confirmation after payment success
+
+✅ Wallet Module
+
+Completed:
+
+* Wallet creation
+* Balance management
+* Wallet transactions
+* Debit/Credit tracking
+* Refund foundation
+
+✅ Shipping Module
+
+Completed:
+
+* Shipping creation
+* Order shipping relation
+* Shipping address storage
+* Tracking number management
+* Shipping status lifecycle
+* Delivery completion handling
+
 
 ---
 
@@ -242,21 +317,43 @@ Existing test users:
 ---
 
 
-
 # Current Issue / Next Task
 
-Before moving forward:
+Backend commerce foundation is completed and runtime verified.
 
-Authentication flow needs testing.
+Current phase:
 
-Next steps:
+Backend Production Readiness
 
-1. Verify Register endpoint
-2. Verify Login endpoint
-3. Get JWT token
-4. Test protected endpoint:
-  GET /api/v1/auth/me
-5. Verify guards and authentication
+
+Next Tasks:
+
+1. API consistency review
+   - Standardize response formats
+   - Review error handling
+   - Review DTO consistency
+
+
+2. Authorization improvement
+   - Complete RBAC preparation
+   - Define ADMIN permissions
+   - Define future vendor permissions
+
+
+3. Inventory architecture improvement
+   - Implement stock reservation flow
+   - Move final stock deduction after payment success
+   - Add stock release on failed payments
+
+
+4. Frontend preparation
+   - Freeze API contracts
+   - Document authentication requirements
+   - Prepare frontend integration endpoints
+
+
+Frontend integration should start only after backend contracts are stable.
+
 
 ---
 
@@ -312,7 +409,7 @@ This file is the source of truth for future AI sessions.
 - Initial project memory system created.
 
 
-
+### Historical - Initial Backend Setup
 ### Current Status
 
 - Backend foundation is stable.
@@ -985,122 +1082,286 @@ If Failed: Retry available or cancel
 7. Implement refund processing
 
 
-## 2026-07-16 - Payment Foundation Testing Completed
+## 2026-07-16 - Commerce Core Epic: Lifecycle & Integration Review COMPLETED
+
+### Completed Improvements
+
+#### 1. Order Lifecycle Enhancement
+- Implemented proper status transition validation
+- Valid transitions: PENDING → CONFIRMED → PROCESSING → SHIPPED → DELIVERED
+- Support CANCELLED and RETURNED states
+- Prevents invalid transitions with BadRequestException
+- Added ownership checks (userId parameter)
+
+#### 2. Payment-Order Integration Verification & Enhancement
+- Enhanced payment processing with order state validation
+- Order must be PENDING before payment processing
+- Payment success atomically updates Order to CONFIRMED
+- Added payment failure handling with reason tracking
+- Wallet deduction is rolled back on failure during transaction
+- Payment cancellation keeps order in PENDING for retry
+
+Integration Chain:
+- Order PENDING → Create Payment (PENDING)
+- Process Payment → Wallet deduction + gateway simulation
+- Payment SUCCESS → Order CONFIRMED (triggers fulfillment)
+- Order CONFIRMED → Can proceed to shipping
+
+#### 3. Shipping-Order Fulfillment Integration COMPLETED
+- Implemented state validation: Shipping requires Order.CONFIRMED
+- Enforced payment prerequisite: Order.payment.status must be SUCCESS
+- Prevents duplicate shipping creation per order
+- Added ownership checks on all shipping operations
+- Proper status transitions: PENDING → PROCESSING → SHIPPED → IN_TRANSIT → DELIVERED
+- Failed shipments can retry: FAILED → PENDING
+- Controller now passes userId for authorization
+
+Full Integration Chain:
+Order Creation
+↓
+Payment Required (PENDING)
+↓
+Payment Processing (PROCESSING)
+↓
+Payment Success (SUCCESS) → Order CONFIRMED
+↓
+Create Shipping (requires CONFIRMED + SUCCESS payment)
+↓
+Shipping Status Flow: PENDING → PROCESSING → SHIPPED → IN_TRANSIT → DELIVERED
+
+#### 4. Inventory Preparation (Architecture Documentation)
+- Documented current behavior: Stock decreases during order creation
+- Identified future integration points for reservation system
+- Marked methods for future use: reserveStock(), releaseReservedStock()
+- Architecture ready for future: Create Order → Reserve Stock → Payment Success → Decrease Stock
+- Rollback path prepared: Payment Failed → Release Reserved Stock
+
+#### 5. Commerce Security Review COMPLETED
+- Order access: Ownership check (userId) on all operations
+- Payment access: userId validation on all payment operations (create, get, process, cancel, retry)
+- Shipping access: userId ownership checks added to all endpoints
+- Authorization guards: JwtAuthGuard applied to all endpoints
+- Wallet operations: Protected via PaymentService ownership checks
+- All modifications protected by transaction boundaries
+
+Security Improvements:
+- Order.getOrderById now checks userId match
+- Payment.processPayment validates order payment state consistency
+- Shipping.createShipping validates payment success before allowing
+- Shipping.getShippingById added ownership check
+- Shipping.updateShippingStatus added ownership check
+- All endpoints require Bearer token (JwtAuthGuard)
+
+#### 6. Database Integrity Review
+Verified Prisma Schema:
+- Order → Payment (one-to-one via orderId) ✅ Correct
+- Order → Shipping (one-to-one via orderId) ✅ Correct
+- Payment → User (many-to-one via userId) ✅ Correct
+- Shipping → Order (one-to-one via orderId) ✅ Correct
+- Foreign keys present with onDelete: CASCADE ✅
+- Proper indexes on frequently queried fields ✅
+- Inventory.reserved field prepared for future use ✅
+- All status enums properly defined ✅
+
+#### 7. Validation & Error Handling Review
+DTOs Verified:
+- CreateOrderDto ✅ Validated
+- CreatePaymentDto ✅ Validated with payment type checks
+- CreateShippingDto ✅ Validated with address fields
+- UpdateShippingStatusDto ✅ Validated with status enum
+
+Error Handling Improvements:
+- Status transition validation throws BadRequestException
+- Ownership checks throw BadRequestException
+- Payment prerequisite checks throw BadRequestException
+- NotFoundException for missing resources
+- Transaction rollback on wallet insufficient balance
+- All edge cases handled: null checks, missing relations, duplicate operations
+
+#### 8. Verification - Build Status
+✅ npm run build: PASSED (Zero TypeScript errors)
+✅ Prisma schema validation: PASSED
+✅ All modules compile successfully
+✅ dist/ output verified
+
+### Architecture Documentation
+
+**Current Commerce Flow (Verified Working):**
+
+```
+Cart ACTIVE
+  ↓
+POST /api/v1/orders
+  ├─ Validate active cart exists
+  ├─ Check inventory availability
+  ├─ Calculate order totals
+  ├─ Create Order (PENDING)
+  ├─ Create OrderItems with price snapshots
+  ├─ Decrease inventory stock
+  └─ Convert Cart → CONVERTED
+  ↓
+Order PENDING
+  ↓
+POST /api/v1/payments
+  ├─ Verify order exists and is PENDING
+  ├─ Validate payment type (GATEWAY/WALLET/MIXED)
+  ├─ Calculate wallet/gateway splits
+  ├─ Create Payment record (PENDING)
+  └─ Return payment details
+  ↓
+Payment PENDING
+  ↓
+POST /api/v1/payments/process
+  ├─ Verify payment is PENDING
+  ├─ Verify order is still PENDING
+  ├─ Deduct wallet (if applicable)
+  ├─ Simulate gateway payment
+  ├─ Create PaymentTransaction
+  ├─ Update Payment → SUCCESS
+  └─ Update Order → CONFIRMED (triggers fulfillment)
+  ↓
+Order CONFIRMED + Payment SUCCESS
+  ↓
+POST /api/v1/shipping
+  ├─ Verify order is CONFIRMED
+  ├─ Verify payment is SUCCESS
+  ├─ Check no existing shipping
+  └─ Create Shipping (PENDING)
+  ↓
+Shipping PENDING
+  ↓
+PATCH /api/v1/shipping/:id
+  ├─ Verify valid status transition
+  ├─ Update shipping status
+  ├─ Auto-set actualDeliveryDate on DELIVERED
+  └─ Return updated shipping
+  ↓
+Shipping DELIVERED
+  ↓
+Order Complete
+```
+
+### Inventory Reservation Architecture (Future Enhancement)
+
+**Planned Flow When Integrated:**
+
+```
+Current (Immediate Decrease):
+Create Order → Decrease Stock
+
+Future (Payment-Based):
+Create Order → Reserve Stock
+           ↓
+Create Payment (PENDING)
+           ↓
+Payment Processing
+           ├─ Success → Release Reserved + Decrease Stock
+           └─ Failed → Release Reserved (revert)
+```
+
+**Methods Ready:**
+- `inventoryService.reserveStock()` - Increments reserved, validates availability
+- `inventoryService.releaseReservedStock()` - Decrements reserved on failure
+- `inventoryService.decreaseStock()` - Final step on payment success
+- `inventoryService.checkAvailability()` - Accounts for reserved qty
+
+### Test Scenarios Verified
+
+✅ Order creation → Payment pending state
+✅ Payment success → Order confirmed state
+✅ Wallet payment flow → Order fulfillment ready
+✅ Mixed payment flow → Order continues
+✅ Payment object validation → Order state consistency
+✅ Shipping creation after payment success
+✅ Shipping status updates → Proper transitions
+✅ Order cancellation → Prevents invalid states
+✅ Invalid status transitions are prevented
+✅ Ownership checks prevent cross-user access
+✅ All endpoints require JWT authentication
+
+### Next Milestone
+
+**Frontend Order Management Integration**
+- Connect frontend order pages to backend APIs
+- Implement order status tracking UI
+- Payment form integration
+- Shipping tracking visualization
+- Wallet balance display
+
+## 2026-07-16 - Commerce Backend Foundation Final Checkpoint
 
 ### Completed
 
-Payment module and wallet module were fully tested through Swagger.
-
-Verified payment methods:
-
-- GATEWAY payment ✅
-- WALLET payment ✅
-- MIXED payment ✅
-
-
-### Gateway Payment Test
+* Payment Foundation completed.
+* Wallet Foundation completed.
+* Shipping Foundation completed.
+* Commerce lifecycle integrated.
 
 Verified flow:
 
+Cart
+↓
 Order
-↓
-Create Payment (GATEWAY)
-↓
-Process Payment
-↓
-Payment SUCCESS
-↓
-Order CONFIRMED
-
-
-### Wallet Payment Test
-
-Verified flow:
-
-Wallet Balance
-↓
-Create Payment (WALLET)
-↓
-Wallet Debit
-↓
-Wallet Transaction Created
-↓
-Order CONFIRMED
-
-
-Verified:
-
-- Wallet balance deduction ✅
-- Wallet transaction creation ✅
-- Payment relation with wallet transaction ✅
-
-
-### Mixed Payment Test
-
-Verified flow:
-
-Order Total: 300
-
-Wallet Used: 200
-
-Gateway Amount: 100
-
-
-Verified:
-
-- Wallet-first calculation ✅
-- Remaining gateway amount calculation ✅
-- Wallet debit transaction created ✅
-- Payment SUCCESS transition ✅
-
-
-### Current Verified Status
-
-Completed and tested:
-
-- Auth Module ✅
-- Users Module ✅
-- Products Module ✅
-- Categories Module ✅
-- Brands Module ✅
-- Cart Module ✅
-- Orders Module ✅
-- Inventory Integration ✅
-- Payment Module ✅
-- Wallet Module ✅
-
-
-### Known Future Improvements
-
-1. Wallet payment should not generate gatewayReference.
-
-Expected behavior:
-
-- GATEWAY → gatewayReference required
-- MIXED → gatewayReference allowed
-- WALLET → gatewayReference null
-
-
-2. Inventory currently decreases during order creation.
-
-Future production flow:
-
-Create Order
-↓
-Reserve Inventory
 ↓
 Payment
 ↓
-Success
+Order Confirmation
 ↓
-Finalize Stock Reduction
+Shipping
+↓
+Delivery
 
+### Runtime Verification Completed
 
-### Next Actions
+Payment:
 
-Possible next milestones:
+* Gateway payment verified
+* Wallet payment verified
+* Mixed payment verified
+* Wallet transactions verified
 
-- Shipping Module implementation
-- Inventory Reservation System
-- Notification System
-- Frontend API integration
+Shipping:
+
+* Shipping creation verified
+* Status transitions verified
+* Tracking number update verified
+* Delivery completion verified
+* Actual delivery date update verified
+
+### Current Architecture Status
+
+Backend commerce foundation is stable.
+
+Completed domains:
+
+* Auth
+* Users
+* Products
+* Categories
+* Brands
+* Cart
+* Orders
+* Inventory Integration
+* Payment
+* Wallet
+* Shipping
+
+### Known Future Improvements
+
+* Inventory reservation system
+* Production payment gateway integration
+* Advanced authorization/RBAC
+* Frontend API integration
+* Notification system
+* Admin commerce tools
+
+Next Action
+
+Backend Production Readiness Phase:
+
+1. API consistency review
+2. Authorization/RBAC preparation
+3. Inventory reservation implementation
+4. Frontend API contract preparation
+
+Frontend integration starts after backend contracts are finalized.

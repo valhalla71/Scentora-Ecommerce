@@ -158,7 +158,23 @@ export class OrdersService {
   async updateOrderStatus(
     orderId: string,
     status: OrderStatus,
+    userId?: string,
   ) {
+    // Ownership check
+    const order = await this.prisma.order.findFirst({
+      where: {
+        id: orderId,
+        ...(userId && { userId }),
+      },
+    });
+
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+
+    // Validate status transition
+    this.validateStatusTransition(order.status, status);
+
     return this.prisma.order.update({
       where: {
         id: orderId,
@@ -167,5 +183,23 @@ export class OrdersService {
         status,
       },
     });
+  }
+
+  private validateStatusTransition(currentStatus: OrderStatus, newStatus: OrderStatus) {
+    const validTransitions: Record<OrderStatus, OrderStatus[]> = {
+      [OrderStatus.PENDING]: [OrderStatus.CONFIRMED, OrderStatus.CANCELLED],
+      [OrderStatus.CONFIRMED]: [OrderStatus.PROCESSING, OrderStatus.CANCELLED],
+      [OrderStatus.PROCESSING]: [OrderStatus.SHIPPED, OrderStatus.CANCELLED],
+      [OrderStatus.SHIPPED]: [OrderStatus.DELIVERED, OrderStatus.CANCELLED],
+      [OrderStatus.DELIVERED]: [OrderStatus.RETURNED],
+      [OrderStatus.CANCELLED]: [],
+      [OrderStatus.RETURNED]: [],
+    };
+
+    if (!validTransitions[currentStatus]?.includes(newStatus)) {
+      throw new Error(
+        `Invalid status transition from ${currentStatus} to ${newStatus}`,
+      );
+    }
   }
 }

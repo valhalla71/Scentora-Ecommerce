@@ -101,6 +101,15 @@ enum ShippingMethod {
   OVERNIGHT
 }
 
+enum ShippingStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  IN_TRANSIT
+  DELIVERED
+  FAILED
+}
+
 // ============================================================================
 // USERS MODULE
 // ============================================================================
@@ -589,20 +598,25 @@ model Payment {
 }
 
 model Shipping {
-  id             String         @id @default(cuid())
-  orderId        String         @unique
-  method         ShippingMethod
-  cost           Decimal        @db.Decimal(10, 2)
-  estimatedDate  DateTime?
-  actualDate     DateTime?
-  trackingNumber String?        @db.VarChar(100)
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+  id                   String          @id @default(cuid())
+  orderId              String          @unique
+  status               ShippingStatus  @default(PENDING)
+  street               String          @db.VarChar(255)
+  city                 String          @db.VarChar(100)
+  state                String          @db.VarChar(100)
+  zipCode              String          @db.VarChar(20)
+  country              String          @db.VarChar(100)
+  trackingNumber       String?         @db.VarChar(100)
+  estimatedDeliveryDate DateTime?
+  actualDeliveryDate   DateTime?
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
 
   // Relations
   order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@index([orderId])
+  @@index([status])
 }
 
 // ============================================================================

@@ -18,6 +18,7 @@ import { InventoryModule } from '@modules/inventory/inventory.module';
 import { ReviewsModule } from '@modules/reviews/reviews.module';
 import { PaymentModule } from '@modules/payment/payment.module';
 import { WalletModule } from '@modules/wallet/wallet.module';
+import { ShippingModule } from '@modules/shipping/shipping.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { WalletModule } from '@modules/wallet/wallet.module';
     ReviewsModule,
     PaymentModule,
     WalletModule,
+    ShippingModule,
   ],
   providers: [
     {
