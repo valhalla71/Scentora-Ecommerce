@@ -1365,3 +1365,137 @@ Backend Production Readiness Phase:
 4. Frontend API contract preparation
 
 Frontend integration starts after backend contracts are finalized.
+
+
+## Completed
+
+### Backend Production Readiness - API Consistency Review Phase 1 Started
+
+Completed initial API consistency analysis across core backend domains.
+
+Reviewed:
+
+- Products
+- Payment
+- Auth
+- Existing exception handling patterns
+- Route ordering issues
+- API contract problems
+
+
+Implemented fixes:
+
+### Products Module
+
+Fixed route ordering issue in:
+
+backend/src/modules/products/products.controller.ts
+
+Change:
+
+Moved:
+
+GET /products/slug/:slug
+
+before:
+
+GET /products/:id
+
+
+Reason:
+
+Prevent dynamic :id route from shadowing slug lookup endpoint.
+
+Verified:
+
+- NestJS route compilation successful
+- Backend build completed successfully
+
+
+### Exception Handling Foundation
+
+Reviewed custom exception architecture.
+
+Updated:
+
+backend/src/shared/exceptions/custom.exceptions.ts
+
+
+Current direction:
+
+Custom exceptions are being aligned with backend error handling strategy.
+
+Goal:
+
+- Consistent HTTP status responses
+- Predictable frontend error handling
+- Reduced API contract inconsistency
+
+
+Verified:
+
+npm run build
+
+Result:
+
+Successful compilation.
+
+
+---
+
+## Verified
+
+Current verification:
+
+✅ NestJS backend builds successfully
+
+✅ Prisma compatibility maintained
+
+✅ Existing commerce lifecycle unchanged
+
+✅ Products slug lookup route fixed
+
+✅ Exception handling changes compile successfully
+
+
+---
+
+## Current Status
+
+Backend Production Readiness phase is in progress.
+
+API consistency review identified multiple improvement areas.
+
+Phase 1 priority fixes:
+
+1. Exception handling consistency
+2. Route shadowing fixes
+3. Authorization validation improvements
+4. Missing DTO improvements
+
+
+Current completed fixes:
+
+- Products controller route ordering
+- Custom exception review and alignment
+
+
+---
+
+## Next Action
+
+Continue Phase 1 API consistency improvements.
+
+Next review targets:
+
+1. Payment controller route ordering and API consistency
+2. Auth service exception migration
+3. Authorization gaps
+4. DTO contract improvements
+
+
+Maintain existing architecture.
+
+Avoid large refactors.
+
+Prefer smallest safe production improvements.

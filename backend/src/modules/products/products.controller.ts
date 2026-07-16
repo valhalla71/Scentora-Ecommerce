@@ -49,21 +49,21 @@ export class ProductsController {
     return this.productsService.search(query, skip, pagination.limit);
   }
 
-  @Get(':id')
-  @Public()
-  @ApiOperation({ summary: 'Get product by ID' })
-  @ApiResponse({ status: 200, description: 'Product retrieved successfully' })
-  findOne(@Param('id') id: string) {
-    return this.productsService.findById(id);
-  }
-
   @Get('slug/:slug')
-  @Public()
-  @ApiOperation({ summary: 'Get product by slug' })
-  @ApiResponse({ status: 200, description: 'Product retrieved successfully' })
-  findBySlug(@Param('slug') slug: string) {
-    return this.productsService.findBySlug(slug);
-  }
+@Public()
+@ApiOperation({ summary: 'Get product by slug' })
+@ApiResponse({ status: 200, description: 'Product retrieved successfully' })
+findBySlug(@Param('slug') slug: string) {
+  return this.productsService.findBySlug(slug);
+}
+
+@Get(':id')
+@Public()
+@ApiOperation({ summary: 'Get product by ID' })
+@ApiResponse({ status: 200, description: 'Product retrieved successfully' })
+findOne(@Param('id') id: string) {
+  return this.productsService.findById(id);
+}
 
   @Put(':id')
   @UseGuards(JwtAuthGuard)

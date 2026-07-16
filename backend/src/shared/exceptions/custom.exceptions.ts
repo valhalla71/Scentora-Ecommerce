@@ -1,11 +1,19 @@
-export class CustomException extends Error {
+import { HttpException } from '@nestjs/common';
+
+export class CustomException extends HttpException {
   constructor(
-    public statusCode: number,
-    public message: string,
-    public error?: string,
+    statusCode: number,
+    message: string,
+    error?: string,
   ) {
-    super(message);
-    this.name = 'CustomException';
+    super(
+      {
+        statusCode,
+        message,
+        error,
+      },
+      statusCode,
+    );
   }
 }
 
@@ -29,7 +37,11 @@ export class ForbiddenException extends CustomException {
 
 export class NotFoundException extends CustomException {
   constructor(resource: string, id: string) {
-    super(404, `${resource} with ID ${id} not found`, 'NOT_FOUND');
+    super(
+      404,
+      `${resource} with ID ${id} not found`,
+      'NOT_FOUND',
+    );
   }
 }
 

@@ -30,13 +30,13 @@ export class PaymentController {
     return this.paymentService.processPayment(user.id, processPaymentDto);
   }
 
-  @Get(':id')
-  @ApiOperation({ summary: 'Get payment by ID' })
-  getPaymentById(
+  @Get('order/:orderId/history')
+  @ApiOperation({ summary: 'Get payment history for order' })
+  getOrderPaymentHistory(
     @CurrentUser() user: any,
-    @Param('id') paymentId: string,
+    @Param('orderId') orderId: string,
   ) {
-    return this.paymentService.getPaymentById(paymentId, user.id);
+    return this.paymentService.getOrderPaymentHistory(orderId, user.id);
   }
 
   @Get('order/:orderId')
@@ -46,6 +46,15 @@ export class PaymentController {
     @Param('orderId') orderId: string,
   ) {
     return this.paymentService.getOrderPayment(orderId, user.id);
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Get payment by ID' })
+  getPaymentById(
+    @CurrentUser() user: any,
+    @Param('id') paymentId: string,
+  ) {
+    return this.paymentService.getPaymentById(paymentId, user.id);
   }
 
   @Post(':id/retry')
@@ -64,14 +73,5 @@ export class PaymentController {
     @Param('id') paymentId: string,
   ) {
     return this.paymentService.cancelPayment(paymentId, user.id);
-  }
-
-  @Get('order/:orderId/history')
-  @ApiOperation({ summary: 'Get payment history for order' })
-  getOrderPaymentHistory(
-    @CurrentUser() user: any,
-    @Param('orderId') orderId: string,
-  ) {
-    return this.paymentService.getOrderPaymentHistory(orderId, user.id);
   }
 }

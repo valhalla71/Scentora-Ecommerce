@@ -7,6 +7,13 @@ import { PrismaService } from '@config/prisma.service';
 import { LoginDto, RegisterDto, ChangePasswordDto, LogoutDto } from './dto/login.dto';
 import { UnauthorizedException, ConflictException } from '@shared/exceptions/custom.exceptions';
 
+interface TokenUser {
+  id: string;
+  email: string;
+  firstName?: string | null;
+  lastName?: string | null;
+}
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -93,7 +100,7 @@ export class AuthService {
     };
   }
 
-  async generateTokens(user: any) {
+  async generateTokens(user: TokenUser) {
     const userWithRoles = await this.prisma.user.findUnique({
       where: { id: user.id },
       include: {
@@ -121,6 +128,7 @@ export class AuthService {
     });
 
     const refreshTokenString = crypto.randomBytes(32).toString('hex');
+
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 7);
 
@@ -144,7 +152,11 @@ export class AuthService {
       where: { token: refreshTokenString },
     });
 
-    if (!refreshToken || refreshToken.revokedAt || refreshToken.expiresAt < new Date()) {
+    if (
+      !refreshToken ||
+      refreshToken.revokedAt ||
+      refreshToken.expiresAt < new Date()
+    ) {
       throw new UnauthorizedException('Invalid or expired refresh token');
     }
 
@@ -156,9 +168,20 @@ export class AuthService {
       throw new UnauthorizedException('User not found or inactive');
     }
 
-    const tokens = await this.generateTokens(user);
+    // Revoke old refresh token before issuing a new one
+    await this.prisma.refreshToken.update({
+      where: { id: refreshToken.id },
+      data: {
+        revokedAt: new Date(),
+      },
+    });
 
-    return tokens;
+    return this.generateTokens({
+      id: user.id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+    });
   }
 
   async logout(logoutDto: LogoutDto) {
@@ -169,14 +192,21 @@ export class AuthService {
     if (refreshToken) {
       await this.prisma.refreshToken.update({
         where: { id: refreshToken.id },
-        data: { revokedAt: new Date() },
+        data: {
+          revokedAt: new Date(),
+        },
       });
     }
 
-    return { message: 'Logged out successfully' };
+    return {
+      message: 'Logged out successfully',
+    };
   }
 
-  async changePassword(userId: string, changePasswordDto: ChangePasswordDto) {
+  async changePassword(
+    userId: string,
+    changePasswordDto: ChangePasswordDto,
+  ) {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
     });
@@ -194,22 +224,28 @@ export class AuthService {
       throw new UnauthorizedException('Current password is incorrect');
     }
 
-    const hashedPassword = await bcrypt.hash(changePasswordDto.newPassword, 10);
+    const hashedPassword = await bcrypt.hash(
+      changePasswordDto.newPassword,
+      10,
+    );
 
     await this.prisma.user.update({
       where: { id: userId },
-      data: { password: hashedPassword },
+      data: {
+        password: hashedPassword,
+      },
     });
 
-    return { message: 'Password changed successfully' };
+    return {
+      message: 'Password changed successfully',
+    };
   }
 
   async validateToken(token: string) {
     try {
-      const payload = this.jwtService.verify(token, {
+      return this.jwtService.verify(token, {
         secret: this.configService.get<string>('jwt.secret'),
       });
-      return payload;
     } catch {
       throw new UnauthorizedException('Invalid token');
     }
