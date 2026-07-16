@@ -4,13 +4,12 @@ import {
   IsOptional,
   MaxLength,
   Min,
-  IsArray,
 } from 'class-validator';
 
 export class CreateProductDto {
   @IsString()
   @MaxLength(255)
-  name: string;
+  name!: string;
 
   @IsOptional()
   @IsString()
@@ -18,17 +17,17 @@ export class CreateProductDto {
 
   @IsNumber()
   @Min(0)
-  price: number;
+  price!: number;
 
   @IsNumber()
   @Min(0)
-  cost: number;
+  cost!: number;
 
   @IsString()
-  categoryId: string;
+  categoryId!: string;
 
   @IsString()
-  brandId: string;
+  brandId!: string;
 }
 
 export class UpdateProductDto {
@@ -53,13 +52,13 @@ export class UpdateProductDto {
 }
 
 export class ProductResponseDto {
-  id: string;
-  name: string;
-  slug: string;
-  description: string;
-  price: number;
-  cost: number;
-  status: string;
-  createdAt: Date;
-  updatedAt: Date;
+  id!: string;
+  name!: string;
+  slug!: string;
+  description!: string;
+  price!: number;
+  cost!: number;
+  status!: string;
+  createdAt!: Date;
+  updatedAt!: Date;
 }

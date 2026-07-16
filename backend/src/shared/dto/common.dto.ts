@@ -17,24 +17,24 @@ export class PaginationDto {
 }
 
 export class PaginatedResponseDto<T> {
-  data: T[];
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
+  data!: T[];
+  total!: number;
+  page!: number;
+  limit!: number;
+  totalPages!: number;
 }
 
 export class BaseResponseDto<T> {
-  statusCode: number;
-  message: string;
-  data: T;
-  timestamp: string;
+  statusCode!: number;
+  message!: string;
+  data!: T;
+  timestamp!: string;
 }
 
 export class ErrorResponseDto {
-  statusCode: number;
-  message: string;
-  error: string;
-  timestamp: string;
-  path: string;
+  statusCode!: number;
+  message!: string;
+  error!: string;
+  timestamp!: string;
+  path!: string;
 }

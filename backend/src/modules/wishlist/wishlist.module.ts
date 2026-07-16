@@ -2,10 +2,24 @@ import { Module } from '@nestjs/common';
 import { WishlistService } from './wishlist.service';
 import { WishlistController } from './wishlist.controller';
 import { PrismaService } from '@config/prisma.service';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
-  providers: [WishlistService, PrismaService],
-  controllers: [WishlistController],
-  exports: [WishlistService],
+  imports: [
+    AuthModule,
+  ],
+
+  providers: [
+    WishlistService,
+    PrismaService,
+  ],
+
+  controllers: [
+    WishlistController,
+  ],
+
+  exports: [
+    WishlistService,
+  ],
 })
 export class WishlistModule {}

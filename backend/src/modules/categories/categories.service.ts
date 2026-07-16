@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@config/prisma.service';
 
 export class CreateCategoryDto {
-  name: string;
+  name!: string;
   description?: string;
 }
 

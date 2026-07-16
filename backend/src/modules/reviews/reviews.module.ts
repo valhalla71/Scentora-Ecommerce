@@ -2,10 +2,21 @@ import { Module } from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
 import { ReviewsController } from './reviews.controller';
 import { PrismaService } from '@config/prisma.service';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
-  providers: [ReviewsService, PrismaService],
-  controllers: [ReviewsController],
-  exports: [ReviewsService],
+  imports: [
+    AuthModule,
+  ],
+  providers: [
+    ReviewsService,
+    PrismaService,
+  ],
+  controllers: [
+    ReviewsController,
+  ],
+  exports: [
+    ReviewsService,
+  ],
 })
 export class ReviewsModule {}
