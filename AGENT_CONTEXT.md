@@ -4,12 +4,13 @@
 
 Scentora is a portfolio-grade perfume e-commerce platform.
 
+---
 
 # Business Identity
 
 Scentora is a luxury perfume ecommerce platform.
 
-Future decisions should consider:
+Future decisions must consider:
 
 - Premium shopping experience
 - Perfume discovery
@@ -20,209 +21,154 @@ Future decisions should consider:
 
 Avoid building a generic ecommerce system.
 
-## Stack
-Frontend:
+---
+
+# Technology Stack
+
+## Frontend
+
 - Next.js 16
 - TypeScript
 - Tailwind CSS
 - shadcn/ui
 
-Backend:
+
+## Backend
+
 - NestJS
 - TypeScript
 - Prisma ORM
 
-Database:
+
+## Database
+
 - PostgreSQL
 - Prisma schema created
 
-## Completed
 
-✅ Git repository initialized and connected to GitHub
+---
 
-✅ Next.js frontend created
+# Current Active Phase
 
-✅ TypeScript configured
+Current development phase:
 
-✅ Persian/English i18n architecture completed
+## Backend Stabilization & Architecture Repair
 
-✅ RTL/LTR support completed
 
-✅ Fonts configured:
-- Geist for English
-- Vazirmatn for Persian
+The objective of this phase is ONLY:
 
-✅ Scentora luxury theme tokens created
+- Backend audit
+- Security verification
+- Authorization correction
+- API consistency preparation
+- Error handling review
+- Database safety review
 
-✅ Container component created
 
-✅ Header component created
+Do NOT start:
 
-✅ Footer component created
+- Frontend integration
+- New features
+- UI changes
+- New domains
 
-✅ SiteShell component created
 
-✅ SiteShell connected to locale layout
+---
 
-✅ Homepage hero section created
+# Priority Order
 
-✅ Homepage features section created
+When making technical decisions follow this order:
 
-✅ Homepage product showcase section created
+1. Security
+2. Stability
+3. Backward compatibility
+4. Existing architecture preservation
+5. Code quality
+6. New features
 
-✅ Homepage testimonials section created
 
-✅ Homepage CTA section created
+---
 
-✅ Catalog page created
-
-✅ Product detail page created
-
-✅ Shopping cart page created
-
-✅ Authentication pages created
-
-✅ User profile page created
-
-✅ Wishlist page created
-
-✅ Header authentication links integrated
-
-✅ User account area created
-
-✅ Shopping experience flow created
-
-✅ Product discovery experience created
-
-✅ Customer experience domain created
-
-✅ Store management domain created
-
-✅ Complete customer platform experience created
-
-✅ Frontend production polish completed
-
-✅ Frontend audit and freeze completed
-
-## Current Stage
-
-Full-stack development phase.
-
-Frontend:
-- Completed
-- Audited
-- Frozen
-- Production snapshot created
-- Git tag: frontend-complete
-
-Backend:
-- Foundation completed
-- Architecture created
-- Database schema foundation created
-- Identity Platform implemented
-- Feature development in progress
-
-Current Development Focus:
-- Backend domain implementation
-- Authentication and User Management
-- Production-ready backend services
+# Frontend Status
 
 ## Current State
 
-Completed:
-- frontend/components/layout/container.tsx
-- frontend/components/layout/header.tsx
-- frontend/components/layout/footer.tsx
-- frontend/components/layout/site-shell.tsx
-- frontend/app/[locale]/layout.tsx uses SiteShell
-- frontend/components/home/hero-section.tsx
-- frontend/components/home/product-showcase.tsx
-- frontend/components/home/testimonials-section.tsx
-- frontend/components/home/cta-section.tsx
-- frontend/app/[locale]/(routes)/page.tsx uses HeroSection, FeaturesSection, ProductShowcase, TestimonialsSection, and CTASection
-- frontend/app/[locale]/(routes)/catalog/
-- frontend/app/[locale]/(routes)/catalog/[id]/
-- frontend/lib/products.ts
-- frontend/app/[locale]/(routes)/cart/
-- frontend/lib/cart.ts
-- frontend/app/[locale]/(routes)/login/
-- frontend/app/[locale]/(routes)/register/
-- frontend/components/auth/
-- frontend/app/[locale]/(routes)/profile/
-- frontend/lib/user.ts
-- frontend/app/[locale]/(routes)/wishlist/
-- frontend/lib/wishlist.ts
-- frontend/components/layout/header.tsx updated
-- frontend/app/[locale]/(routes)/account/
-- frontend/lib/orders.ts
-- frontend/app/[locale]/(routes)/checkout/
-- frontend/app/[locale]/(routes)/order-success/
-- frontend/components/checkout/
-- frontend/app/[locale]/(routes)/catalog/catalog-content.tsx
-- frontend/components/catalog/
-- frontend/lib/catalog.ts
-- frontend/app/[locale]/(routes)/about/
-- frontend/app/[locale]/(routes)/contact/
-- frontend/components/contact/
-- frontend/components/home/newsletter-section.tsx
-- frontend/components/home/recently-viewed.tsx
-- frontend/components/home/recommendations.tsx
-- frontend/components/product/
-- frontend/lib/reviews.ts
-- frontend/app/[locale]/(routes)/admin/
-- frontend/components/admin/
-- frontend/lib/admin.ts
-- frontend/components/account/
-- frontend/components/blog/
-- frontend/components/checkout/checkout-progress.tsx
-- frontend/components/checkout/index.ts
-- frontend/components/checkout/shipping-payment-selector.tsx
-- frontend/components/commerce/
-- frontend/components/marketing/
-- frontend/components/product/frequently-bought-together.tsx
-- frontend/components/product/index.ts
-- frontend/components/product/product-comparison.tsx
-- frontend/components/product/product-faq.tsx
-- frontend/components/showcase.tsx
-- frontend/components/system/
-- frontend/lib/blog.ts
-- frontend/lib/commerce.ts
-- frontend/lib/products-advanced.ts
-- frontend/lib/user-account.ts
-- IMPLEMENTATION_SUMMARY.md
-- FRONTEND_POLISH_REPORT.md
-- POLISH_EPIC_SUMMARY.md
-- frontend/app/[locale]/(routes)/not-found.tsx
-- frontend/components/layout/breadcrumb.tsx
-- frontend/components/ui/
-- frontend/components/system/
-Frontend freeze status:
-- 26 pages verified
-- Critical issues fixed
-- Production build verified
-- RTL/LTR verified
-- i18n verified
-- Accessibility reviewed
-- Audit reports generated
-- Git tag: frontend-complete
+Frontend UI implementation is completed and audited.
+
+The UI layer is considered stable and frozen.
+
+Important:
+
+Frontend business integration is NOT completed yet.
+
+Current reality:
+
+- UI completed
+- UI audited
+- UI frozen
+- Mock data currently used
+- Backend integration pending
 
 
+## Frontend Rules
 
-# Backend Foundation Notes
+Do not:
 
-## Current Backend Status
+- recreate pages
+- redesign components
+- replace architecture
+- create duplicate components
+- modify completed UI flows
 
-Backend foundation completed and tagged:
 
-- Tag: backend-foundation-complete
-- NestJS architecture created
-- Prisma ORM configured
-- PostgreSQL schema foundation created
-- Core ecommerce modules created
-- Common infrastructure created
-- Security foundation created
+Allowed frontend changes in future:
 
-Backend modules created:
+- API integration
+- Backend connection
+- Required bug fixes only
+
+
+During current backend stabilization phase:
+
+DO NOT MODIFY FRONTEND.
+
+
+---
+
+# Backend Status
+
+## Current Backend State
+
+Backend foundation exists.
+
+This means:
+
+- NestJS architecture exists
+- Prisma configured
+- PostgreSQL connected
+- Core modules created
+- Shared infrastructure exists
+
+
+This does NOT mean:
+
+- Production complete
+- Security verified
+- Authorization complete
+- All commerce features completed
+- APIs fully validated
+
+
+Do not rebuild existing modules.
+
+Extend existing architecture only.
+
+
+---
+
+# Backend Modules
+
+Existing domains:
 
 - auth
 - users
@@ -236,6 +182,7 @@ Backend modules created:
 - wishlist
 - health
 
+
 Infrastructure:
 
 - config module
@@ -247,176 +194,179 @@ Infrastructure:
 - decorators
 - shared utilities
 
-Important:
-Backend foundation is not feature complete.
-Future development must extend the existing architecture.
-Do not rebuild existing modules.
 
-Backend implementation status:
+Admin functionality may exist inside existing domains.
 
-Completed:
-- Architecture setup
-- Prisma foundation
-- Database schema foundation
-- Core module structure
-- Authentication and User Management domain
-- JWT authentication flow
-- Refresh token system
-- RBAC foundation
-- User management foundation
-- Prisma migration and database synchronization
+Do NOT create a separate Admin module unless current architecture requires it.
 
-Not completed:
-- Remaining commerce domain implementation
-- Backend build stabilization
-- Integration testing
-- Production infrastructure
-
-## Backend Feature Development Rules
-
-All backend feature development must follow:
-
-Architecture:
-- Extend existing NestJS modules.
-- Do not rebuild existing modules.
-- Do not create duplicate business logic.
-- Keep module boundaries clean.
-
-Database:
-- All Prisma changes require migration planning.
-- Verify relations before modifying schema.
-- Verify indexes and constraints.
-- Preserve data integrity.
-
-Authentication and Security:
-- Never store plain passwords.
-- Protect sensitive endpoints.
-- Validate all inputs.
-- Follow production security practices.
-
-API Development:
-- Use DTO validation.
-- Keep API responses consistent.
-- Maintain scalable endpoint structure.
-- Update existing documentation when necessary.
-
-Testing:
-- New domains should include testing foundations.
-- Verify integration between modules.
 
 ---
 
-# Backend Development Roadmap
+# Authentication System
 
-## Database Development Rules
+Authentication foundation exists.
 
-Prisma migration:
+Existing:
 
-- Create proper migrations
-- Verify schema relations
-- Verify indexes
-- Verify constraints
-
-Important:
-Do not only modify schema.prisma.
-
-All database changes must consider:
-- Migration history
-- Existing relations
-- Data integrity
-- Future scalability
-
-## Authentication System
-
-Current:
-- Auth module foundation exists
-
-Required:
-
-- JWT authentication flow
-- Access token implementation
-- Refresh token implementation
-- Token rotation
-- Logout and token invalidation
+- JWT flow
+- Access token generation
+- Refresh token mechanism
 - Password hashing
-- Password validation rules
-- Forgot password flow
-- Password reset tokens
-- Email verification foundation
-- Session management
+- Register endpoint
+- Login endpoint
+
+
+Verification required:
+
+- JWT guards
+- Token lifecycle
+- Logout invalidation
+- Route protection
+- Role enforcement
+
+
+Do NOT create a new authentication system.
+
+Extend existing implementation only.
+
 
 ---
 
-## User Management
+# Authorization & RBAC
 
-Required:
+RBAC foundation exists.
 
-- Complete user APIs
-- Profile management
-- Update profile
-- Change password
-- User preferences
-- Address CRUD
-- Default address management
-- User session handling
+RBAC is NOT considered complete until:
+
+- Guards verified
+- Roles enforced
+- Permissions checked
+- Admin routes protected
+
+
+Required roles:
+
+- ADMIN
+- USER
+- VENDOR
+
+
+Requirements:
+
+- Public routes must remain accessible
+- User routes require authentication
+- Admin/vendor actions require role validation
+
+
+Do not duplicate authorization systems.
+
 
 ---
 
-## Authorization
+# Current Critical Gaps
+
+## Frontend Backend Integration
 
 Current:
-- Guards foundation exists
 
-Required:
+- Frontend uses mock data
+- Backend APIs exist
+- Integration not started
 
-- Complete RBAC system
-- Permission checking
-- Role assignment
-- Admin authorization
-- Protected endpoint architecture
 
----
+Future requirements:
 
-## Commerce Improvements
+- API client layer
+- Authentication state
+- Token handling
+- Error handling
+- Loading states
+- Gradual replacement of mocks
 
-Required:
 
-### Cart
-- Cart validation
-- Stock validation
-- Price validation
-- Advanced calculations
+Do not start integration during backend stabilization.
 
-### Inventory
-- Inventory transaction history
-- Stock movement tracking
-- Reservation system
-- Low stock handling
-
-### Orders
-- Complete order lifecycle
-- Status transition rules
-- Cancellation flow
-- Return/refund foundation
-- Order event tracking
-
-### Discounts
-- Coupon-order relationship
-- Discount calculation engine
-- Coupon validation
-- Usage limits
-- Expiration rules
 
 ---
 
-# Scentora Specific Product Extensions
+# Backend Development Rules
 
-Scentora is a perfume ecommerce platform.
+## Architecture
+
+Must:
+
+- Extend existing NestJS modules
+- Preserve domain boundaries
+- Reuse existing services
+- Reuse existing guards
+- Reuse existing decorators
+
+
+Do not:
+
+- rebuild modules
+- create duplicate business logic
+- change architecture unnecessarily
+
+
+---
+
+# Database Rules
+
+Prisma changes require:
+
+- Migration planning
+- Relation verification
+- Index verification
+- Constraint verification
+- Data integrity checks
+
+
+Never modify schema.prisma without checking impact.
+
+
+---
+
+# API Stability Rules
+
+Preserve existing API structure as much as possible.
+
+Avoid:
+
+- unnecessary endpoint changes
+- breaking response changes
+- renaming existing contracts
+
+
+---
+
+# Error Handling Rules
+
+Review:
+
+- Exception filters
+- Validation pipes
+- DTO validation
+- Prisma errors
+
+
+Ensure:
+
+- Clean validation messages
+- No sensitive database information exposure
+
+
+---
+
+# Product Domain
 
 Current Product model is generic.
-Future extensions required:
 
-- Fragrance notes system
+Do not replace Product model.
+
+Future extensions may include:
+
+- Fragrance notes
 - Top notes
 - Middle notes
 - Base notes
@@ -427,114 +377,18 @@ Future extensions required:
 - Occasion
 - Longevity
 - Sillage
-- Advanced perfume filtering
+- Advanced filtering
 
-Do not replace Product model.
-Extend existing design.
 
 ---
 
-# Production Readiness Checklist
+# Domain Completion Rule
 
-Before production:
+A feature is NOT complete because:
 
-Backend:
-- Unit tests
-- Integration tests
-- API tests
-- Database tests
-- Logging system
-- Monitoring
-- Performance optimization
+- Database model exists
+- Prisma schema exists
 
-Infrastructure:
-- CI/CD
-- Deployment configuration
-- Production environment setup
-- Database backup strategy
-
----
-
-# Development Strategy Update
-
-Project prefers:
-
-- Large domain-focused tasks
-- Complete related features together
-- Minimal architecture changes
-- No duplicate implementations
-- Verify existing architecture before adding new systems
-
-
-
-Working correctly:
-- Build successful
-- Git clean
-- Changes committed and pushed
-
-## Completed Epic
-
-Authentication and User Management Backend Epic
-
-Completed:
-
-- JWT authentication flow
-- Access token generation
-- Refresh token storage
-- Logout and token invalidation
-- Password hashing
-- Register and login endpoints
-- Password reset token foundation
-- Email verification token foundation
-- JWT authentication guards
-- Role based authorization foundation
-- Permission checking foundation
-- User profile management
-- User preferences
-- Address CRUD
-- Default address handling
-- DTO validation
-- Error handling foundation
-- Pagination support
-- Prisma migration
-- Authentication documentation
-
-
-## Next Task
-
-Backend Build Stabilization and Verification
-
-Goal:
-
-Resolve remaining TypeScript issues, verify backend runtime, and validate completed Identity Platform implementation.
-
-
-## Development Rules
-
-- Keep tasks domain-focused
-- Combine related features into one task
-- Do not inspect unrelated files
-- Do not modify architecture
-- Do not create unnecessary files
-- Use existing components
-- TypeScript only
-- Commit after each completed domain task
-
-## Critical AI Development Rules
-
-Before creating any new module:
-
-1. Check existing architecture first.
-2. Extend existing modules whenever possible.
-3. Never duplicate business logic.
-4. Never create alternative implementations.
-5. Never replace Prisma models without migration planning.
-6. Never modify completed frontend architecture.
-7. Prefer completing existing domains over creating new domains.
-
-## Implementation Reality Rule
-
-Do not mark a feature complete based only on database models.
 
 A domain is complete only when:
 
@@ -544,42 +398,45 @@ A domain is complete only when:
 - Validation exists
 - Verification exists
 
-Database schema additions alone do not represent feature completion.
 
-## Domain Completion Checklist
+---
 
-## Build Verification Rule
+# Build Verification Rule
 
-No domain implementation is considered complete until:
+No domain is complete until:
 
 - npm run build succeeds
-- TypeScript errors are resolved
-- Prisma migration status is clean
-- Git changes are reviewed
+- TypeScript errors resolved
+- Prisma status verified
+- Runtime tested
+- APIs verified
 
-Do not mark implementation complete with failing build.
 
-Before marking any domain complete:
+---
 
-Required:
+# Cursor Execution Rules
 
-- Build verification
-- TypeScript check
-- Architecture review
-- Check missing dependencies
-- Check database relations
-- Check API consistency
-- Verify implemented business flows
-- Verify database models are actually used by services/controllers
-- Verify claimed features exist beyond schema definitions
+Before every task:
 
-## Documentation Rule
+1. Read this file completely.
+2. Inspect existing implementation first.
+3. Do not recreate existing modules.
+4. Do not modify frontend during backend tasks.
+5. Do not create unnecessary files.
+6. Do not create duplicate documentation.
+7. Prefer fixing existing code over adding new code.
+8. Complete current task before starting another.
+9. Minimize unnecessary exploration.
+10. Ask before major architectural changes.
 
-Create documentation only when it provides project value.
 
-Rules:
+---
 
-- Do not create unnecessary markdown reports.
-- Prefer updating existing documentation files.
-- Avoid duplicate documentation.
-- Keep documentation focused on long-term project maintenance.
+# Implementation Philosophy
+
+Priority:
+
+Security > Stability > Compatibility > Clean code > Features
+
+
+The goal is a stable production-ready architecture without unnecessary rewrites.
