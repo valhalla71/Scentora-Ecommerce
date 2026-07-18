@@ -1888,3 +1888,23 @@ Next Step:
 
 Begin API integration testing:
 Auth → User → Product → Cart → Order → Payment → Shipping flow.
+
+
+Latest Progress:
+
+Commerce flow stabilization completed.
+
+Completed:
+- Cart flow verified
+- Order creation verified
+- Payment flow verified
+- Wallet payment verified
+- Inventory atomic stock validation added
+
+Important limitation:
+Inventory reservation is not implemented yet.
+Current behavior:
+Stock decreases during order creation.
+
+Future:
+Implement reservation-based inventory flow after payment integration.
