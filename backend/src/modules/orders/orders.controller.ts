@@ -1,25 +1,57 @@
-import { Controller, Get, Post, Body, Param, UseGuards, Query } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Body,
+  Param,
+  UseGuards,
+  Query,
+} from '@nestjs/common';
+
+import {
+  ApiTags,
+  ApiOperation,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
+
 import { OrdersService } from './orders.service';
+
 import { JwtAuthGuard } from '@shared/guards/jwt-auth.guard';
-import { CurrentUser } from '@shared/decorators';
+import { RolesGuard } from '@shared/guards/roles.guard';
+
+import {
+  CurrentUser,
+  Roles,
+} from '@shared/decorators';
+
 import { PaginationDto } from '@shared/dto/common.dto';
+
 import { CreateOrderDto } from './dto/create-order.dto';
+import { UpdateOrderStatusDto } from './dto/update-order-status.dto';
+
 
 @ApiTags('Orders')
 @Controller('orders')
 @UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
 export class OrdersController {
-  constructor(private ordersService: OrdersService) {}
+  constructor(
+    private ordersService: OrdersService,
+  ) {}
+
 
   @Get()
-  @ApiOperation({ summary: 'Get user orders' })
+  @ApiOperation({
+    summary: 'Get user orders',
+  })
   getUserOrders(
     @CurrentUser() user: any,
     @Query() pagination: PaginationDto,
   ) {
-    const skip = (pagination.page - 1) * pagination.limit;
+    const skip =
+      (pagination.page - 1) *
+      pagination.limit;
 
     return this.ordersService.getUserOrders(
       user.id,
@@ -28,8 +60,11 @@ export class OrdersController {
     );
   }
 
+
   @Get(':id')
-  @ApiOperation({ summary: 'Get order by ID' })
+  @ApiOperation({
+    summary: 'Get order by ID',
+  })
   getOrderById(
     @CurrentUser() user: any,
     @Param('id') orderId: string,
@@ -40,8 +75,11 @@ export class OrdersController {
     );
   }
 
+
   @Post()
-  @ApiOperation({ summary: 'Create order from cart' })
+  @ApiOperation({
+    summary: 'Create order from cart',
+  })
   createOrder(
     @CurrentUser() user: any,
     @Body() createOrderDto: CreateOrderDto,
@@ -49,6 +87,23 @@ export class OrdersController {
     return this.ordersService.createOrder(
       user.id,
       createOrderDto,
+    );
+  }
+
+
+  @Patch(':id/status')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  @ApiOperation({
+    summary: 'Update order status (Admin only)',
+  })
+  updateOrderStatus(
+    @Param('id') orderId: string,
+    @Body() updateOrderStatusDto: UpdateOrderStatusDto,
+  ) {
+    return this.ordersService.updateOrderStatus(
+      orderId,
+      updateOrderStatusDto.status,
     );
   }
 }

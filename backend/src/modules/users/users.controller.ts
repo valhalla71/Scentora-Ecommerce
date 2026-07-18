@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Param, Put, Delete, Query, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { UsersService } from './users.service';
-import { CreateUserDto, UpdateUserDto, UpdatePreferencesDto, CreateAddressDto, UpdateAddressDto, UserResponseDto } from './dto/create-user.dto';
+import { CreateUserDto, UpdateUserDto, UpdatePreferencesDto, CreateAddressDto, UpdateAddressDto } from './dto/create-user.dto';
 import { PaginationDto } from '@shared/dto/common.dto';
 import { JwtAuthGuard } from '@shared/guards/jwt-auth.guard';
 import { RolesGuard } from '@shared/guards/roles.guard';
@@ -44,7 +44,6 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get user preferences' })
-  @ApiResponse({ status: 200, description: 'Preferences retrieved successfully' })
   getPreferences(@CurrentUser() user: any) {
     return this.usersService.getPreferences(user.id);
   }
@@ -53,7 +52,6 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update user preferences' })
-  @ApiResponse({ status: 200, description: 'Preferences updated successfully' })
   updatePreferences(
     @CurrentUser() user: any,
     @Body() updatePreferencesDto: UpdatePreferencesDto,
@@ -65,7 +63,6 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get user addresses' })
-  @ApiResponse({ status: 200, description: 'Addresses retrieved successfully' })
   getAddresses(@CurrentUser() user: any) {
     return this.usersService.getAddresses(user.id);
   }
@@ -74,7 +71,6 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Create user address' })
-  @ApiResponse({ status: 201, description: 'Address created successfully' })
   createAddress(
     @CurrentUser() user: any,
     @Body() createAddressDto: CreateAddressDto,
@@ -86,7 +82,6 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get address by ID' })
-  @ApiResponse({ status: 200, description: 'Address retrieved successfully' })
   getAddress(@CurrentUser() user: any, @Param('id') id: string) {
     return this.usersService.getAddressById(user.id, id);
   }
@@ -95,7 +90,6 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update address' })
-  @ApiResponse({ status: 200, description: 'Address updated successfully' })
   updateAddress(
     @CurrentUser() user: any,
     @Param('id') id: string,
@@ -108,7 +102,6 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete address' })
-  @ApiResponse({ status: 200, description: 'Address deleted successfully' })
   deleteAddress(@CurrentUser() user: any, @Param('id') id: string) {
     return this.usersService.deleteAddress(user.id, id);
   }
@@ -117,13 +110,14 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Set address as default' })
-  @ApiResponse({ status: 200, description: 'Default address set successfully' })
   setDefaultAddress(@CurrentUser() user: any, @Param('id') id: string) {
     return this.usersService.setDefaultAddress(user.id, id);
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Get user by ID' })
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get user by ID (Authenticated only)' })
   @ApiResponse({ status: 200, description: 'User retrieved successfully' })
   findOne(@Param('id') id: string) {
     return this.usersService.findById(id);
@@ -134,8 +128,11 @@ export class UsersController {
   @Roles('ADMIN')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update user (Admin only)' })
-  @ApiResponse({ status: 200, description: 'User updated successfully' })
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto, @CurrentUser() user: any) {
+  update(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+    @CurrentUser() user: any,
+  ) {
     return this.usersService.updateAsAdmin(id, updateUserDto, user.id);
   }
 
@@ -144,7 +141,6 @@ export class UsersController {
   @Roles('ADMIN')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete user (Admin only)' })
-  @ApiResponse({ status: 200, description: 'User deleted successfully' })
   remove(@Param('id') id: string, @CurrentUser() user: any) {
     return this.usersService.removeAsAdmin(id, user.id);
   }

@@ -1,14 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@config/prisma.service';
 import { OrderStatus, CartStatus } from '@prisma/client';
 import { CreateOrderDto } from './dto/create-order.dto';
-import { InventoryService } from '../inventory/inventory.service';
+import {
+  NotFoundException,
+  BadRequestException,
+} from '@shared/exceptions/custom.exceptions';
 
 @Injectable()
 export class OrdersService {
   constructor(
     private prisma: PrismaService,
-    private inventoryService: InventoryService,
   ) {}
 
   async getUserOrders(userId: string, skip: number, take: number) {
@@ -42,7 +44,7 @@ export class OrdersService {
   }
 
   async getOrderById(orderId: string, userId: string) {
-    return this.prisma.order.findFirst({
+    const order = await this.prisma.order.findFirst({
       where: {
         id: orderId,
         userId,
@@ -57,6 +59,12 @@ export class OrdersService {
         shipping: true,
       },
     });
+
+    if (!order) {
+      throw new NotFoundException('Order', orderId);
+    }
+
+    return order;
   }
 
   async createOrder(
@@ -78,15 +86,7 @@ export class OrdersService {
     });
 
     if (!cart || cart.items.length === 0) {
-      throw new NotFoundException('Cart is empty');
-    }
-
-    // Check inventory availability before creating order
-    for (const item of cart.items) {
-      await this.inventoryService.checkAvailability(
-        item.productId,
-        item.quantity,
-      );
+      throw new NotFoundException('Cart', userId);
     }
 
     const subtotal = cart.items.reduce(
@@ -97,12 +97,50 @@ export class OrdersService {
 
     const tax = 0;
     const shippingCost = 0;
-
     const total = subtotal + tax + shippingCost;
 
     const orderNumber = `ORD-${Date.now()}`;
 
     return this.prisma.$transaction(async (tx) => {
+
+      /**
+       * Atomic inventory validation + decrease
+       * Prevents overselling caused by concurrent order creation
+       */
+      for (const item of cart.items) {
+        const inventory = await tx.inventory.findUnique({
+          where: {
+            productId: item.productId,
+          },
+        });
+
+        if (!inventory) {
+          throw new BadRequestException(
+            `Inventory not found for product ${item.productId}`,
+          );
+        }
+
+        const availableQuantity =
+          inventory.quantity - inventory.reserved;
+
+        if (availableQuantity < item.quantity) {
+          throw new BadRequestException(
+            `Insufficient stock for product ${item.productId}`,
+          );
+        }
+
+        await tx.inventory.update({
+          where: {
+            productId: item.productId,
+          },
+          data: {
+            quantity: {
+              decrement: item.quantity,
+            },
+          },
+        });
+      }
+
       const order = await tx.order.create({
         data: {
           userId,
@@ -134,14 +172,6 @@ export class OrdersService {
         },
       });
 
-      // Reduce inventory after successful order creation
-      for (const item of cart.items) {
-        await this.inventoryService.decreaseStock(
-          item.productId,
-          item.quantity,
-        );
-      }
-
       await tx.cart.update({
         where: {
           id: cart.id,
@@ -160,7 +190,6 @@ export class OrdersService {
     status: OrderStatus,
     userId?: string,
   ) {
-    // Ownership check
     const order = await this.prisma.order.findFirst({
       where: {
         id: orderId,
@@ -169,10 +198,9 @@ export class OrdersService {
     });
 
     if (!order) {
-      throw new NotFoundException('Order not found');
+      throw new NotFoundException('Order', orderId);
     }
 
-    // Validate status transition
     this.validateStatusTransition(order.status, status);
 
     return this.prisma.order.update({
@@ -185,19 +213,42 @@ export class OrdersService {
     });
   }
 
-  private validateStatusTransition(currentStatus: OrderStatus, newStatus: OrderStatus) {
+  private validateStatusTransition(
+    currentStatus: OrderStatus,
+    newStatus: OrderStatus,
+  ) {
     const validTransitions: Record<OrderStatus, OrderStatus[]> = {
-      [OrderStatus.PENDING]: [OrderStatus.CONFIRMED, OrderStatus.CANCELLED],
-      [OrderStatus.CONFIRMED]: [OrderStatus.PROCESSING, OrderStatus.CANCELLED],
-      [OrderStatus.PROCESSING]: [OrderStatus.SHIPPED, OrderStatus.CANCELLED],
-      [OrderStatus.SHIPPED]: [OrderStatus.DELIVERED, OrderStatus.CANCELLED],
-      [OrderStatus.DELIVERED]: [OrderStatus.RETURNED],
+      [OrderStatus.PENDING]: [
+        OrderStatus.CONFIRMED,
+        OrderStatus.CANCELLED,
+      ],
+
+      [OrderStatus.CONFIRMED]: [
+        OrderStatus.PROCESSING,
+        OrderStatus.CANCELLED,
+      ],
+
+      [OrderStatus.PROCESSING]: [
+        OrderStatus.SHIPPED,
+        OrderStatus.CANCELLED,
+      ],
+
+      [OrderStatus.SHIPPED]: [
+        OrderStatus.DELIVERED,
+        OrderStatus.CANCELLED,
+      ],
+
+      [OrderStatus.DELIVERED]: [
+        OrderStatus.RETURNED,
+      ],
+
       [OrderStatus.CANCELLED]: [],
+
       [OrderStatus.RETURNED]: [],
     };
 
     if (!validTransitions[currentStatus]?.includes(newStatus)) {
-      throw new Error(
+      throw new BadRequestException(
         `Invalid status transition from ${currentStatus} to ${newStatus}`,
       );
     }

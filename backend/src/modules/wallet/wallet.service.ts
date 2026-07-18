@@ -1,5 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@config/prisma.service';
+import { NotFoundException } from '@shared/exceptions/custom.exceptions';
 
 @Injectable()
 export class WalletService {
@@ -28,7 +29,7 @@ export class WalletService {
     });
 
     if (!wallet) {
-      throw new NotFoundException('Wallet not found');
+      throw new NotFoundException('Wallet', userId);
     }
 
     return wallet;

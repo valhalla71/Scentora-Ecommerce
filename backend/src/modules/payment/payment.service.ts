@@ -1,18 +1,26 @@
-import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  NotFoundException,
+} from '@shared/exceptions/custom.exceptions';
 import { PrismaService } from '@config/prisma.service';
-import { PaymentStatus, PaymentType, WalletTransactionType, OrderStatus } from '@prisma/client';
-import { CreatePaymentDto, ProcessPaymentDto } from './dto/create-payment.dto';
-import { InventoryService } from '../inventory/inventory.service';
-
+import {
+  PaymentStatus,
+  PaymentType,
+  WalletTransactionType,
+  OrderStatus,
+} from '@prisma/client';
+import {
+  CreatePaymentDto,
+  ProcessPaymentDto,
+} from './dto/create-payment.dto';
 @Injectable()
 export class PaymentService {
   constructor(
     private prisma: PrismaService,
-    private inventoryService: InventoryService,
   ) {}
 
   async createPayment(userId: string, createPaymentDto: CreatePaymentDto) {
-    // Verify order exists and belongs to user
     const order = await this.prisma.order.findFirst({
       where: {
         id: createPaymentDto.orderId,
@@ -24,39 +32,50 @@ export class PaymentService {
     });
 
     if (!order) {
-      throw new NotFoundException('Order not found');
+      throw new NotFoundException('Order', createPaymentDto.orderId);
     }
 
     if (order.status !== OrderStatus.PENDING) {
-      throw new BadRequestException('Order is not in PENDING status');
+      throw new BadRequestException(
+        'Order is not in PENDING status',
+      );
     }
 
-    // Get user wallet
     let wallet = await this.prisma.wallet.findUnique({
       where: { userId },
     });
 
     if (!wallet) {
       wallet = await this.prisma.wallet.create({
-        data: { userId, balance: 0 },
+        data: {
+          userId,
+          balance: 0,
+        },
       });
     }
 
-    // Calculate amounts based on payment type
     const totalAmount = Number(order.total);
+
     let walletAmountUsed = 0;
     let gatewayAmount = totalAmount;
 
     if (createPaymentDto.paymentType === PaymentType.WALLET) {
       if (Number(wallet.balance) < totalAmount) {
         throw new BadRequestException(
-          `Insufficient wallet balance. Available: ${wallet.balance}, Required: ${totalAmount}`,
+          'Insufficient wallet balance',
         );
       }
+
       walletAmountUsed = totalAmount;
       gatewayAmount = 0;
-    } else if (createPaymentDto.paymentType === PaymentType.MIXED) {
-      walletAmountUsed = Math.min(Number(wallet.balance), totalAmount);
+    } else if (
+      createPaymentDto.paymentType === PaymentType.MIXED
+    ) {
+      walletAmountUsed = Math.min(
+        Number(wallet.balance),
+        totalAmount,
+      );
+
       gatewayAmount = totalAmount - walletAmountUsed;
 
       if (!createPaymentDto.paymentMethod) {
@@ -64,7 +83,9 @@ export class PaymentService {
           'Payment method required for MIXED payment',
         );
       }
-    } else if (createPaymentDto.paymentType === PaymentType.GATEWAY) {
+    } else if (
+      createPaymentDto.paymentType === PaymentType.GATEWAY
+    ) {
       if (!createPaymentDto.paymentMethod) {
         throw new BadRequestException(
           'Payment method required for GATEWAY payment',
@@ -72,26 +93,29 @@ export class PaymentService {
       }
     }
 
-    // Create payment record
-    const payment = await this.prisma.payment.create({
+    return this.prisma.payment.create({
       data: {
         orderId: createPaymentDto.orderId,
         userId,
         paymentType: createPaymentDto.paymentType,
-        paymentMethod: createPaymentDto.paymentMethod || null,
+        paymentMethod:
+          createPaymentDto.paymentMethod || null,
         status: PaymentStatus.PENDING,
         amount: totalAmount,
         walletAmountUsed,
         gatewayAmount,
       },
     });
-
-    return payment;
   }
 
-  async processPayment(userId: string, processPaymentDto: ProcessPaymentDto) {
+  async processPayment(
+    userId: string,
+    processPaymentDto: ProcessPaymentDto,
+  ) {
     const payment = await this.prisma.payment.findUnique({
-      where: { id: processPaymentDto.paymentId },
+      where: {
+        id: processPaymentDto.paymentId,
+      },
       include: {
         order: {
           include: {
@@ -103,7 +127,10 @@ export class PaymentService {
     });
 
     if (!payment) {
-      throw new NotFoundException('Payment not found');
+      throw new NotFoundException(
+        'Payment',
+        processPaymentDto.paymentId,
+      );
     }
 
     if (payment.userId !== userId) {
@@ -111,46 +138,61 @@ export class PaymentService {
     }
 
     if (payment.status !== PaymentStatus.PENDING) {
-      throw new BadRequestException(`Payment is already ${payment.status}`);
+      throw new BadRequestException(
+        `Payment is already ${payment.status}`,
+      );
     }
 
-    // Verify order is in correct state for payment processing
-    if (payment.order.status !== OrderStatus.PENDING) {
+    if (
+      payment.order.status !== OrderStatus.PENDING
+    ) {
       throw new BadRequestException(
         `Cannot process payment for order in ${payment.order.status} status. Order must be PENDING.`,
       );
     }
 
     return this.prisma.$transaction(async (tx) => {
-      // Update payment status
-      const updatedPayment = await tx.payment.update({
-        where: { id: processPaymentDto.paymentId },
+      await tx.payment.update({
+        where: {
+          id: processPaymentDto.paymentId,
+        },
         data: {
           status: PaymentStatus.PROCESSING,
         },
       });
 
-      // Handle wallet deduction if applicable
       if (Number(payment.walletAmountUsed) > 0) {
         const wallet = await tx.wallet.findUnique({
-          where: { userId },
+          where: {
+            userId,
+          },
         });
 
-        if (!wallet || Number(wallet.balance) < Number(payment.walletAmountUsed)) {
-          // Rollback: revert payment status
+        if (
+          !wallet ||
+          Number(wallet.balance) <
+            Number(payment.walletAmountUsed)
+        ) {
           await tx.payment.update({
-            where: { id: processPaymentDto.paymentId },
+            where: {
+              id: processPaymentDto.paymentId,
+            },
             data: {
               status: PaymentStatus.FAILED,
-              failureReason: 'Insufficient wallet balance during processing',
+              failureReason:
+                'Insufficient wallet balance during processing',
             },
           });
-          throw new BadRequestException('Insufficient wallet balance');
+
+          throw new BadRequestException(
+            'Insufficient wallet balance',
+          );
         }
 
-        // Deduct from wallet
         await tx.wallet.update({
-          where: { userId },
+          where: {
+            userId,
+          },
           data: {
             balance: {
               decrement: payment.walletAmountUsed,
@@ -158,7 +200,6 @@ export class PaymentService {
           },
         });
 
-        // Record wallet transaction
         await tx.walletTransaction.create({
           data: {
             walletId: wallet.id,
@@ -170,17 +211,19 @@ export class PaymentService {
         });
       }
 
-      // Simulate gateway payment success (real implementation would call actual gateway)
-      // For now, mark as successful
-      const finalPayment = await tx.payment.update({
-        where: { id: processPaymentDto.paymentId },
-        data: {
-          status: PaymentStatus.SUCCESS,
-          gatewayReference: processPaymentDto.gatewayToken || `GW-${Date.now()}`,
-        },
-      });
+      const finalPayment =
+        await tx.payment.update({
+          where: {
+            id: processPaymentDto.paymentId,
+          },
+          data: {
+            status: PaymentStatus.SUCCESS,
+            gatewayReference:
+              processPaymentDto.gatewayToken ||
+              `GW-${Date.now()}`,
+          },
+        });
 
-      // Create payment transaction record
       await tx.paymentTransaction.create({
         data: {
           paymentId: payment.id,
@@ -191,9 +234,10 @@ export class PaymentService {
         },
       });
 
-      // Update order status to CONFIRMED (triggers fulfillment workflow)
       await tx.order.update({
-        where: { id: payment.orderId },
+        where: {
+          id: payment.orderId,
+        },
         data: {
           status: OrderStatus.CONFIRMED,
         },
@@ -203,16 +247,25 @@ export class PaymentService {
     });
   }
 
-  async getPaymentById(paymentId: string, userId: string) {
-    const payment = await this.prisma.payment.findUnique({
-      where: { id: paymentId },
-      include: {
-        transactions: true,
-      },
-    });
+  async getPaymentById(
+    paymentId: string,
+    userId: string,
+  ) {
+    const payment =
+      await this.prisma.payment.findUnique({
+        where: {
+          id: paymentId,
+        },
+        include: {
+          transactions: true,
+        },
+      });
 
     if (!payment) {
-      throw new NotFoundException('Payment not found');
+      throw new NotFoundException(
+        'Payment',
+        paymentId,
+      );
     }
 
     if (payment.userId !== userId) {
@@ -222,16 +275,25 @@ export class PaymentService {
     return payment;
   }
 
-  async getOrderPayment(orderId: string, userId: string) {
-    const payment = await this.prisma.payment.findUnique({
-      where: { orderId },
-      include: {
-        transactions: true,
-      },
-    });
+  async getOrderPayment(
+    orderId: string,
+    userId: string,
+  ) {
+    const payment =
+      await this.prisma.payment.findUnique({
+        where: {
+          orderId,
+        },
+        include: {
+          transactions: true,
+        },
+      });
 
     if (!payment) {
-      throw new NotFoundException('Payment not found');
+      throw new NotFoundException(
+        'Payment',
+        orderId,
+      );
     }
 
     if (payment.userId !== userId) {
@@ -241,27 +303,41 @@ export class PaymentService {
     return payment;
   }
 
-  async retryPayment(paymentId: string, userId: string) {
-    const payment = await this.prisma.payment.findUnique({
-      where: { id: paymentId },
-    });
+  async retryPayment(
+    paymentId: string,
+    userId: string,
+  ) {
+    const payment =
+      await this.prisma.payment.findUnique({
+        where: {
+          id: paymentId,
+        },
+      });
 
     if (!payment) {
-      throw new NotFoundException('Payment not found');
+      throw new NotFoundException(
+        'Payment',
+        paymentId,
+      );
     }
 
     if (payment.userId !== userId) {
       throw new BadRequestException('Unauthorized');
     }
 
-    if (payment.status !== PaymentStatus.FAILED && payment.status !== PaymentStatus.PENDING) {
+    if (
+      payment.status !== PaymentStatus.FAILED &&
+      payment.status !== PaymentStatus.PENDING
+    ) {
       throw new BadRequestException(
         `Cannot retry payment in ${payment.status} status`,
       );
     }
 
     return this.prisma.payment.update({
-      where: { id: paymentId },
+      where: {
+        id: paymentId,
+      },
       data: {
         status: PaymentStatus.PENDING,
         retryCount: {
@@ -271,16 +347,25 @@ export class PaymentService {
     });
   }
 
-  async cancelPayment(paymentId: string, userId: string) {
-    const payment = await this.prisma.payment.findUnique({
-      where: { id: paymentId },
-      include: {
-        order: true,
-      },
-    });
+  async cancelPayment(
+    paymentId: string,
+    userId: string,
+  ) {
+    const payment =
+      await this.prisma.payment.findUnique({
+        where: {
+          id: paymentId,
+        },
+        include: {
+          order: true,
+        },
+      });
 
     if (!payment) {
-      throw new NotFoundException('Payment not found');
+      throw new NotFoundException(
+        'Payment',
+        paymentId,
+      );
     }
 
     if (payment.userId !== userId) {
@@ -296,38 +381,39 @@ export class PaymentService {
       );
     }
 
-    return this.prisma.$transaction(async (tx) => {
-      // If wallet was deducted but not yet committed, we would refund here
-      // (currently not applicable since success is atomic)
-
-      const cancelledPayment = await tx.payment.update({
-        where: { id: paymentId },
-        data: {
-          status: PaymentStatus.CANCELLED,
-        },
-      });
-
-      // Keep order in PENDING state - allows another payment attempt
-      // Order remains PENDING and can accept new payments
-
-      return cancelledPayment;
+    return this.prisma.payment.update({
+      where: {
+        id: paymentId,
+      },
+      data: {
+        status: PaymentStatus.CANCELLED,
+      },
     });
   }
 
-  async getOrderPaymentHistory(orderId: string, userId: string) {
-    const payment = await this.prisma.payment.findUnique({
-      where: { orderId },
-      include: {
-        transactions: {
-          orderBy: {
-            createdAt: 'desc',
+  async getOrderPaymentHistory(
+    orderId: string,
+    userId: string,
+  ) {
+    const payment =
+      await this.prisma.payment.findUnique({
+        where: {
+          orderId,
+        },
+        include: {
+          transactions: {
+            orderBy: {
+              createdAt: 'desc',
+            },
           },
         },
-      },
-    });
+      });
 
     if (!payment) {
-      throw new NotFoundException('Payment not found for this order');
+      throw new NotFoundException(
+        'Payment',
+        orderId,
+      );
     }
 
     if (payment.userId !== userId) {

@@ -1,6 +1,5 @@
 import {
   Injectable,
-  NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
 
@@ -14,6 +13,7 @@ import {
 
 import { CreateShippingDto } from './dto/create-shipping.dto';
 import { UpdateShippingStatusDto } from './dto/update-shipping-status.dto';
+import { NotFoundException } from '@shared/exceptions/custom.exceptions';
 
 
 @Injectable()
@@ -41,9 +41,7 @@ export class ShippingService {
 
 
     if (!order) {
-      throw new NotFoundException(
-        `Order ${createShippingDto.orderId} not found`,
-      );
+      throw new NotFoundException('Order', createShippingDto.orderId);
     }
 
 
@@ -120,9 +118,7 @@ export class ShippingService {
 
 
     if (!shipping) {
-      throw new NotFoundException(
-        `Shipping record ${shippingId} not found`,
-      );
+      throw new NotFoundException('Shipping', shippingId);
     }
 
 
@@ -222,9 +218,7 @@ export class ShippingService {
 
 
     if (!order) {
-      throw new NotFoundException(
-        'Order not found',
-      );
+      throw new NotFoundException('Order', orderId);
     }
 
 
@@ -240,9 +234,7 @@ export class ShippingService {
 
 
     if (!shipping) {
-      throw new NotFoundException(
-        'Shipping information not found',
-      );
+      throw new NotFoundException('Shipping', orderId);
     }
 
 
@@ -268,9 +260,7 @@ export class ShippingService {
 
 
     if (!shipping) {
-      throw new NotFoundException(
-        `Shipping record ${shippingId} not found`,
-      );
+      throw new NotFoundException('Shipping', shippingId);
     }
 
 

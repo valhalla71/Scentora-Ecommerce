@@ -1,7 +1,6 @@
-import { IsEnum, IsDecimal, IsOptional, IsString, Min } from 'class-validator';
+import { IsEnum, IsNumber, IsOptional, IsString, Min } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { Decimal } from '@prisma/client/runtime/library';
 
 export enum PaymentTypeEnum {
   GATEWAY = 'GATEWAY',
@@ -19,7 +18,7 @@ export enum PaymentMethodEnum {
 export class CreatePaymentDto {
   @ApiProperty({
     description: 'Order ID',
-    example: 'ORD-123',
+    example: 'cmrmtae2w0019momggub76njx',
   })
   @IsString()
   orderId!: string;
@@ -45,6 +44,7 @@ export class CreatePaymentDto {
     example: 150.0,
   })
   @Type(() => Number)
+  @IsNumber()
   @Min(0)
   amount!: number;
 }

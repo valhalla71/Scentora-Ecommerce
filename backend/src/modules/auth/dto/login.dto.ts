@@ -1,4 +1,10 @@
-import { IsEmail, IsString, MinLength, IsOptional, Matches } from 'class-validator';
+import {
+  IsEmail,
+  IsString,
+  MinLength,
+  IsOptional,
+  Matches,
+} from 'class-validator';
 
 export class RegisterDto {
   @IsEmail()
@@ -6,9 +12,13 @@ export class RegisterDto {
 
   @IsString()
   @MinLength(8)
-  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, {
-    message: 'Password must contain uppercase, lowercase, number, and special character',
-  })
+  @Matches(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+    {
+      message:
+        'Password must contain uppercase, lowercase, number, and special character',
+    },
+  )
   password!: string;
 
   @IsString()
@@ -36,10 +46,19 @@ export class ChangePasswordDto {
 
   @IsString()
   @MinLength(8)
-  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, {
-    message: 'Password must contain uppercase, lowercase, number, and special character',
-  })
+  @Matches(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+    {
+      message:
+        'Password must contain uppercase, lowercase, number, and special character',
+    },
+  )
   newPassword!: string;
+}
+
+export class RefreshTokenDto {
+  @IsString()
+  refreshToken!: string;
 }
 
 export class TokenDto {
@@ -55,9 +74,11 @@ export class AuthResponseDto {
     firstName: string;
     lastName: string;
   };
+
   token!: TokenDto;
 }
 
 export class LogoutDto {
+  @IsString()
   refreshToken!: string;
 }
