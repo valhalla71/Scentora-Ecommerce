@@ -45,33 +45,35 @@ Avoid building a generic ecommerce system.
 - PostgreSQL
 - Prisma schema created
 
-
 ---
+
 # Current Active Phase
 
 Current development phase:
 
-## Backend Commerce Completion & Architecture Improvement
+## Backend API Verification & Production Readiness
 
 
-The objective of this phase:
+Objective:
 
-- Complete remaining commerce domains
-- Improve production readiness
-- Review architecture gaps
-- Verify existing flows
-- Prepare backend for future frontend integration
+- Verify existing backend flows
+- Fix production blockers
+- Improve API consistency
+- Validate security boundaries
+- Prepare backend for frontend integration
 
 
-Current focus (COMPLETED):
+Completed in this phase:
 
-✅ Shipping module (completed with full integration)
-✅ Order fulfillment flow (verified and working)
-✅ Order lifecycle & status transitions (implemented)
-✅ Payment-Order integration (verified and enhanced)
-✅ Commerce security (authorization verified)
-✅ Database integrity review (all validated)
-✅ Inventory reservation architecture (documented for future)
+✅ Shipping module completed and verified  
+✅ Order fulfillment flow verified  
+✅ Order lifecycle & status transitions implemented  
+✅ Payment-Order integration verified  
+✅ Commerce security review completed  
+✅ Runtime verification completed  
+✅ Critical production issues fixed  
+✅ High-risk production issues fixed  
+✅ API consistency improvements completed  
 
 
 Important:
@@ -87,12 +89,13 @@ Preserve:
 - Database integrity
 - Current business logic
 
+
 Do NOT start:
 
 - Frontend integration
-- New features
 - UI changes
 - New domains
+- Architecture rewrite
 
 
 ---
@@ -150,7 +153,7 @@ Allowed frontend changes in future:
 - Required bug fixes only
 
 
-During current backend stabilization phase:
+During backend stabilization phase:
 
 DO NOT MODIFY FRONTEND.
 
@@ -161,9 +164,9 @@ DO NOT MODIFY FRONTEND.
 
 ## Current Backend State
 
-Backend foundation exists.
+Backend foundation exists and is production-oriented.
 
-This means:
+Foundation:
 
 - NestJS architecture exists
 - Prisma configured
@@ -177,37 +180,127 @@ Completed commerce domains:
 - Cart
 - Orders
 - Inventory Integration
-- Payment Foundation
-- Wallet Foundation
-- Shipping Foundation
+- Payment
+- Wallet
+- Shipping
 
 
 Runtime verification completed:
 
-- Cart APIs tested
-- Order creation tested
-- Payment flows tested
-- Wallet operations tested
-- Shipping runtime verification completed:
-  - Shipping creation tested
-  - Shipping status transitions tested
-  - Tracking number update tested
-  - Delivery completion tested
-  - Actual delivery date update verified
+
+## Authentication
+
+Verified:
+
+- Register flow
+- Login flow
+- JWT protection
+- Token lifecycle
+- Logout handling
 
 
-This does NOT mean:
+## Users
 
-- Production complete
-- Security verified
-- Authorization complete
-- All commerce features completed
-- APIs fully validated
+Verified:
+
+- Profile access
+- Preferences
+- Address management
+
+Security improvement completed:
+
+- Protected user profile access
+- Authorization boundaries reviewed
 
 
-Do not rebuild existing modules.
+## Products
 
-Extend existing architecture only.
+Verified:
+
+- Product listing
+- Search
+- Product detail
+- Product slug lookup
+
+
+Fix completed:
+
+- Product slug route ordering issue resolved
+
+
+## Cart
+
+Verified:
+
+- Cart retrieval
+- Add item
+- Remove item
+- Clear cart
+
+
+Security and data integrity improvements:
+
+- Product existence validation
+- Quantity validation
+- Inventory availability validation
+
+
+## Orders
+
+Verified:
+
+- Order creation
+- Order items creation
+- Price snapshot
+- Ownership validation
+
+
+Improvements completed:
+
+- Inventory race condition protection
+- Transaction safety improvement
+- Order status update endpoint
+- Status transition validation
+
+
+## Payment
+
+Verified:
+
+- Gateway payment
+- Wallet payment
+- Mixed payment
+
+
+Verified:
+
+- Payment creation
+- Payment processing
+- Wallet deduction
+- Wallet transaction history
+
+
+Security improvement:
+
+- Sensitive financial information removed from error messages
+
+
+## Shipping
+
+Verified:
+
+- Shipping creation
+- Order relation
+- Payment dependency
+- Status transitions
+- Tracking management
+- Delivery completion
+- Runtime behavior
+
+
+Current status:
+
+Production verification completed.
 
 
 ---
@@ -255,7 +348,7 @@ Do NOT create a separate Admin module unless current architecture requires it.
 
 Authentication foundation exists.
 
-Existing:
+Verified:
 
 - JWT flow
 - Access token generation
@@ -263,15 +356,7 @@ Existing:
 - Password hashing
 - Register endpoint
 - Login endpoint
-
-
-Verification required:
-
-- JWT guards
-- Token lifecycle
-- Logout invalidation
-- Route protection
-- Role enforcement
+- Protected routes
 
 
 Do NOT create a new authentication system.
@@ -285,11 +370,10 @@ Extend existing implementation only.
 
 RBAC foundation exists.
 
-RBAC is NOT considered complete until:
+Current status:
 
-- Guards verified
-- Roles enforced
-- Permissions checked
+- Guards implemented
+- Roles enforced on protected routes
 - Admin routes protected
 
 
@@ -312,28 +396,19 @@ Do not duplicate authorization systems.
 
 ---
 
-# Current Critical Gaps
+# Current Remaining Work
 
-## Frontend Backend Integration
+Backend stabilization is completed.
 
-Current:
+Remaining tasks:
 
-- Frontend uses mock data
-- Backend APIs exist
-- Integration not started
-
-
-Future requirements:
-
-- API client layer
-- Authentication state
-- Token handling
-- Error handling
-- Loading states
-- Gradual replacement of mocks
+1. API integration testing
+2. Complete customer journey verification
+3. Production environment preparation
+4. Monitoring and deployment readiness
 
 
-Do not start integration during backend stabilization.
+Frontend integration starts only after backend verification completion.
 
 
 ---
@@ -391,18 +466,19 @@ Avoid:
 
 # Error Handling Rules
 
-Review:
-
-- Exception filters
-- Validation pipes
-- DTO validation
-- Prisma errors
-
-
 Ensure:
 
-- Clean validation messages
-- No sensitive database information exposure
+- Exception filters work correctly
+- DTO validation exists
+- Prisma errors are handled
+- No sensitive information is exposed
+
+
+Current status:
+
+Custom exceptions correctly extend NestJS HttpException.
+
+Global exception filter verified.
 
 
 ---
@@ -461,6 +537,11 @@ No domain is complete until:
 - APIs verified
 
 
+Current status:
+
+✅ npm run build successful
+
+
 ---
 
 # Cursor Execution Rules
@@ -490,83 +571,62 @@ Security > Stability > Compatibility > Clean code > Features
 
 The goal is a stable production-ready architecture without unnecessary rewrites.
 
+
 ---
 
 # Commerce Domain Progress
 
 Completed backend domains:
 
-- Auth foundation
+- Auth
 - Users
 - Products
 - Categories
 - Brands
 - Cart
-- Orders Foundation
+- Orders
 - Inventory Integration
-- Payment Foundation
-- Wallet Foundation
-- Shipping Foundation
-
-Verified:
-
-Cart:
-
-- Cart flow tested
-- Product relation verified
+- Payment
+- Wallet
+- Shipping
 
 
-Orders:
+Verified commerce flow:
 
-- Order creation tested
-- Order items creation tested
-- Price snapshot verified
-- Order status flow tested
-
-
-Inventory:
-
-- Stock validation tested
-- Stock decrease behavior verified
-
-
-Payment:
-
-Verified payment types:
-
-- Gateway payment
-- Wallet payment
-- Mixed payment
+Auth
+↓
+User
+↓
+Product Discovery
+↓
+Cart
+↓
+Create Order
+↓
+Payment
+↓
+Shipping
+↓
+Delivery
 
 
-Verified:
+---
 
-- Payment creation
-- Payment processing
-- Payment status updates
-- Wallet deduction
-- Wallet transaction history
+# Inventory Architecture
 
-Shipping:
+Current Inventory Flow:
 
-Verified:
+Inventory decreases during successful order creation transaction.
 
-- Shipping creation
-- Order shipping relation
-- Payment success requirement
-- Shipping lifecycle transitions
-- Tracking number management
-- Delivery completion
 
-Current architecture limitation:
+Current limitation:
 
-Inventory currently decreases during order creation.
+Reservation-based inventory flow is not implemented yet.
+
 
 Future improvement:
 
-Inventory reservation system.
-
-Target flow:
+Move toward reservation model:
 
 Create Order
 ↓
@@ -576,58 +636,87 @@ Payment Pending
 ↓
 Payment Success
 ↓
-Decrease Stock
+Finalize Stock Deduction
 
 
 Payment Failed:
 
 Release Reservation
 
-Current next domain:
-
-Inventory Reservation Architecture + Order Fulfillment Improvements
-
-
-Shipping Status:
-
-Database foundation exists.
-
-Pending:
-
-- Verify shipping module architecture
-- Complete shipping service logic
-- Complete shipping controller endpoints
-- Add DTO validation
-- Connect shipping lifecycle with orders
-- Verify shipping status transitions
-- Runtime test shipping flow
-
-
-Target commerce flow:
-
-Cart
-↓
-Create Order
-↓
-Inventory Check
-↓
-Payment
-↓
-Create Shipping
-↓
-Shipment Tracking
-↓
-Delivery Completion
-
 
 Important:
 
-Do not redesign Order module.
-
-Do not modify Payment module.
-
-Do not modify Frontend.
-
-Extend existing Shipping foundation only.
+Do not redesign inventory flow during current stabilization phase.
 
 
+---
+
+# Current Next Phase
+
+## API Integration Testing
+
+
+Goal:
+
+Verify complete customer journey:
+
+
+Register
+
+↓
+
+Login
+
+↓
+
+Get Profile
+
+↓
+
+Browse Products
+
+↓
+
+Add Cart Item
+
+↓
+
+Create Order
+
+↓
+
+Create Payment
+
+↓
+
+Process Payment
+
+↓
+
+Create Shipping
+
+↓
+
+Complete Delivery
+
+
+After successful verification:
+
+Prepare backend for frontend integration.
+
+
+---
+
+# Final Project Rule
+
+Scentora is a portfolio-grade luxury ecommerce platform.
+
+Future implementation decisions must maintain:
+
+- Premium business identity
+- Clean domain architecture
+- Production reliability
+- Security-first approach
+- Incremental development
+
+Avoid shortcuts that reduce long-term quality.
