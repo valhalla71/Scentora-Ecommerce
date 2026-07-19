@@ -253,6 +253,111 @@ Build verification status: FINAL — verified complete.
 ✅ `npx tsc --noEmit` — passed with zero errors.
 ✅ `npm run build` — passed, all 44 pages generated.
 
+## Phase 5 — Commerce Funnel Completion — VERIFIED COMPLETE
+
+Objective:
+
+- Connect the existing frontend commerce experience to the existing backend
+  order/payment flow. No backend, Prisma, or API contract changes; no UI
+  redesign; existing architecture preserved.
+
+Completed in this phase:
+
+✅ Cart checkout navigation fixed — the Checkout button in
+  `app/[locale]/(routes)/cart/cart-content.tsx` now navigates to
+  `/${locale}/checkout`, and both Continue Shopping buttons (empty-cart and
+  populated-cart states) navigate to `/${locale}/catalog`, via the existing
+  `useLocale()` hook. Previously these buttons had no `href`/`onClick` and
+  were inert.
+✅ Checkout connected to real cart data — `components/checkout/order-summary.tsx`
+  no longer falls back to hardcoded mock items ("Midnight Elegance", "Rose
+  Garden"); it now reads live items from `useCommerce().cart` and renders a
+  cart-empty and a cart-loading state instead.
+✅ Order creation integrated — `lib/api/commerce.ts` gained `createOrder()`,
+  calling the existing `POST /orders` endpoint (`CreateOrderDto`), mapped to a
+  `CreatedOrder` view model (id, orderNumber, subtotal, tax, shippingCost,
+  total, status).
+✅ Payment flow connected — `lib/api/commerce.ts` gained `createPayment()` and
+  `processPayment()`, calling the existing `POST /payments` and
+  `POST /payments/process` endpoints. `components/providers/commerce-provider.tsx`
+  gained `placeOrder({ paymentMethod })`, sequencing
+  createOrder → createPayment (`GATEWAY`, amount = order.total) →
+  processPayment, reloading the cart, and returning
+  `{ orderId, orderNumber, total }`. Guarded by the existing
+  `cartActionInFlight` ref so it cannot race with cart mutations.
+✅ `components/checkout/checkout-form.tsx` — removed the `setTimeout` submit
+  simulation and the unused `onSubmit` prop; submit now calls `placeOrder`,
+  maps the form's payment method ("creditCard"/"paypal") to the backend
+  `PaymentMethodEnum` (`CREDIT_CARD`/`PAYPAL`), and on success navigates to
+  `/${locale}/order-success` with the real order number and total; on failure
+  surfaces the real `ApiError` message.
+✅ `app/[locale]/(routes)/order-success/page.tsx` — replaced the hardcoded fake
+  order number ("ORD-2024-123456") and fake total ("$249.99") with real
+  values read from `searchParams`; fixed its three action links (Continue
+  Shopping, Track Order, Home) to be locale-aware (previously locale-blind).
+
+Verified end-to-end flow:
+
+Cart (real backend cart)
+↓
+Checkout button navigation (fixed)
+↓
+POST /orders (existing contract, unchanged)
+↓
+POST /payments (GATEWAY, amount = order.total)
+↓
+POST /payments/process → Order CONFIRMED
+↓
+Cart reloaded (now empty)
+↓
+Redirect to /order-success with real order number + total
+
+Explicitly not done in this phase (by design, per task constraints):
+
+- No backend, Prisma, or API contract changes — all three endpoints used
+  (`POST /orders`, `POST /payments`, `POST /payments/process`) already
+  existed and were called exactly per the backend's own verified
+  architecture.
+- Shipping address fields captured in the checkout form are not yet
+  persisted as a backend `Address`/`addressId` — `createOrder()` is called
+  without an `addressId`. Address integration remains a separate,
+  already-tracked roadmap item.
+- Checkout summary still displays an estimated 10% tax + $10 shipping
+  (matching the pre-existing cart-page display convention). The amount
+  actually charged is always the backend's authoritative `order.total`
+  (currently `tax = 0`, `shippingCost = 0` per `orders.service.ts`), not the
+  displayed estimate — a pre-existing backend business-rule gap, out of
+  scope for a no-backend-change phase.
+- Wallet/Mixed payment types were not added to the checkout UI — only
+  `GATEWAY` payment (matching the form's existing Credit Card / PayPal
+  options) is wired.
+- Cart-page tax display and its live increment/remove actions were left
+  untouched — this phase only fixed the two previously dead navigation
+  buttons there.
+
+Files changed:
+
+- `frontend/lib/api/commerce.ts`
+- `frontend/lib/api/index.ts`
+- `frontend/components/providers/commerce-provider.tsx`
+- `frontend/app/[locale]/(routes)/cart/cart-content.tsx`
+- `frontend/components/checkout/order-summary.tsx`
+- `frontend/components/checkout/checkout-form.tsx`
+- `frontend/app/[locale]/(routes)/order-success/page.tsx`
+
+Build verification status: FINAL — verified complete.
+
+✅ `npx tsc --noEmit` — passed with zero errors.
+✅ `npm run build` — passed. `✓ Compiled successfully`, `✓ Finished TypeScript`,
+  all 44 pages generated. `git status` after the run showed exactly the 7
+  files above as modified, matching this phase's scope.
+⚠️ Middleware-to-proxy deprecation warning remains — pre-existing, unrelated
+  to this phase, already tracked as a separate maintenance item.
+
+Next recommended phase: persist checkout shipping details to a real backend
+address record (`addressId`), then reconcile the checkout summary's displayed
+tax/shipping with the backend's authoritative order total.
+
 ## Frontend Commerce Flow API Integration
 
 

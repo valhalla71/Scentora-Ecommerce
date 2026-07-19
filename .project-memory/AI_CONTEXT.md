@@ -21,6 +21,40 @@ Build a portfolio-grade premium ecommerce platform focused on perfume discovery,
 
 ## Current Phase
 
+Phase 5 — Commerce Funnel Completion completed.
+
+Connected the existing frontend commerce experience to the existing backend
+order/payment flow: fixed the cart's Checkout/Continue Shopping navigation
+(`cart-content.tsx`, previously inert buttons), connected the checkout order
+summary to real cart data instead of hardcoded mock items
+(`order-summary.tsx`), added `createOrder`/`createPayment`/`processPayment`
+to `frontend/lib/api/commerce.ts` against the existing `POST /orders`,
+`POST /payments`, and `POST /payments/process` endpoints, added
+`placeOrder()` to `commerce-provider.tsx`, replaced the checkout form's
+`setTimeout` submission mock with the real order/payment call in
+`checkout-form.tsx`, and replaced the hardcoded fake order number/total on
+`order-success/page.tsx` with real values plus locale-aware links. No
+backend/API contract/Prisma changes. Full details in `AGENT_CONTEXT.md`
+under "Phase 5 — Commerce Funnel Completion".
+
+Verification note: FINAL — verified complete.
+
+- `npx tsc --noEmit`: passed with zero errors.
+- `npm run build`: passed, all 44 pages generated. Only the pre-existing
+  middleware-to-proxy deprecation warning remains (unrelated).
+- `git status` after the run showed exactly the 7 files changed in this
+  phase (`lib/api/commerce.ts`, `lib/api/index.ts`,
+  `commerce-provider.tsx`, `cart-content.tsx`, `order-summary.tsx`,
+  `checkout-form.tsx`, `order-success/page.tsx`).
+
+Known limitation carried forward: checkout does not yet persist shipping
+details to a backend address record (`addressId` omitted from
+`createOrder()`); the checkout summary's displayed tax/shipping estimate
+does not match the backend's current `tax = 0` / `shippingCost = 0` order
+total, though the actual charge always uses the authoritative backend total.
+
+Previous phase:
+
 Product visual assets integration completed.
 
 Connected luxury product visuals to the existing product system: six new
