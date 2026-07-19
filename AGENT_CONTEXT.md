@@ -74,7 +74,8 @@ Completed in this phase:
 ✅ Critical production issues fixed  
 ✅ High-risk production issues fixed  
 ✅ API consistency improvements completed  
-✅ Backend v1 final verification completed
+✅ Backend v1 final verification completed  
+✅ Isolated end-to-end customer journey runtime verified
 
 
 Important:
@@ -414,8 +415,7 @@ Known limitations:
 
 - Inventory is deducted at order creation; reservation-based inventory is not implemented
 - Gateway payment processing is currently simulated and requires a real provider integration
-- The local development database already matches the current shipping schema, but its migration history must be reconciled before applying the new shipping alignment migration
-- State-changing customer journey steps were verified statically; automated runtime coverage requires an isolated test database
+- The complete customer journey was runtime-verified in a temporary isolated PostgreSQL schema; a persistent automated E2E suite is not yet committed
 
 
 Frontend integration starts only after backend verification completion.
@@ -674,7 +674,7 @@ Connect the frozen frontend UI to the verified backend v1 APIs.
 Recommended parallel verification:
 
 - Add isolated end-to-end coverage for the complete customer journey
-- Reconcile migration history in each environment before deployment
+- Verify migration history in each target environment before deployment
 - Replace simulated gateway processing before production launch
 
 
@@ -694,7 +694,7 @@ Completed:
 ✅ Shipping service improvements completed  
 ✅ Shipping database schema aligned with current architecture  
 ✅ Shipping status lifecycle finalized  
-✅ Migration created for shipping schema alignment  
+✅ Shipping alignment migration created and local history reconciled  
 ✅ Prisma schema and live database consistency verified  
 ✅ npm run build successful  
 ✅ Lint diagnostics clean  
