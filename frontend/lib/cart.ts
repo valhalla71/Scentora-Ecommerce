@@ -1,7 +1,6 @@
-import type { products } from "./products";
-
 export type CartItem = {
   id: string;
+  productId: string;
   name: string;
   category: string;
   price: string;
@@ -17,6 +16,7 @@ export const mockCart: Cart = {
   items: [
     {
       id: "1",
+      productId: "1",
       name: "Midnight Elegance",
       category: "Oriental",
       price: "$125.00",
@@ -24,6 +24,7 @@ export const mockCart: Cart = {
     },
     {
       id: "4",
+      productId: "4",
       name: "Amber Noir",
       category: "Amber",
       price: "$120.00",
@@ -31,6 +32,7 @@ export const mockCart: Cart = {
     },
     {
       id: "7",
+      productId: "7",
       name: "Oud Symphony",
       category: "Woody",
       price: "$150.00",
@@ -38,6 +40,7 @@ export const mockCart: Cart = {
     },
     {
       id: "2",
+      productId: "2",
       name: "Rose Garden",
       category: "Floral",
       price: "$95.00",

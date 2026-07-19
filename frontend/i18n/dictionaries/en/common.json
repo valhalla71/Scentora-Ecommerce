@@ -31,7 +31,23 @@
     "longevity": "Longevity",
     "sillage": "Sillage",
     "seasonality": "Best Season",
-    "volume": "Volume"
+    "volume": "Volume",
+    "quantity": "Quantity",
+    "increaseQuantity": "Increase quantity",
+    "decreaseQuantity": "Decrease quantity",
+    "share": "Share",
+    "inStock": "In Stock",
+    "outOfStock": "Out of Stock",
+    "available": "available",
+    "story": {
+      "eyebrow": "The Story",
+      "heading": "A fragrance worth savoring"
+    },
+    "positioning": {
+      "curated": "Curated by fragrance experts",
+      "crafted": "Crafted with rare ingredients",
+      "concierge": "Backed by our concierge service"
+    }
   },
   "cart": {
     "title": "Shopping Cart",

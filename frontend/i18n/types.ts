@@ -34,6 +34,22 @@ export type CommonDictionary = {
     sillage: string;
     seasonality: string;
     volume: string;
+    quantity: string;
+    increaseQuantity: string;
+    decreaseQuantity: string;
+    share: string;
+    inStock: string;
+    outOfStock: string;
+    available: string;
+    story: {
+      eyebrow: string;
+      heading: string;
+    };
+    positioning: {
+      curated: string;
+      crafted: string;
+      concierge: string;
+    };
   };
   cart: {
     title: string;
@@ -433,6 +449,19 @@ export type HomeDictionary = {
     primaryCta: string;
     secondaryCta: string;
   };
+  brandStory: {
+    eyebrow: string;
+    title: string;
+    paragraphs: string[];
+    quote: string;
+    quoteAuthor: string;
+  };
+  discovery: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    exploreLabel: string;
+  };
   features: {
     title: string;
     items: {
@@ -442,6 +471,7 @@ export type HomeDictionary = {
     };
   };
   showcase: {
+    eyebrow: string;
     title: string;
     description: string;
     viewAll: string;

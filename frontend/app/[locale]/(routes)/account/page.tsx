@@ -4,7 +4,6 @@ import { Settings, ShoppingBag, Heart, LogOut } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -13,8 +12,12 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import { spacing } from "@/lib/design-system/tokens";
 import { textVariants } from "@/lib/design-system/typography";
 import { cn } from "@/lib/utils";
-import { mockUser } from "@/lib/user";
 import { mockOrders } from "@/lib/orders";
+import {
+  AccountWelcome,
+  LogoutButton,
+  ProtectedAccountContent,
+} from "@/components/account/profile-identity";
 
 type AccountPageProps = {
   params: Promise<{ locale: string }>;
@@ -54,8 +57,9 @@ export default async function AccountPage({ params }: AccountPageProps) {
   ];
 
   return (
-    <main style={{ paddingBlock: spacing.section.lg }}>
-      <Container>
+    <ProtectedAccountContent locale={locale}>
+      <main style={{ paddingBlock: spacing.section.lg }}>
+        <Container>
         {/* Breadcrumb */}
         <div className="mb-8">
           <Breadcrumb
@@ -72,7 +76,7 @@ export default async function AccountPage({ params }: AccountPageProps) {
             {title}
           </h1>
           <p className={cn(textVariants({ variant: "body" }), "text-muted-foreground")}>
-            {welcome}, {mockUser.name}
+            <AccountWelcome prefix={welcome} />
           </p>
         </div>
 
@@ -201,12 +205,11 @@ export default async function AccountPage({ params }: AccountPageProps) {
 
         {/* Logout Section */}
         <section className="flex gap-3">
-          <Button variant="outline" className="gap-2">
-            <LogOut className="w-4 h-4" />
-            Sign Out
-          </Button>
+          <LogOut className="w-4 h-4" />
+          <LogoutButton label="Sign Out" locale={locale} />
         </section>
-      </Container>
-    </main>
+        </Container>
+      </main>
+    </ProtectedAccountContent>
   );
 }

@@ -1,27 +1,24 @@
-import Link from "next/link";
 import { Container } from "@/components/layout/container";
+import { ProductCard } from "@/components/ui/product-card";
 import { textVariants } from "@/lib/design-system/typography";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/i18n/config";
 import { localizeHref } from "@/i18n/navigation";
-import { getRelatedProducts } from "@/lib/products";
+import type { Product } from "@/lib/products";
 
 interface RelatedProductsProps {
-  productId: string;
-  category: string;
+  products: Product[];
   locale: Locale;
   title: string;
 }
 
-export function RelatedProducts({
-  productId,
-  category,
-  locale,
-  title,
-}: RelatedProductsProps) {
-  const relatedProducts = getRelatedProducts(productId, category, 4);
-
-  if (relatedProducts.length === 0) {
+/**
+ * Presentational only — the caller owns fetching/selecting related
+ * products (real backend data on the product detail page) and passes
+ * them in directly.
+ */
+export function RelatedProducts({ products, locale, title }: RelatedProductsProps) {
+  if (products.length === 0) {
     return null;
   }
 
@@ -33,40 +30,16 @@ export function RelatedProducts({
         </h2>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {relatedProducts.map((product) => (
-            <Link
+          {products.map((product) => (
+            <ProductCard
               key={product.id}
               href={localizeHref(`/catalog/${product.id}`, locale)}
-              className="group"
-            >
-              <article className="rounded-xl border border-border/60 bg-card p-6 text-start shadow-sm transition-shadow hover:shadow-md">
-                <div className="mb-4 aspect-square rounded-lg bg-muted" />
-                <h3 className={cn(textVariants({ variant: "h4" }), "mb-2 group-hover:text-primary transition-colors")}>
-                  {product.name}
-                </h3>
-                <p
-                  className={cn(
-                    textVariants({ variant: "bodySm" }),
-                    "text-muted-foreground mb-3",
-                  )}
-                >
-                  {product.category}
-                </p>
-                <div className="flex items-center justify-between">
-                  <p
-                    className={cn(
-                      textVariants({ variant: "bodySm" }),
-                      "font-semibold",
-                    )}
-                  >
-                    {product.price}
-                  </p>
-                  <span className={cn(textVariants({ variant: "bodySm" }), "text-muted-foreground")}>
-                    {product.rating.toFixed(1)}★
-                  </span>
-                </div>
-              </article>
-            </Link>
+              name={product.name}
+              category={product.category}
+              price={product.price}
+              image={product.image}
+              rating={product.rating}
+            />
           ))}
         </div>
       </Container>

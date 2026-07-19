@@ -8,10 +8,11 @@ const Card = ({ className, variant = "default", ...props }: CardProps) => {
   return (
     <div
       className={cn(
-        "rounded-lg bg-card p-6 transition-all",
+        "rounded-lg bg-card p-6 transition-all duration-300 ease-luxury",
         variant === "default" && "border border-border/60",
         variant === "outlined" && "border-2 border-border/40",
-        variant === "elevated" && "border border-border/40 shadow-md",
+        variant === "elevated" &&
+          "hover-lift border border-border/40 shadow-luxury-sm hover:shadow-luxury-md",
         className
       )}
       {...props}

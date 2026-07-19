@@ -1,17 +1,24 @@
+import { resolveProductImage } from "./product-images";
+
 export interface Product {
   id: string;
+  slug?: string;
   name: string;
   category: string;
   price: string;
   description: string;
   rating: number;
   reviewCount: number;
+  stock: number;
+  image?: string;
+  /** Full ordered gallery, when the source has more than one image. Falls back to `[image]`. */
+  images?: string[];
   topNotes: string[];
   heartNotes: string[];
   baseNotes: string[];
 }
 
-export const products: Product[] = [
+const rawProducts: Product[] = [
   {
     id: "1",
     name: "Midnight Elegance",
@@ -21,6 +28,7 @@ export const products: Product[] = [
       "A captivating Oriental fragrance that combines mystique with sophistication. Perfect for evening wear and special occasions.",
     rating: 4.8,
     reviewCount: 124,
+    stock: 24,
     topNotes: ["Bergamot", "Black Pepper"],
     heartNotes: ["Jasmine", "Rose", "Patchouli"],
     baseNotes: ["Amber", "Vetiver", "Musk"],
@@ -34,6 +42,7 @@ export const products: Product[] = [
       "A romantic floral bouquet that captures the essence of a blooming garden in spring. Timeless and elegant.",
     rating: 4.7,
     reviewCount: 89,
+    stock: 18,
     topNotes: ["Lemon", "Bergamot"],
     heartNotes: ["Rose", "Peony", "Lily"],
     baseNotes: ["Sandalwood", "Musk"],
@@ -47,6 +56,7 @@ export const products: Product[] = [
       "A fresh and energizing fragrance inspired by the first light of dawn. Perfect for daily wear and daytime activities.",
     rating: 4.6,
     reviewCount: 156,
+    stock: 31,
     topNotes: ["Orange", "Grapefruit", "Lemon"],
     heartNotes: ["Green Tea", "Neroli"],
     baseNotes: ["Cedarwood"],
@@ -60,6 +70,7 @@ export const products: Product[] = [
       "A rich and sensual amber fragrance with warm spices. Creates an aura of mystery and elegance.",
     rating: 4.9,
     reviewCount: 203,
+    stock: 12,
     topNotes: ["Cinnamon", "Nutmeg"],
     heartNotes: ["Amber", "Vanilla", "Tonka"],
     baseNotes: ["Oud", "Leather", "Patchouli"],
@@ -73,6 +84,7 @@ export const products: Product[] = [
       "A warm and comforting blend of floral and vanilla notes. Ideal for creating a cozy, inviting presence.",
     rating: 4.5,
     reviewCount: 95,
+    stock: 27,
     topNotes: ["Peach", "Orange Blossom"],
     heartNotes: ["Vanilla", "Jasmine"],
     baseNotes: ["Musk", "Amber"],
@@ -86,6 +98,7 @@ export const products: Product[] = [
       "Crisp and refreshing notes evoke the feeling of a sea breeze on a sunny day. Perfect for summer.",
     rating: 4.4,
     reviewCount: 112,
+    stock: 36,
     topNotes: ["Sea Salt", "Citrus", "Mint"],
     heartNotes: ["Water Lily", "Aquatic Notes"],
     baseNotes: ["Cedarwood", "Driftwood"],
@@ -99,6 +112,7 @@ export const products: Product[] = [
       "A luxurious and complex woody fragrance featuring precious oud. A statement of refined taste and elegance.",
     rating: 4.9,
     reviewCount: 78,
+    stock: 9,
     topNotes: ["Rose", "Saffron"],
     heartNotes: ["Oud", "Agar", "Incense"],
     baseNotes: ["Sandalwood", "Vetiver", "Musk"],
@@ -112,6 +126,7 @@ export const products: Product[] = [
       "Delicate jasmine blossoms combined with luminous pearl accords. A fresh and sophisticated floral.",
     rating: 4.7,
     reviewCount: 134,
+    stock: 21,
     topNotes: ["Bergamot", "Pink Pepper"],
     heartNotes: ["Jasmine", "Gardenia", "Tuberose"],
     baseNotes: ["Musk", "Sandalwood"],
@@ -125,6 +140,7 @@ export const products: Product[] = [
       "Creamy sandalwood wrapped in spicy warmth. A dreamy and meditative fragrance for contemplation.",
     rating: 4.8,
     reviewCount: 98,
+    stock: 14,
     topNotes: ["Cardamom", "Clove"],
     heartNotes: ["Sandalwood", "Spices"],
     baseNotes: ["Vetiver", "Musk", "Amber"],
@@ -138,6 +154,7 @@ export const products: Product[] = [
       "Calming and peaceful lavender fragrance with herbal notes. Promotes relaxation and tranquility.",
     rating: 4.6,
     reviewCount: 167,
+    stock: 42,
     topNotes: ["Lavender", "Bergamot"],
     heartNotes: ["Lavender", "Geranium"],
     baseNotes: ["Sandalwood", "Musk"],
@@ -151,6 +168,7 @@ export const products: Product[] = [
       "An intoxicating blend of rare spices and oriental warmth. Perfect for those who love exotic aromas.",
     rating: 4.7,
     reviewCount: 87,
+    stock: 16,
     topNotes: ["Black Cardamom", "Cinnamon"],
     heartNotes: ["Clove", "Nutmeg", "Ginger"],
     baseNotes: ["Amber", "Oud", "Leather"],
@@ -164,6 +182,7 @@ export const products: Product[] = [
       "Pure and clean white musk with subtle floral touches. A versatile everyday fragrance.",
     rating: 4.5,
     reviewCount: 145,
+    stock: 34,
     topNotes: ["Bergamot", "Lemon"],
     heartNotes: ["White Flowers", "Musk"],
     baseNotes: ["Sandalwood", "Musk"],
@@ -177,6 +196,7 @@ export const products: Product[] = [
       "Dramatic and mysterious black orchid paired with dark florals and woods. Sophisticated and bold.",
     rating: 4.8,
     reviewCount: 156,
+    stock: 11,
     topNotes: ["Black Currant", "Dark Plum"],
     heartNotes: ["Black Orchid", "Dark Roses"],
     baseNotes: ["Dark Wood", "Musk", "Amber"],
@@ -190,6 +210,7 @@ export const products: Product[] = [
       "A natural woody fragrance with herbal sage notes. Grounding and earthy for the modern minimalist.",
     rating: 4.6,
     reviewCount: 103,
+    stock: 29,
     topNotes: ["Sage", "Grapefruit"],
     heartNotes: ["Cedar", "Juniper"],
     baseNotes: ["Vetiver", "Sandalwood"],
@@ -203,6 +224,7 @@ export const products: Product[] = [
       "Warm golden honey sweetness with subtle spice. A comforting and uplifting everyday fragrance.",
     rating: 4.7,
     reviewCount: 189,
+    stock: 25,
     topNotes: ["Orange Blossom", "Bergamot"],
     heartNotes: ["Honey", "Almond", "Vanilla"],
     baseNotes: ["Amber", "Musk", "Sandalwood"],
@@ -216,6 +238,7 @@ export const products: Product[] = [
       "A mysterious forest fragrance with moss and wood notes. Evokes the feeling of walking through ancient woods.",
     rating: 4.7,
     reviewCount: 92,
+    stock: 19,
     topNotes: ["Pine", "Eucalyptus"],
     heartNotes: ["Moss", "Fir", "Green Notes"],
     baseNotes: ["Cedarwood", "Vetiver", "Patchouli"],
@@ -229,6 +252,7 @@ export const products: Product[] = [
       "Delicate cherry blossoms with light fruity accords. A fresh and feminine springtime fragrance.",
     rating: 4.6,
     reviewCount: 127,
+    stock: 33,
     topNotes: ["Green Apple", "Bergamot"],
     heartNotes: ["Cherry Blossom", "Peach Blossom"],
     baseNotes: ["Musk", "Sandalwood"],
@@ -242,6 +266,7 @@ export const products: Product[] = [
       "A perfect balance of warm spices with creamy vanilla. Cozy and perfect for all seasons.",
     rating: 4.8,
     reviewCount: 198,
+    stock: 22,
     topNotes: ["Cinnamon", "Nutmeg"],
     heartNotes: ["Vanilla", "Caramel"],
     baseNotes: ["Sandalwood", "Amber", "Musk"],
@@ -255,6 +280,7 @@ export const products: Product[] = [
       "Elegant iris flour with powdery iris root notes. A sophisticated and timeless fragrance.",
     rating: 4.9,
     reviewCount: 156,
+    stock: 10,
     topNotes: ["Bergamot", "Pink Pepper"],
     heartNotes: ["Iris", "Violet", "Powdery Notes"],
     baseNotes: ["Sandalwood", "Musk", "Amber"],
@@ -268,11 +294,18 @@ export const products: Product[] = [
       "A captivating oriental blend that unfolds like twilight. Mysterious, warm, and unforgettable.",
     rating: 4.8,
     reviewCount: 134,
+    stock: 17,
     topNotes: ["Galbanum", "Black Pepper"],
     heartNotes: ["Frangipani", "Tuberose", "Amber"],
     baseNotes: ["Sandalwood", "Vetiver", "Musk"],
   },
 ];
+
+/** Mock catalog products with a resolved luxury visual for every entry. */
+export const products: Product[] = rawProducts.map((product) => ({
+  ...product,
+  image: resolveProductImage(product.image, product.category),
+}));
 
 export function getProductById(id: string): Product | undefined {
   return products.find((p) => p.id === id);

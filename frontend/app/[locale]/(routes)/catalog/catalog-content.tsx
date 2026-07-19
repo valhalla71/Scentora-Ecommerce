@@ -1,17 +1,16 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { SearchBar } from "@/components/catalog/search-bar";
 import { ProductFilters, type FilterState } from "@/components/catalog/product-filters";
 import { ProductSort, type SortOption } from "@/components/catalog/product-sort";
 import { CategoryNav } from "@/components/catalog/category-nav";
-import { spacing } from "@/lib/design-system/tokens";
 import { textVariants } from "@/lib/design-system/typography";
+import { resolveProductImage } from "@/lib/product-images";
 import { cn } from "@/lib/utils";
-import { products } from "@/lib/products";
 import {
-  PRODUCT_CATEGORIES,
   filterProducts,
   sortProducts,
   MIN_PRICE,
@@ -19,16 +18,31 @@ import {
 } from "@/lib/catalog";
 import { Package, X } from "lucide-react";
 import type { CommonDictionary } from "@/i18n/types";
+import { useCommerce } from "@/components/providers/commerce-provider";
 
 type CatalogContentProps = {
   discovery: CommonDictionary["discovery"];
   addToCartLabel: string;
+  locale: string;
+  initialCategory: string | null;
 };
 
 export default function CatalogContent({
   discovery,
   addToCartLabel,
+  locale,
+  initialCategory,
 }: CatalogContentProps) {
+  const {
+    products,
+    categories,
+    catalogLoading,
+    catalogError,
+    addToCart,
+    cartActionPending,
+    cartError,
+  } = useCommerce();
+  const categoryNames = categories.map((category) => category.name);
   const [searchQuery, setSearchQuery] = useState("");
   const [sort, setSort] = useState<SortOption>("newest");
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
@@ -38,8 +52,27 @@ export default function CatalogContent({
     priceMax: MAX_PRICE,
   });
 
+  // `initialCategory` may be a category slug (e.g. links from the homepage
+  // discovery tiles) or a legacy category name. Resolve it once against the
+  // loaded categories so filtering (which matches on name) still works.
+  const initialCategoryApplied = useRef(false);
+  useEffect(() => {
+    if (initialCategoryApplied.current) return;
+    if (!initialCategory) {
+      initialCategoryApplied.current = true;
+      return;
+    }
+    if (categories.length === 0) return;
+
+    const match = categories.find(
+      (category) => category.slug === initialCategory || category.name === initialCategory,
+    );
+    setCategoryFilter(match ? match.name : initialCategory);
+    initialCategoryApplied.current = true;
+  }, [initialCategory, categories]);
+
   const filteredAndSorted = useMemo(() => {
-    let result = filterProducts(products, {
+    const result = filterProducts(products, {
       searchQuery,
       categories: categoryFilter ? [categoryFilter] : filters.categories,
       priceMin: filters.priceMin,
@@ -47,7 +80,7 @@ export default function CatalogContent({
     });
 
     return sortProducts(result, sort);
-  }, [searchQuery, sort, categoryFilter, filters]);
+  }, [searchQuery, sort, categoryFilter, filters, products]);
 
   const handleClearFilters = () => {
     setSearchQuery("");
@@ -66,6 +99,14 @@ export default function CatalogContent({
     filters.categories.length +
     (filters.priceMin > MIN_PRICE || filters.priceMax < MAX_PRICE ? 1 : 0);
 
+  if (catalogLoading) {
+    return <p className="py-12 text-center text-muted-foreground">Loading products…</p>;
+  }
+
+  if (catalogError) {
+    return <p className="py-12 text-center text-destructive">{catalogError}</p>;
+  }
+
   return (
     <div className="space-y-6">
       <div className="space-y-4">
@@ -75,7 +116,7 @@ export default function CatalogContent({
         />
 
         <CategoryNav
-          categories={PRODUCT_CATEGORIES as unknown as string[]}
+          categories={categoryNames}
           activeCategory={categoryFilter}
           onCategoryChange={setCategoryFilter}
           allLabel={discovery.categories.all}
@@ -86,7 +127,7 @@ export default function CatalogContent({
         <aside className="hidden lg:block">
           <div className="sticky top-20">
             <ProductFilters
-              categories={PRODUCT_CATEGORIES as unknown as string[]}
+              categories={categoryNames}
               minPrice={MIN_PRICE}
               maxPrice={MAX_PRICE}
               filters={filters}
@@ -149,11 +190,18 @@ export default function CatalogContent({
                   key={product.id}
                   className="group flex flex-col rounded-xl border border-border/60 bg-card p-6 shadow-sm transition-shadow hover:shadow-md"
                 >
-                  <div className="mb-4 aspect-square rounded-lg bg-muted" />
+                  <div
+                    className="mb-4 aspect-square rounded-lg bg-muted bg-cover bg-center"
+                    style={{
+                      backgroundImage: `url("${resolveProductImage(product.image, product.category)}")`,
+                    }}
+                  />
 
-                  <h3 className={cn(textVariants({ variant: "h4" }), "mb-2")}>
-                    {product.name}
-                  </h3>
+                  <Link href={`/${locale}/catalog/${product.id}`}>
+                    <h3 className={cn(textVariants({ variant: "h4" }), "mb-2")}>
+                      {product.name}
+                    </h3>
+                  </Link>
 
                   <p
                     className={cn(
@@ -196,6 +244,8 @@ export default function CatalogContent({
                     variant="default"
                     size="sm"
                     className="mt-auto"
+                    disabled={cartActionPending || product.stock === 0}
+                    onClick={() => void addToCart(product.id)}
                   >
                     {addToCartLabel}
                   </Button>
@@ -233,6 +283,7 @@ export default function CatalogContent({
               </Button>
             </div>
           )}
+          {cartError && <p className="text-sm text-destructive">{cartError}</p>}
         </div>
       </div>
     </div>

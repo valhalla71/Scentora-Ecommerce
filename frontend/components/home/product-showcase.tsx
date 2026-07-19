@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
 import { Button } from "@/components/ui/button";
+import { ProductCard } from "@/components/ui/product-card";
 import type { Dictionary } from "@/i18n/types";
 import type { Locale } from "@/i18n/config";
 import { localizeHref } from "@/i18n/navigation";
@@ -59,6 +60,10 @@ export function ProductShowcase({ locale, dictionary }: ProductShowcaseProps) {
     >
       <Container>
         <div className="text-center">
+          <p className={cn(textVariants({ variant: "eyebrow" }), "mb-3")}>
+            {showcase.eyebrow}
+          </p>
+
           <h2
             id="showcase-heading"
             className={cn(
@@ -81,26 +86,12 @@ export function ProductShowcase({ locale, dictionary }: ProductShowcaseProps) {
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
           {mockProducts.map((product) => (
-            <article
+            <ProductCard
               key={product.id}
-              className="group rounded-xl border border-border/60 bg-card p-6 text-start shadow-sm transition-shadow hover:shadow-md"
-            >
-              <div className="mb-4 aspect-square rounded-lg bg-muted" />
-              <h3 className={cn(textVariants({ variant: "h4" }), "mb-2")}>
-                {product.name}
-              </h3>
-              <p
-                className={cn(
-                  textVariants({ variant: "bodySm" }),
-                  "text-muted-foreground",
-                )}
-              >
-                {product.category}
-              </p>
-              <p className={cn(textVariants({ variant: "bodySm" }), "mt-3 font-semibold")}>
-                {product.price}
-              </p>
-            </article>
+              name={product.name}
+              category={product.category}
+              price={product.price}
+            />
           ))}
         </div>
 

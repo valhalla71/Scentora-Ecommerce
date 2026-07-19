@@ -48,7 +48,7 @@ export function CheckoutForm({ dictionary, onSubmit }: CheckoutFormProps) {
     paymentMethod: "creditCard",
     agreeTerms: false,
   });
-  const [errors, setErrors] = useState<Partial<FormData>>({});
+  const [errors, setErrors] = useState<Partial<Record<keyof FormData, boolean>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const steps = ["Shipping", "Payment", "Review"];
@@ -70,7 +70,7 @@ export function CheckoutForm({ dictionary, onSubmit }: CheckoutFormProps) {
   };
 
   const validateStep = (): boolean => {
-    const newErrors: Partial<FormData> = {};
+    const newErrors: Partial<Record<keyof FormData, boolean>> = {};
     
     if (currentStep === 0) {
       if (!formData.firstName.trim()) newErrors.firstName = true;

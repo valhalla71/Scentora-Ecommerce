@@ -1,7 +1,15 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
-import { HeroSection, FeaturesSection, ProductShowcase, TestimonialsSection, CtaSection } from "@/components/home";
+import {
+  HeroSection,
+  BrandStorySection,
+  DiscoverySection,
+  FeaturesSection,
+  ProductShowcase,
+  TestimonialsSection,
+  CtaSection,
+} from "@/components/home";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 
@@ -47,8 +55,10 @@ export default async function HomePage({ params }: HomePageProps) {
   return (
     <>
       <HeroSection locale={locale} dictionary={dictionary} />
-      <FeaturesSection dictionary={dictionary} />
+      <BrandStorySection dictionary={dictionary} />
+      <DiscoverySection locale={locale} dictionary={dictionary} />
       <ProductShowcase locale={locale} dictionary={dictionary} />
+      <FeaturesSection dictionary={dictionary} />
       <TestimonialsSection dictionary={dictionary} />
       <CtaSection locale={locale} dictionary={dictionary} />
     </>

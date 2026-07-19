@@ -9,6 +9,11 @@ import { spacing } from "@/lib/design-system/tokens";
 import { textVariants } from "@/lib/design-system/typography";
 import { cn } from "@/lib/utils";
 import { mockUser } from "@/lib/user";
+import {
+  LogoutButton,
+  ProfileIdentity,
+  ProtectedAccountContent,
+} from "@/components/account/profile-identity";
 
 type ProfilePageProps = {
   params: Promise<{ locale: string }>;
@@ -69,8 +74,9 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
   };
 
   return (
-    <main style={{ paddingBlock: spacing.section.lg }}>
-      <Container>
+    <ProtectedAccountContent locale={locale}>
+      <main style={{ paddingBlock: spacing.section.lg }}>
+        <Container>
         <div className="mb-12">
           <h1 className={cn(textVariants({ variant: "h1" }), "text-balance")}>
             {title}
@@ -90,34 +96,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
             </div>
 
             <div className="space-y-4 rounded-lg border border-border/60 bg-card p-6">
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div>
-                  <p className={cn(textVariants({ variant: "label" }), "mb-1 text-muted-foreground")}>
-                    {name}
-                  </p>
-                  <p className={textVariants({ variant: "body" })}>
-                    {mockUser.name}
-                  </p>
-                </div>
-
-                <div>
-                  <p className={cn(textVariants({ variant: "label" }), "mb-1 text-muted-foreground")}>
-                    {email}
-                  </p>
-                  <p className={textVariants({ variant: "body" })}>
-                    {mockUser.email}
-                  </p>
-                </div>
-
-                <div>
-                  <p className={cn(textVariants({ variant: "label" }), "mb-1 text-muted-foreground")}>
-                    {phone}
-                  </p>
-                  <p className={textVariants({ variant: "body" })}>
-                    {mockUser.phone}
-                  </p>
-                </div>
-              </div>
+              <ProfileIdentity labels={{ name, email, phone }} locale={locale} />
             </div>
           </section>
 
@@ -299,12 +278,11 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 
           {/* Logout Section */}
           <div className="flex justify-center pb-8">
-            <Button variant="destructive">
-              {logout}
-            </Button>
+            <LogoutButton label={logout} locale={locale} />
           </div>
         </div>
-      </Container>
-    </main>
+        </Container>
+      </main>
+    </ProtectedAccountContent>
   );
 }

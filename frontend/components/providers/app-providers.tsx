@@ -2,6 +2,7 @@
 
 import { DirectionProvider } from "@/components/ui/direction";
 import { ThemeProvider } from "@/components/theme/theme-provider";
+import { CommerceProvider } from "@/components/providers/commerce-provider";
 import { localeDirection, type Locale } from "@/i18n/config";
 
 type AppProvidersProps = {
@@ -17,9 +18,11 @@ export function AppProviders({ children, locale }: AppProvidersProps) {
       enableSystem
       disableTransitionOnChange
     >
-      <DirectionProvider direction={localeDirection[locale]}>
-        {children}
-      </DirectionProvider>
+      <CommerceProvider>
+        <DirectionProvider direction={localeDirection[locale]}>
+          {children}
+        </DirectionProvider>
+      </CommerceProvider>
     </ThemeProvider>
   );
 }

@@ -6,6 +6,22 @@
     "primaryCta": "Explore Collection",
     "secondaryCta": "Learn More"
   },
+  "brandStory": {
+    "eyebrow": "Our Philosophy",
+    "title": "Fragrance as an art form, not a commodity",
+    "paragraphs": [
+      "Scentora was born from a simple belief: a great perfume is not just worn — it's remembered. Every bottle we curate carries a story of craftsmanship, rare ingredients, and the quiet confidence that comes from wearing something extraordinary.",
+      "We work only with houses that treat perfumery as an art, pairing timeless technique with modern sensibility — so every scent you discover here feels considered, never generic."
+    ],
+    "quote": "A signature scent is the one thing people remember long after you've left the room.",
+    "quoteAuthor": "The Scentora Atelier"
+  },
+  "discovery": {
+    "eyebrow": "Explore by Character",
+    "title": "Find your fragrance family",
+    "description": "Every scent belongs to a family. Explore ours and discover the one that feels like you.",
+    "exploreLabel": "Explore"
+  },
   "features": {
     "title": "Why Scentora",
     "items": {
@@ -24,6 +40,7 @@
     }
   },
   "showcase": {
+    "eyebrow": "Handpicked For You",
     "title": "Featured Perfumes",
     "description": "Handpicked fragrances that capture the essence of luxury",
     "viewAll": "View All Perfumes"

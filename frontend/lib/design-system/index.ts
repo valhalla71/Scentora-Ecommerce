@@ -3,6 +3,7 @@ export {
   breakpoints,
   containerWidths,
   motion,
+  shadow,
   spacing,
   zIndex,
 } from "./tokens";

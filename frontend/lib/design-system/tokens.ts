@@ -42,4 +42,21 @@ export const motion = {
     normal: "250ms",
     slow: "350ms",
   },
+  easing: {
+    /** Reusable luxury easing curve — gentle acceleration, soft settle. */
+    luxury: "cubic-bezier(0.22, 1, 0.36, 1)",
+  },
+} as const;
+
+/**
+ * Soft, warm-tinted elevation shadows (see `--shadow-luxury-*` in globals.css).
+ * Prefer the `shadow-luxury-*` Tailwind utilities in className; use these
+ * only where an inline `boxShadow` style is unavoidable.
+ */
+export const shadow = {
+  luxury: {
+    sm: "var(--shadow-luxury-sm)",
+    md: "var(--shadow-luxury-md)",
+    lg: "var(--shadow-luxury-lg)",
+  },
 } as const;

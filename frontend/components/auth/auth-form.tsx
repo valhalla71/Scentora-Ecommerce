@@ -2,11 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { spacing } from "@/lib/design-system/tokens";
 import { textVariants } from "@/lib/design-system/typography";
+import { useCommerce } from "@/components/providers/commerce-provider";
+import { ApiError } from "@/lib/api";
 
 interface FormField {
   name: string;
@@ -43,6 +46,8 @@ export function AuthForm({
   linkHref,
   additionalLinks,
 }: AuthFormProps) {
+  const router = useRouter();
+  const { login, register, sessionError } = useCommerce();
   const [formData, setFormData] = useState<Record<string, string>>(
     fields.reduce((acc, field) => ({ ...acc, [field.name]: "" }), {}),
   );
@@ -50,6 +55,7 @@ export function AuthForm({
     checkboxes?.reduce((acc, cb) => ({ ...acc, [cb.name]: false }), {}) || {},
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [localError, setLocalError] = useState<string | null>(null);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -68,17 +74,36 @@ export function AuthForm({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setLocalError(null);
 
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    setFormData(
-      fields.reduce((acc, field) => ({ ...acc, [field.name]: "" }), {}),
-    );
-    setCheckedItems(
-      checkboxes?.reduce((acc, cb) => ({ ...acc, [cb.name]: false }), {}) ||
-        {},
-    );
-    setIsSubmitting(false);
+    try {
+      if ("fullname" in formData) {
+        if (formData.password !== formData.confirmPassword) {
+          throw new Error("Passwords do not match.");
+        }
+        if (!checkedItems.terms) {
+          throw new Error("Please accept the terms to continue.");
+        }
+        const [firstName, ...lastNameParts] = formData.fullname.trim().split(/\s+/);
+        await register({
+          email: formData.email,
+          password: formData.password,
+          firstName,
+          lastName: lastNameParts.join(" ") || firstName,
+        });
+      } else {
+        await login({ email: formData.email, password: formData.password });
+      }
+      const localePrefix = linkHref.split("/").slice(0, 2).join("/");
+      router.push(`${localePrefix}/account`);
+    } catch (error) {
+      if (!(error instanceof ApiError)) {
+        // Provider exposes normalized API failures; local validation is surfaced here.
+        setLocalError(error instanceof Error ? error.message : "Unable to authenticate.");
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -103,6 +128,11 @@ export function AuthForm({
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
+        {(localError || sessionError) && (
+          <p className="text-sm text-destructive" role="alert">
+            {localError || sessionError}
+          </p>
+        )}
         {fields.map((field) => (
           <div key={field.name} className="space-y-1.5">
             <label

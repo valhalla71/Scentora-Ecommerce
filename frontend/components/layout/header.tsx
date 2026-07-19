@@ -13,6 +13,7 @@ import type { Locale } from "@/i18n/config";
 import { localizeHref } from "@/i18n/navigation";
 import { zIndex } from "@/lib/design-system/tokens";
 import { cn } from "@/lib/utils";
+import { useCommerce } from "@/components/providers/commerce-provider";
 
 type HeaderProps = {
   locale: Locale;
@@ -43,6 +44,7 @@ export function Header({ locale, dictionary }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { layout, common } = dictionary;
   const labels = actionLabels[locale];
+  const { user, cart } = useCommerce();
 
   const navItems = [
     { href: "/", label: layout.nav.home },
@@ -64,7 +66,7 @@ export function Header({ locale, dictionary }: HeaderProps) {
           <div className="flex items-center gap-4 min-w-0 flex-1">
             <Link
               href={localizeHref("/", locale)}
-              className="truncate font-semibold tracking-tight transition-colors hover:text-primary shrink-0"
+              className="truncate font-heading font-semibold tracking-tight transition-colors duration-300 ease-luxury hover:text-primary shrink-0"
             >
               <span className="text-xl text-foreground">{common.siteName}</span>
             </Link>
@@ -78,7 +80,7 @@ export function Header({ locale, dictionary }: HeaderProps) {
                 <Link
                   key={item.href}
                   href={localizeHref(item.href, locale)}
-                  className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-all duration-300 ease-luxury hover:bg-muted hover:text-foreground"
                 >
                   {item.label}
                 </Link>
@@ -100,7 +102,7 @@ export function Header({ locale, dictionary }: HeaderProps) {
             </Button>
 
             {/* Desktop Auth Links */}
-            <div className="hidden items-center gap-1 lg:flex">
+            {!user && <div className="hidden items-center gap-1 lg:flex">
               <Link href={localizeHref("/login", locale)}>
                 <Button
                   variant="ghost"
@@ -120,7 +122,7 @@ export function Header({ locale, dictionary }: HeaderProps) {
                   {labels.register}
                 </Button>
               </Link>
-            </div>
+            </div>}
 
             {/* Language Switcher */}
             <LocaleSwitcher
@@ -136,27 +138,31 @@ export function Header({ locale, dictionary }: HeaderProps) {
             />
 
             {/* Cart Button */}
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              aria-label={labels.cart}
-              className="text-muted-foreground relative"
-            >
-              <ShoppingCart aria-hidden="true" />
-              <span className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full" />
-            </Button>
+            <Link href={localizeHref("/cart", locale)}>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                aria-label={labels.cart}
+                className="text-muted-foreground relative"
+              >
+                <ShoppingCart aria-hidden="true" />
+                {cart.items.length > 0 && <span className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full" />}
+              </Button>
+            </Link>
 
             {/* Account Button */}
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              aria-label={labels.account}
-              className="hidden md:flex text-muted-foreground"
-            >
-              <User aria-hidden="true" />
-            </Button>
+            <Link href={localizeHref(user ? "/account" : "/login", locale)}>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                aria-label={labels.account}
+                className="hidden md:flex text-muted-foreground"
+              >
+                <User aria-hidden="true" />
+              </Button>
+            </Link>
 
             {/* Mobile Menu Button */}
             <Button
@@ -203,7 +209,7 @@ export function Header({ locale, dictionary }: HeaderProps) {
               <div className="border-t border-border/60 my-2" />
 
               {/* Mobile Auth Links */}
-              <Link href={localizeHref("/login", locale)}>
+              {!user && <Link href={localizeHref("/login", locale)}>
                 <Button
                   variant="outline"
                   className="w-full"
@@ -211,16 +217,16 @@ export function Header({ locale, dictionary }: HeaderProps) {
                 >
                   {labels.login}
                 </Button>
-              </Link>
+              </Link>}
 
-              <Link href={localizeHref("/register", locale)}>
+              {!user && <Link href={localizeHref("/register", locale)}>
                 <Button
                   className="w-full"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {labels.register}
                 </Button>
-              </Link>
+              </Link>}
             </Container>
           </div>
         )}

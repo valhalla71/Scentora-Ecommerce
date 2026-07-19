@@ -11,6 +11,7 @@ import CatalogContent from "./catalog-content";
 
 type CatalogPageProps = {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ category?: string | string[] }>;
 };
 
 export async function generateMetadata({ params }: CatalogPageProps): Promise<Metadata> {
@@ -36,8 +37,9 @@ export async function generateMetadata({ params }: CatalogPageProps): Promise<Me
   };
 }
 
-export default async function CatalogPage({ params }: CatalogPageProps) {
+export default async function CatalogPage({ params, searchParams }: CatalogPageProps) {
   const { locale: rawLocale } = await params;
+  const { category } = await searchParams;
 
   if (!isValidLocale(rawLocale)) {
     notFound();
@@ -75,6 +77,8 @@ export default async function CatalogPage({ params }: CatalogPageProps) {
         <CatalogContent
           discovery={discovery}
           addToCartLabel={addToCart}
+          locale={locale}
+          initialCategory={typeof category === "string" ? category : null}
         />
       </Container>
     </main>

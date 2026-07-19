@@ -1,16 +1,19 @@
 import { notFound } from "next/navigation";
+import { Gem, ShieldCheck, Sparkles } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { ProductGallery } from "@/components/product/product-gallery";
+import { PurchaseActions } from "@/components/product/purchase-actions";
+import { RelatedProducts } from "@/components/product/related-products";
 import { isValidLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { spacing } from "@/lib/design-system/tokens";
 import { textVariants } from "@/lib/design-system/typography";
-import { getProductById, getRelatedProducts } from "@/lib/products";
+import { ApiError, createApiFoundation, createCommerceApi } from "@/lib/api";
+import type { Product } from "@/lib/products";
 import { cn } from "@/lib/utils";
-import { Heart, Share2, ShoppingCart } from "lucide-react";
 
 type ProductDetailPageProps = {
   params: Promise<{ locale: string; id: string }>;
@@ -28,13 +31,43 @@ export default async function ProductDetailPage({
   const locale = rawLocale as Locale;
   const dictionary = await getDictionary(locale);
 
-  const product = getProductById(id);
-  if (!product) {
-    notFound();
+  const commerceApi = createCommerceApi(createApiFoundation().client);
+  let product: Product;
+  let relatedProducts: Product[];
+  try {
+    product = await commerceApi.getProduct(id);
+    const listing = await commerceApi.getProducts(1, 100);
+    relatedProducts = listing.products
+      .filter((item) => item.id !== id && item.category === product.category)
+      .slice(0, 4);
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) notFound();
+    return (
+      <main style={{ paddingBlock: spacing.section.lg }}>
+        <Container>
+          <p className="py-12 text-center text-destructive">
+            {error instanceof Error ? error.message : "Unable to load this product."}
+          </p>
+        </Container>
+      </main>
+    );
   }
-
-  const relatedProducts = getRelatedProducts(id, product.category, 3);
   const { product: productStrings } = dictionary.common;
+  const galleryImages = product.images?.length
+    ? product.images
+    : product.image
+      ? [product.image]
+      : [];
+  const noteGroups = (
+    [
+      ["topNotes", productStrings.topNotes],
+      ["heartNotes", productStrings.heartNotes],
+      ["baseNotes", productStrings.baseNotes],
+    ] as const
+  )
+    .map(([key, label]) => ({ key, label, notes: product[key] }))
+    .filter((group) => group.notes.length > 0);
+  const hasNotes = noteGroups.length > 0;
 
   return (
     <main style={{ paddingBlock: spacing.section.lg }}>
@@ -43,9 +76,12 @@ export default async function ProductDetailPage({
         <div className="mb-8">
           <Breadcrumb
             items={[
-              { label: "Home", href: "/" },
-              { label: "Products", href: "/catalog" },
-              { label: product.category, href: `/catalog?category=${product.category}` },
+              { label: "Home", href: `/${locale}` },
+              { label: "Products", href: `/${locale}/catalog` },
+              {
+                label: product.category,
+                href: `/${locale}/catalog?category=${encodeURIComponent(product.category)}`,
+              },
               { label: product.name },
             ]}
           />
@@ -53,25 +89,17 @@ export default async function ProductDetailPage({
 
         {/* Product Section */}
         <div className="grid gap-8 lg:grid-cols-2 lg:gap-12 mb-16">
-          {/* Product Image */}
-          <div className="flex items-center justify-center">
-            <div className="aspect-square w-full rounded-2xl bg-gradient-to-br from-muted to-muted/60 relative group">
-              <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
-                Product Image
-              </div>
-              <Badge className="absolute top-4 left-4">New</Badge>
-            </div>
-          </div>
+          {/* Product Gallery */}
+          <ProductGallery
+            images={galleryImages}
+            name={product.name}
+            galleryLabel={productStrings.gallery}
+          />
 
           {/* Product Info */}
           <div className="flex flex-col justify-start">
             <div className="mb-6">
-              <p
-                className={cn(
-                  textVariants({ variant: "bodySm" }),
-                  "mb-3 text-muted-foreground uppercase tracking-wide",
-                )}
-              >
+              <p className={cn(textVariants({ variant: "eyebrow" }), "mb-3")}>
                 {product.category}
               </p>
 
@@ -118,149 +146,117 @@ export default async function ProductDetailPage({
                   {product.price}
                 </p>
                 <div className="flex items-center gap-2">
-                  <Badge variant="success">In Stock</Badge>
-                  <span className={cn(textVariants({ variant: "bodySm" }), "text-muted-foreground")}>
-                    {product.stock} available
-                  </span>
+                  <Badge variant={product.stock > 0 ? "success" : "destructive"}>
+                    {product.stock > 0 ? productStrings.inStock : productStrings.outOfStock}
+                  </Badge>
+                  {product.stock > 0 ? (
+                    <span className={cn(textVariants({ variant: "bodySm" }), "text-muted-foreground")}>
+                      {product.stock} {productStrings.available}
+                    </span>
+                  ) : null}
                 </div>
               </div>
-
-              <p
-                className={cn(
-                  textVariants({ variant: "body" }),
-                  "mb-8 text-muted-foreground leading-relaxed",
-                )}
-              >
-                {product.description}
-              </p>
             </div>
 
             {/* Actions */}
-            <div className="mb-8 flex gap-3">
-              <Button variant="default" size="lg" className="flex-1 gap-2">
-                <ShoppingCart className="w-4 h-4" />
-                {productStrings.addToCart}
-              </Button>
-              <Button variant="outline" size="lg" className="gap-2">
-                <Heart className="w-4 h-4" />
-                {productStrings.addToWishlist}
-              </Button>
-              <Button variant="outline" size="icon">
-                <Share2 className="w-4 h-4" />
-              </Button>
+            <div className="mb-8">
+              <PurchaseActions
+                productId={product.id}
+                stock={product.stock}
+                addToCartLabel={productStrings.addToCart}
+                addToWishlistLabel={productStrings.addToWishlist}
+                quantityLabel={productStrings.quantity}
+                increaseQuantityLabel={productStrings.increaseQuantity}
+                decreaseQuantityLabel={productStrings.decreaseQuantity}
+                shareLabel={productStrings.share}
+              />
             </div>
 
             {/* Fragrance Notes */}
-            <div className="space-y-6 border-t border-border/60 pt-8">
-              <div>
-                <h3
-                  className={cn(
-                    textVariants({ variant: "h4" }),
-                    "mb-4 text-foreground",
-                  )}
-                >
-                  {productStrings.notes}
-                </h3>
+            {hasNotes ? (
+              <div className="space-y-6 border-t border-border/60 pt-8">
+                <div>
+                  <h3
+                    className={cn(
+                      textVariants({ variant: "h4" }),
+                      "mb-4 text-foreground",
+                    )}
+                  >
+                    {productStrings.notes}
+                  </h3>
 
-                <div className="grid gap-6 sm:grid-cols-3">
-                  <div>
-                    <p className={cn(textVariants({ variant: "label" }), "mb-2 text-muted-foreground uppercase tracking-wide")}>
-                      {productStrings.topNotes}
-                    </p>
-                    <ul className={cn(textVariants({ variant: "bodySm" }), "space-y-1")}>
-                      {product.topNotes.map((note, idx) => (
-                        <li key={idx} className="text-foreground">
-                          {note}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div>
-                    <p className={cn(textVariants({ variant: "label" }), "mb-2 text-muted-foreground uppercase tracking-wide")}>
-                      {productStrings.heartNotes}
-                    </p>
-                    <ul className={cn(textVariants({ variant: "bodySm" }), "space-y-1")}>
-                      {product.heartNotes.map((note, idx) => (
-                        <li key={idx} className="text-foreground">
-                          {note}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div>
-                    <p className={cn(textVariants({ variant: "label" }), "mb-2 text-muted-foreground uppercase tracking-wide")}>
-                      {productStrings.baseNotes}
-                    </p>
-                    <ul className={cn(textVariants({ variant: "bodySm" }), "space-y-1")}>
-                      {product.baseNotes.map((note, idx) => (
-                        <li key={idx} className="text-foreground">
-                          {note}
-                        </li>
-                      ))}
-                    </ul>
+                  <div className="grid gap-6 sm:grid-cols-3">
+                    {noteGroups.map(({ key, label, notes }) => (
+                      <div key={key}>
+                        <p className={cn(textVariants({ variant: "eyebrow" }), "mb-3")}>
+                          {label}
+                        </p>
+                        <ul className="flex flex-wrap gap-2">
+                          {notes.map((note, idx) => (
+                            <li
+                              key={idx}
+                              className={cn(
+                                textVariants({ variant: "bodySm" }),
+                                "rounded-full border border-border/60 bg-muted/50 px-3 py-1 text-foreground",
+                              )}
+                            >
+                              {note}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
-            </div>
+            ) : null}
           </div>
         </div>
 
-        {/* Related Products */}
-        {relatedProducts.length > 0 && (
-          <div>
-            <h2
-              className={cn(
-                textVariants({ variant: "h2" }),
-                "mb-8 text-center",
-              )}
-            >
-              {productStrings.relatedProducts}
-            </h2>
+        {/* Fragrance Storytelling */}
+        {product.description ? (
+          <div className="mb-16 border-t border-border/40 pt-12">
+            <div className="mx-auto max-w-3xl text-center">
+              <p className={cn(textVariants({ variant: "eyebrow" }), "mb-3")}>
+                {productStrings.story.eyebrow}
+              </p>
+              <h2 className={cn(textVariants({ variant: "h2" }), "mb-6 text-balance")}>
+                {productStrings.story.heading}
+              </h2>
+              <p
+                className={cn(
+                  textVariants({ variant: "h4" }),
+                  "text-balance font-normal italic text-muted-foreground",
+                )}
+              >
+                &ldquo;{product.description}&rdquo;
+              </p>
+            </div>
 
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-              {relatedProducts.map((relatedProduct) => (
-                <article
-                  key={relatedProduct.id}
-                  className="group flex flex-col rounded-xl border border-border/60 bg-card p-6 shadow-sm transition-all hover:shadow-md hover:border-primary/40"
-                >
-                  <div className="mb-4 aspect-square rounded-lg bg-muted relative overflow-hidden">
-                    <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
-                      Product Image
-                    </div>
-                  </div>
-
-                  <h3 className={cn(textVariants({ variant: "h4" }), "mb-2")}>
-                    {relatedProduct.name}
-                  </h3>
-
-                  <p
-                    className={cn(
-                      textVariants({ variant: "bodySm" }),
-                      "mb-4 text-muted-foreground",
-                    )}
-                  >
-                    {relatedProduct.category}
+            {/* Brand positioning */}
+            <div className="mx-auto mt-10 grid max-w-3xl gap-6 sm:grid-cols-3">
+              {[
+                { icon: Sparkles, label: productStrings.positioning.curated },
+                { icon: Gem, label: productStrings.positioning.crafted },
+                { icon: ShieldCheck, label: productStrings.positioning.concierge },
+              ].map(({ icon: Icon, label }) => (
+                <div key={label} className="flex flex-col items-center gap-2 text-center">
+                  <Icon className="size-5 text-accent" aria-hidden="true" />
+                  <p className={cn(textVariants({ variant: "bodySm" }), "text-muted-foreground")}>
+                    {label}
                   </p>
-
-                  <p className={cn(textVariants({ variant: "bodySm" }), "mb-6 font-semibold")}>
-                    {relatedProduct.price}
-                  </p>
-
-                  <Button
-                    variant="default"
-                    size="sm"
-                    className="mt-auto w-full gap-2"
-                  >
-                    <ShoppingCart className="w-4 h-4" />
-                    {productStrings.addToCart}
-                  </Button>
-                </article>
+                </div>
               ))}
             </div>
           </div>
-        )}
+        ) : null}
+
+        {/* Related Products */}
+        <RelatedProducts
+          products={relatedProducts}
+          locale={locale}
+          title={productStrings.relatedProducts}
+        />
       </Container>
     </main>
   );

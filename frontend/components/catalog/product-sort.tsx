@@ -40,21 +40,23 @@ export function ProductSort({ value, onChange, labels }: ProductSortProps) {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className={cn(
-            "gap-2",
-            "flex items-center",
-          )}
-        >
-          <ArrowUpDown className="size-4" aria-hidden="true" />
-          <span className={cn(textVariants({ variant: "bodySm" }))}>
-            {labels.sortBy}
-          </span>
-        </Button>
-      </DropdownMenuTrigger>
+      <DropdownMenuTrigger
+        render={
+          <Button
+            variant="outline"
+            size="sm"
+            className={cn(
+              "gap-2",
+              "flex items-center",
+            )}
+          >
+            <ArrowUpDown className="size-4" aria-hidden="true" />
+            <span className={cn(textVariants({ variant: "bodySm" }))}>
+              {labels.sortBy}
+            </span>
+          </Button>
+        }
+      />
 
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuRadioGroup value={value} onValueChange={onChange}>

@@ -9,13 +9,8 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import { defaultLocale, type Locale } from "@/i18n/config";
 import { localizeHref } from "@/i18n/navigation";
 
-type NotFoundProps = {
-  params: Promise<{ locale?: string }>;
-};
-
-export default async function NotFound({ params }: NotFoundProps) {
-  const { locale: rawLocale } = await params;
-  const locale = (rawLocale || defaultLocale) as Locale;
+export default async function NotFound() {
+  const locale = defaultLocale as Locale;
   const dictionary = await getDictionary(locale);
   const { title, description, goHome, browseProducts } = dictionary.common.errors.notFound;
 

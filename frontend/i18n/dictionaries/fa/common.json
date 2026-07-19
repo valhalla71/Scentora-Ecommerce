@@ -31,7 +31,23 @@
     "longevity": "دوام عطر",
     "sillage": "نشر عطر",
     "seasonality": "بهترین فصل",
-    "volume": "حجم"
+    "volume": "حجم",
+    "quantity": "تعداد",
+    "increaseQuantity": "افزایش تعداد",
+    "decreaseQuantity": "کاهش تعداد",
+    "share": "اشتراک‌گذاری",
+    "inStock": "موجود در انبار",
+    "outOfStock": "ناموجود",
+    "available": "موجود",
+    "story": {
+      "eyebrow": "داستان عطر",
+      "heading": "عطری که ارزش لذت بردن دارد"
+    },
+    "positioning": {
+      "curated": "انتخاب‌شده توسط متخصصان عطر",
+      "crafted": "ساخته‌شده با مواد اولیه‌ی نادر",
+      "concierge": "با پشتیبانی خدمات مشاوره ما"
+    }
   },
   "cart": {
     "title": "سبد خریدتان",

@@ -1,4 +1,4 @@
-import { Geist, Vazirmatn } from "next/font/google";
+import { Cormorant_Garamond, Geist, Vazirmatn } from "next/font/google";
 
 import type { Locale } from "@/i18n/config";
 
@@ -16,8 +16,16 @@ export const vazirmatn = Vazirmatn({
   display: "swap",
 });
 
-/** Both font variables are applied on `<html>`; active font is selected via `[dir]`. */
-export const fontVariables = `${geist.variable} ${vazirmatn.variable}`;
+/** Luxury display serif for LTR headings — evokes a premium perfume-house feel. */
+export const cormorantGaramond = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-cormorant",
+  display: "swap",
+});
+
+/** All font variables are applied on `<html>`; active fonts are selected via `[dir]`. */
+export const fontVariables = `${geist.variable} ${vazirmatn.variable} ${cormorantGaramond.variable}`;
 
 export function getLocaleFontFamily(locale: Locale): string {
   return locale === "fa"

@@ -21,11 +21,121 @@ Build a portfolio-grade premium ecommerce platform focused on perfume discovery,
 
 ## Current Phase
 
-Backend Commerce Foundation Completed
+Product visual assets integration completed.
+
+Connected luxury product visuals to the existing product system: six new
+assets in `frontend/public/images/products/` (`oriental.webp`, `fresh.webp`,
+`floral.webp`, `amber.webp`, `woody.webp`, `placeholder.webp`), a new
+`frontend/lib/product-images.ts` resolver (real image → fragrance-family
+visual → placeholder, never empty), mock products in `frontend/lib/products.ts`
+now resolving an `image` for every entry, and `ProductCard`/`catalog-content.tsx`
+using the resolver instead of blank image tiles. No backend/API/Prisma changes;
+`lib/api/commerce.ts` untouched. Full details in `AGENT_CONTEXT.md` under
+"Product Visual Assets Integration".
+
+Verification note: FINAL — verified complete.
+
+- `npx tsc --noEmit`: passed with zero errors.
+- `npm run build`: passed, all 44 pages generated.
+
+Previous phase:
+
+Luxury UI Upgrade — Phase 3 (luxury product experience) completed and
+verified 2026-07-19.
+
+Upgraded the product detail page: product gallery with thumbnail strip
+(`components/product/product-gallery.tsx`), a fragrance storytelling section
+(pull-quote description + curated/crafted/concierge positioning strip),
+polished purchase actions (quantity stepper, add-to-cart, wishlist toggle,
+share), and related products now rendered through the shared `ProductCard`
+primitive. Reuses Phase 1/2 design tokens only; no API/backend/Prisma
+changes. Full details in `AGENT_CONTEXT.md` under "Luxury UI Upgrade — Phase 3
+(Luxury Product Experience)".
+
+Verification note: FINAL — Luxury UI Phase 3 verified complete.
+
+- `npx tsc --noEmit`: passed.
+- `npm run build`: passed.
+- Remaining warning: pre-existing middleware-to-proxy deprecation notice,
+  unrelated to Phase 3, non-blocking maintenance item.
+
+Next recommended phase: Final Commerce Polish — catalog experience, product
+cards (align `catalog-content.tsx` grid cards with the shared `ProductCard`),
+cart, and checkout visual polish.
+
+Previous phase:
+
+Luxury UI Upgrade — Phase 2 (homepage transformation) completed and verified
+2026-07-19.
+
+New homepage flow: Hero → Brand Story → Discovery (Fragrance Families) →
+Featured Collections → Features → Testimonials → CTA. Added two new sections
+(`BrandStorySection`, `DiscoverySection`), restructured the hero into a
+two-column layout with a reserved slot for a future 3D visualization, and
+reordered existing sections. Discovery tiles use live categories and link to
+`/catalog?category=<slug>`; `catalog-content.tsx` resolves slug-or-name
+against loaded categories before filtering. No API/backend/Prisma changes.
+Full details in `AGENT_CONTEXT.md` under "Luxury UI Upgrade — Phase 2
+(Homepage Transformation)".
+
+Verification note: FINAL — Luxury UI Phase 2 verified complete.
+
+- `npx tsc --noEmit`: passed with zero errors.
+- `npm run build`: passed — compiled successfully, all 44 pages generated.
+- Remaining warning: pre-existing middleware-to-proxy deprecation notice,
+  unrelated to Phase 2.
+
+Previous phase:
+
+Luxury UI Upgrade — Phase 1 (design system foundation) completed and
+verified 2026-07-19.
+
+This phase only touched shared design tokens and primitives — typography
+(a new heading serif wired to an existing but previously-unused token),
+shadows, easing, radius, and the `Button`/`Card`/`Input`/new `ProductCard`
+primitives. No homepage redesign, no page content changes, no API/business
+logic changes. Full details in `AGENT_CONTEXT.md` under "Luxury UI Foundation
+(Phase 1)".
+
+Verification note: FINAL — Luxury UI Phase 1 verified complete.
+
+- `npx tsc --noEmit`: passed with zero errors. Luxury UI Phase 1 introduced no
+  TypeScript regressions.
+- `npm run lint`: ESLint surfaced pre-existing issues elsewhere in the
+  frontend, unrelated to Luxury UI Phase 1. Left unfixed by explicit
+  instruction; Phase 1 files were not modified. Tracked as separate,
+  pre-existing technical debt.
+- `npm run build`: passed.
+
+Next recommended UI phase: Luxury UI Upgrade — Phase 3. Candidates: catalog
+grid card polish (still using pre-Phase-1 inline markup, not the shared
+`ProductCard`), product detail page, and cart/checkout visual polish.
+
+Previous phase:
+
+Frontend Commerce Flow API Integration Completed
 
 Current checkpoint:
 
-The backend commerce lifecycle is implemented, integrated, and runtime verified.
+The backend commerce lifecycle is implemented and runtime verified. The
+frontend products, categories, authentication/session, cart, and current-user
+profile flows now use backend v1. Unrelated business mocks remain intentionally.
+
+Final integration audit completed 2026-07-19:
+
+- Contracts were checked against the backend controllers, services, DTOs,
+  Prisma schema, and global response envelope.
+- Session recovery now shares refresh work globally, avoids stale refresh/login
+  overwrites, clears React user/cart state on invalid recovery, and retries
+  logout revocation with a refreshed access token when necessary.
+- Cart actions are serialized; exact decrement remains disabled because the
+  backend has no exact-update endpoint.
+- Account/profile content is optimistically gated during client session
+  restoration and redirects unauthenticated users. This is UI gating, not
+  authoritative server route protection; backend JWT guards remain the secure
+  data boundary.
+- Catalog category query navigation, localized detail links, product images,
+  and zero-stock presentation were corrected.
 
 Completed backend flow:
 
@@ -51,15 +161,14 @@ Current backend status:
 
 Current priority:
 
-Production readiness improvements.
+Incremental frontend business API integration without redesigning the frozen UI.
 
 Focus areas:
 
-* Security hardening
-* API consistency review
-* Inventory reservation architecture
-* Advanced commerce improvements
-* Preparation for frontend integration
+* Add backend-supported exact cart quantity updates
+* Finalize production-safe HttpOnly token transport
+* Migrate addresses, orders/checkout, wishlist, and reviews incrementally
+* Preserve mocks until each replacement is verified
 
 
 ---
@@ -90,6 +199,194 @@ Features prepared:
 - RTL / LTR support
 - Luxury theme system
 - Component-based architecture
+
+Luxury UI design-system foundation (Phase 1, 2026-07-19):
+
+- `lib/fonts.ts`: added `Cormorant_Garamond` serif, wired to the existing
+  `--font-heading` CSS variable for LTR headings only (RTL keeps Vazirmatn).
+- `app/globals.css`: added `--shadow-luxury-sm/md/lg` (light + dark aware),
+  `--ease-luxury`, `--tracking-luxury`; `--radius` 0.5rem → 0.625rem; added a
+  reduced-motion-aware `.hover-lift` utility.
+- `lib/design-system/{tokens,typography,index}.ts`: exported `shadow.luxury`
+  and `motion.easing.luxury`; headings now apply `font-heading`; added an
+  `eyebrow` (uppercase kicker) text variant.
+- `components/ui/{button,card,input}.tsx`: refined with the new shadow/easing
+  tokens; variant/size APIs unchanged.
+- `components/ui/product-card.tsx`: new reusable primitive, adopted in
+  `components/home/product-showcase.tsx` and
+  `components/product/related-products.tsx` to remove duplicated card markup,
+  with equivalent visual output.
+- `components/layout/header.tsx`: wordmark uses the heading font; nav/logo
+  hover use the shared luxury easing.
+- Deliberately untouched: homepage layout/copy, `catalog-content.tsx` (live
+  cart integration), color palette, spacing scale.
+- Verification: FINAL. `npx tsc --noEmit` passed with zero errors. `npm run
+  lint` surfaced pre-existing issues unrelated to Phase 1, intentionally left
+  unfixed and untouched. `npm run build` passed. Phase 1 files remain
+  unmodified. Ready for Phase 2 (Homepage Transformation).
+
+Luxury UI homepage transformation (Phase 2, 2026-07-19):
+
+- New `components/home/brand-story-section.tsx` (server component):
+  philosophy/storytelling copy, two-column on `lg+` with a pull-quote `Card`
+  ("elevated" variant + `Quote` icon).
+- New `components/home/discovery-section.tsx` (client component): fragrance-
+  family tiles from live `useCommerce()` categories; skeleton while loading,
+  renders `null` on error/empty. Links to `/catalog?category=<slug>`
+  (SEO-stable, localization-safe) instead of `<name>`.
+- `app/[locale]/(routes)/catalog/catalog-content.tsx`: resolves the incoming
+  `category` query value against loaded categories by slug OR name (once,
+  via a ref-guarded effect) before using it as the filter, since filtering
+  itself still matches on category name. No changes to cart actions or API
+  calls in this file.
+- `components/home/hero-section.tsx`: two-column layout on `lg+` (copy left,
+  reserved empty gradient visual slot right for a future 3D/interactive
+  perfume visualization); single column on mobile; CTA/text alignment now
+  responsive (center on mobile, start-aligned on `lg+`).
+- `components/home/product-showcase.tsx`: added an eyebrow label only.
+- `app/[locale]/(routes)/page.tsx`: reordered to Hero → Brand Story →
+  Discovery → Featured Collections (Product Showcase) → Features →
+  Testimonials → CTA.
+- `i18n/types.ts`, `i18n/dictionaries/{en,fa}/home.json`: added `brandStory`
+  and `discovery` dictionaries, added `showcase.eyebrow`.
+- Deliberately untouched: product/cart/auth data flow, all non-homepage
+  routes, design tokens (Phase 1 tokens reused as-is), Testimonials/Features/
+  CTA content (reordered only).
+- Verification: FINAL. `npx tsc --noEmit` passed with zero errors. `npm run
+  build` passed — compiled successfully, all 44 static pages generated. Only
+  the pre-existing middleware-to-proxy deprecation warning remains (unrelated
+  to Phase 2). Ready for Phase 3.
+
+Luxury UI product experience (Phase 3, 2026-07-19):
+
+- `components/product/product-gallery.tsx`: main image + thumbnail strip,
+  `hover-lift`/`shadow-luxury-md`/`ease-luxury` tokens, `data-slot` hook
+  reserved for a future 3D/AR visualization.
+- `app/[locale]/(routes)/catalog/[id]/page.tsx`: added a fragrance
+  storytelling section (product description as a pull-quote, plus a
+  curated/crafted/concierge positioning strip); uses Phase 1 typography
+  tokens throughout.
+- `components/product/purchase-actions.tsx`: quantity stepper, add-to-cart
+  (delegates to existing `AddToCartButton`/`useCommerce()`), a local
+  non-persisted wishlist toggle, and a share action.
+- `components/product/related-products.tsx`: now renders the shared
+  `ProductCard` primitive (from Phase 1) instead of separate inline markup.
+- Deliberately untouched: cart/API logic, wishlist backend integration (the
+  detail-page wishlist heart is visual-only, not wired to the backend
+  wishlist API), catalog grid cards in `catalog-content.tsx`.
+- Verification: FINAL. `npx tsc --noEmit` passed. `npm run build` passed.
+  Only the pre-existing middleware-to-proxy deprecation warning remains
+  (unrelated to Phase 3). Next: Final Commerce Polish (catalog experience,
+  product cards, cart, checkout visual polish).
+
+Product visual assets integration (2026-07-19):
+
+- New assets: `frontend/public/images/products/{oriental,fresh,floral,amber,
+  woody,placeholder}.webp` — one luxury visual per fragrance family used by
+  the mock catalog, plus a neutral placeholder.
+- New `frontend/lib/product-images.ts`: `resolveCategoryImage` (family visual
+  or placeholder) and `resolveProductImage` (real image → family visual →
+  placeholder; never returns empty).
+- `frontend/lib/products.ts`: every mock product now resolves an `image` via
+  `resolveProductImage` instead of leaving the field unset.
+- `frontend/components/ui/product-card.tsx` and `app/[locale]/(routes)/
+  catalog/catalog-content.tsx`: image blocks now use the resolver/fallback
+  instead of rendering a blank muted tile when no image is supplied.
+- Deliberately untouched: backend, API contracts, Prisma, `lib/api/
+  commerce.ts` (real backend images pass through unchanged; the card's own
+  fallback covers backend products with no image), `product-showcase.tsx`
+  (already passes `category`, so it gets the fallback for free), `product-
+  gallery.tsx` (verified working, unchanged).
+- Verification: FINAL. `npx tsc --noEmit` passed with zero errors. `npm run
+  build` passed, all 44 pages generated.
+
+Integration foundation completed:
+
+- `frontend/lib/api/config.ts`: centralized `NEXT_PUBLIC_API_BASE_URL`, defaulting
+  to the verified local backend at `http://localhost:3001/api/v1`
+- `frontend/lib/api/client.ts`: typed fetch client, JSON/no-content responses,
+  Bearer support, normalized failures, and concurrency-safe one-time 401 retry
+- `frontend/lib/api/error.ts`: safe API error status/code/message/details
+- `frontend/lib/api/auth.ts`: envelope-aware auth, refresh/logout, memory store,
+  and isolated session-scoped persistence
+- `frontend/lib/api/contracts.ts`: global response envelope/unwrapping
+- `frontend/lib/api/commerce.ts`: product/category/cart contracts and mappers
+- `frontend/lib/api/users.ts`: protected current-profile contract
+- `frontend/lib/api/index.ts`: exports and integration factory
+
+Connected frontend files:
+
+- `components/providers/commerce-provider.tsx`, `components/providers/app-providers.tsx`
+- `components/auth/auth-form.tsx`, `components/layout/header.tsx`
+- `components/cart/add-to-cart-button.tsx`
+- `components/account/profile-identity.tsx`
+- catalog list/detail/loading route files
+- cart page and `cart-content.tsx`
+- profile and account pages
+- `lib/products.ts`, `lib/cart.ts`
+
+Latest frontend stabilization files:
+
+- `frontend/lib/products.ts`
+- `frontend/components/catalog/product-sort.tsx`
+- `frontend/components/checkout/checkout-form.tsx`
+- `frontend/components/system/index.ts`
+- `frontend/components/ui/index.ts`
+- `frontend/app/[locale]/(routes)/not-found.tsx`
+- `AGENT_CONTEXT.md`
+- `.project-memory/AI_CONTEXT.md`
+
+The retained catalog mock view model now declares and supplies numeric `stock`
+because the frozen product detail page renders it. This is intentionally
+separate from the backend Product contract: API stock remains nested at
+`data.inventory.quantity` inside the global response envelope and must be
+mapped explicitly during catalog integration. Other required compiler fixes
+aligned Base UI trigger composition, checkout error flags, barrel exports, and
+the Next.js prop-free `not-found` convention without changing UI structure.
+
+Current state management and API state:
+
+- Theme and direction use existing providers.
+- A minimal React commerce provider owns catalog, session, profile, and cart state.
+- Loading/action/error states are exposed without adding a state/query dependency.
+
+Token/refresh assumption:
+
+- Backend returns `accessToken` and opaque `refreshToken` in JSON.
+- `/auth/refresh` and protected `/auth/logout` accept `{ refreshToken }`.
+- Connected auth uses `sessionStorage` behind `AuthSessionStore` to survive a
+  refresh within the browser session. This is JavaScript-readable and remains
+  exposed to XSS; it is not production-equivalent to HttpOnly cookies.
+- Automatic refresh shares concurrent refresh work,
+  retries once, and uses a non-refreshing auth client to prevent recursion.
+- Logout attempts server revocation and always clears local session state.
+
+Cart contract limitation:
+
+- Backend has get, additive add, remove, and clear endpoints, but no exact
+  quantity update. The UI supports increment/remove and disables decrement;
+  it does not fake an update by remove/re-add.
+
+Meaningful retained mocks:
+
+- Products/catalog: `lib/products.ts`, `lib/catalog.ts`,
+  `components/home/product-showcase.tsx`
+- Commerce: `lib/cart.ts`, `lib/wishlist.ts`, `lib/orders.ts`, `lib/reviews.ts`,
+  `lib/commerce.ts`, `lib/products-advanced.ts`
+- User/admin: `lib/user.ts`, `lib/user-account.ts`, `lib/admin.ts`
+- Marketing/content: `lib/blog.ts`
+- Simulated form submissions: auth, checkout, contact, and newsletter components
+
+Migration roadmap:
+
+1. Add an exact cart quantity-update backend contract.
+2. Confirm production HttpOnly-cookie/BFF token transport.
+3. Connect addresses, orders/checkout, wishlist, and reviews.
+4. Connect payment/wallet/shipping in verified lifecycle order.
+5. Connect admin reads/actions only after role contracts are confirmed.
+
+Each mock remains until its mapper, loading/error states, and runtime behavior
+are verified.
 
 ---
 
@@ -319,40 +616,50 @@ Existing test users:
 
 # Current Issue / Next Task
 
-Backend commerce foundation is completed and runtime verified.
+Backend commerce foundation, frontend API client foundation, stabilization, and
+the products/categories/auth/cart/profile integration slice are completed.
 
 Current phase:
 
-Backend Production Readiness
+Incremental Frontend API Integration — Next Slice
 
 
-Next Tasks:
+Next recommended phase:
 
-1. API consistency review
-   - Standardize response formats
-   - Review error handling
-   - Review DTO consistency
+1. Add exact backend cart quantity update support.
+2. Decide the production HttpOnly-cookie/BFF session contract.
+3. Connect addresses, orders/checkout, wishlist, and reviews.
+4. Continue through payment/shipping, then role-protected admin APIs.
 
+Current validation:
 
-2. Authorization improvement
-   - Complete RBAC preparation
-   - Define ADMIN permissions
-   - Define future vendor permissions
+- `npx tsc --noEmit` passes with no TypeScript errors.
+- `npm run build` passes and generates all 44 static pages.
+- Focused ESLint on reviewed integration source passes with zero errors or
+  warnings.
+- `git diff --check` passes with only expected LF-to-CRLF notices.
+- Public runtime checks were attempted but localhost:3001 was unavailable;
+  endpoint/envelope/mapping verification was completed statically against the
+  actual backend implementation.
+- No build blockers remain. The existing Next.js `middleware`-to-`proxy`
+  deprecation warning remains for a later focused phase.
 
+Production/readiness status:
 
-3. Inventory architecture improvement
-   - Implement stock reservation flow
-   - Move final stock deduction after payment success
-   - Add stock release on failed payments
-
-
-4. Frontend preparation
-   - Freeze API contracts
-   - Document authentication requirements
-   - Prepare frontend integration endpoints
-
-
-Frontend integration should start only after backend contracts are stable.
+- Not production-safe yet. `sessionStorage` refresh tokens are readable by any
+  successful XSS and cannot provide a server-readable session for authoritative
+  Next.js route checks. A backend/session-contract change to HttpOnly cookies or
+  a BFF is required; this cannot be honestly completed frontend-only.
+- Backend product reads currently do not filter inactive/soft-deleted rows.
+  Checkout/orders/addresses remain mocked or unintegrated, and gateway payment
+  remains simulated. These are production blockers, not frontend polish.
+- `GET /cart` returns only a shallow product relation, so category/image/
+  inventory are unavailable in cart rendering. The frontend no longer fabricates
+  a category label. Exact quantity update/decrement remains unsupported.
+- Catalog currently loads at most 100 products and has no server pagination UI.
+- Luxury UI Upgrade can proceed independently for public and presentational
+  work, but must preserve the integration boundaries above and must not be
+  treated as production-launch approval.
 
 
 ---
