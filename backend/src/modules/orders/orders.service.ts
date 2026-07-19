@@ -129,9 +129,11 @@ export class OrdersService {
           );
         }
 
-        await tx.inventory.update({
+        const inventoryUpdate = await tx.inventory.updateMany({
           where: {
             productId: item.productId,
+            quantity: inventory.quantity,
+            reserved: inventory.reserved,
           },
           data: {
             quantity: {
@@ -139,6 +141,12 @@ export class OrdersService {
             },
           },
         });
+
+        if (inventoryUpdate.count !== 1) {
+          throw new BadRequestException(
+            `Inventory changed while creating order for product ${item.productId}`,
+          );
+        }
       }
 
       const order = await tx.order.create({

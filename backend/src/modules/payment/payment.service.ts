@@ -152,14 +152,21 @@ export class PaymentService {
     }
 
     return this.prisma.$transaction(async (tx) => {
-      await tx.payment.update({
+      const claimedPayment = await tx.payment.updateMany({
         where: {
           id: processPaymentDto.paymentId,
+          status: PaymentStatus.PENDING,
         },
         data: {
           status: PaymentStatus.PROCESSING,
         },
       });
+
+      if (claimedPayment.count !== 1) {
+        throw new BadRequestException(
+          'Payment is already being processed',
+        );
+      }
 
       if (Number(payment.walletAmountUsed) > 0) {
         const wallet = await tx.wallet.findUnique({
@@ -168,30 +175,18 @@ export class PaymentService {
           },
         });
 
-        if (
-          !wallet ||
-          Number(wallet.balance) <
-            Number(payment.walletAmountUsed)
-        ) {
-          await tx.payment.update({
-            where: {
-              id: processPaymentDto.paymentId,
-            },
-            data: {
-              status: PaymentStatus.FAILED,
-              failureReason:
-                'Insufficient wallet balance during processing',
-            },
-          });
-
+        if (!wallet) {
           throw new BadRequestException(
             'Insufficient wallet balance',
           );
         }
 
-        await tx.wallet.update({
+        const walletUpdate = await tx.wallet.updateMany({
           where: {
             userId,
+            balance: {
+              gte: payment.walletAmountUsed,
+            },
           },
           data: {
             balance: {
@@ -199,6 +194,12 @@ export class PaymentService {
             },
           },
         });
+
+        if (walletUpdate.count !== 1) {
+          throw new BadRequestException(
+            'Insufficient wallet balance',
+          );
+        }
 
         await tx.walletTransaction.create({
           data: {

@@ -128,27 +128,52 @@ export class ShippingService {
     );
 
 
-    return this.prisma.shipping.update({
-      where: {
-        id: shippingId,
-      },
+    return this.prisma.$transaction(async (tx) => {
+      const orderStatusByShippingStatus: Partial<
+        Record<ShippingStatus, OrderStatus>
+      > = {
+        [ShippingStatus.PROCESSING]: OrderStatus.PROCESSING,
+        [ShippingStatus.SHIPPED]: OrderStatus.SHIPPED,
+        [ShippingStatus.IN_TRANSIT]: OrderStatus.SHIPPED,
+        [ShippingStatus.DELIVERED]: OrderStatus.DELIVERED,
+      };
 
-      data: {
-        status: updateStatusDto.status,
+      const orderStatus =
+        orderStatusByShippingStatus[updateStatusDto.status];
 
-        trackingNumber:
-          updateStatusDto.trackingNumber ??
-          shipping.trackingNumber,
+      if (orderStatus && shipping.order.status !== orderStatus) {
+        await tx.order.update({
+          where: {
+            id: shipping.orderId,
+          },
+          data: {
+            status: orderStatus,
+          },
+        });
+      }
 
-        actualDeliveryDate:
-          updateStatusDto.status === ShippingStatus.DELIVERED
-            ? new Date()
-            : shipping.actualDeliveryDate,
-      },
+      return tx.shipping.update({
+        where: {
+          id: shippingId,
+        },
 
-      include: {
-        order: true,
-      },
+        data: {
+          status: updateStatusDto.status,
+
+          trackingNumber:
+            updateStatusDto.trackingNumber ??
+            shipping.trackingNumber,
+
+          actualDeliveryDate:
+            updateStatusDto.status === ShippingStatus.DELIVERED
+              ? new Date()
+              : shipping.actualDeliveryDate,
+        },
+
+        include: {
+          order: true,
+        },
+      });
     });
   }
 

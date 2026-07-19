@@ -74,6 +74,7 @@ Completed in this phase:
 ✅ Critical production issues fixed  
 ✅ High-risk production issues fixed  
 ✅ API consistency improvements completed  
+✅ Backend v1 final verification completed
 
 
 Important:
@@ -398,14 +399,23 @@ Do not duplicate authorization systems.
 
 # Current Remaining Work
 
-Backend stabilization is completed.
+Backend v1 stabilization and final verification are completed.
 
 Remaining tasks:
 
-1. API integration testing
-2. Complete customer journey verification
-3. Production environment preparation
-4. Monitoring and deployment readiness
+1. Frontend API integration
+2. Isolated end-to-end customer journey automation
+3. Production payment gateway integration
+4. Production environment preparation
+5. Monitoring and deployment readiness
+
+
+Known limitations:
+
+- Inventory is deducted at order creation; reservation-based inventory is not implemented
+- Gateway payment processing is currently simulated and requires a real provider integration
+- The local development database already matches the current shipping schema, but its migration history must be reconciled before applying the new shipping alignment migration
+- State-changing customer journey steps were verified statically; automated runtime coverage requires an isolated test database
 
 
 Frontend integration starts only after backend verification completion.
@@ -653,56 +663,19 @@ Do not redesign inventory flow during current stabilization phase.
 
 # Current Next Phase
 
-## API Integration Testing
+## Frontend API Integration
 
 
 Goal:
 
-Verify complete customer journey:
+Connect the frozen frontend UI to the verified backend v1 APIs.
 
 
-Register
+Recommended parallel verification:
 
-↓
-
-Login
-
-↓
-
-Get Profile
-
-↓
-
-Browse Products
-
-↓
-
-Add Cart Item
-
-↓
-
-Create Order
-
-↓
-
-Create Payment
-
-↓
-
-Process Payment
-
-↓
-
-Create Shipping
-
-↓
-
-Complete Delivery
-
-
-After successful verification:
-
-Prepare backend for frontend integration.
+- Add isolated end-to-end coverage for the complete customer journey
+- Reconcile migration history in each environment before deployment
+- Replace simulated gateway processing before production launch
 
 
 ---
