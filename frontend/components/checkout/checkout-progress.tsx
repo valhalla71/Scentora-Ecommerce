@@ -37,7 +37,7 @@ export function CheckoutProgress({ steps, currentStep }: CheckoutProgressProps) 
               </div>
 
               {/* Step label */}
-              <div className="ml-2 hidden sm:block">
+              <div className="ms-2 hidden sm:block">
                 <p
                   className={cn(
                     textVariants({ variant: "bodySm" }),

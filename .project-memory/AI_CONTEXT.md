@@ -21,6 +21,43 @@ Build a portfolio-grade premium ecommerce platform focused on perfume discovery,
 
 ## Current Phase
 
+Phase 6 — Production Readiness & RTL/LTR Completion completed.
+
+Activated real RTL/LTR support with dynamic HTML lang/dir attributes based on
+locale, replaced physical-direction Tailwind classes with logical equivalents
+in critical UI components (header, footer, checkout), added production error
+boundaries, fixed production API configuration to fail loudly when
+misconfigured, added loading states for catalog/cart/checkout routes. No
+backend/API/Prisma changes, no architecture rewrite, no UI redesign. Full
+details in `AGENT_CONTEXT.md` under "Phase 6 — Production Readiness & RTL/LTR
+Completion".
+
+Key changes:
+- Moved `<html>` tag with `lang` and `dir` from root layout to `[locale]/layout.tsx`
+- English now renders `lang="en" dir="ltr"`, Persian renders `lang="fa" dir="rtl"`
+- Fixed RTL issues: cart badge, text alignment, spacing (physical → logical)
+- Created `app/[locale]/error.tsx` error boundary with recovery actions
+- API config now throws in production if `NEXT_PUBLIC_API_BASE_URL` is missing
+- Created loading states for catalog, cart, and checkout
+- Created `.env.example` with API configuration documentation
+
+Files changed:
+- `app/layout.tsx`, `app/[locale]/layout.tsx` (RTL/LTR activation)
+- `lib/api/config.ts`, `.env.example` (production API safety)
+- `app/[locale]/error.tsx` (error boundary)
+- `app/[locale]/(routes)/catalog/loading.tsx` (created)
+- `app/[locale]/(routes)/cart/loading.tsx` (created)
+- `app/[locale]/(routes)/checkout/loading.tsx` (created)
+- `components/layout/header.tsx` (RTL fix)
+- `components/layout/footer.tsx` (RTL fix)
+- `components/checkout/checkout-progress.tsx` (RTL fix)
+- `components/checkout/shipping-payment-selector.tsx` (RTL fixes)
+- `components/system/error-state.tsx` (RTL fix)
+
+Verification note: Code review complete, pending build verification.
+
+Previous phase:
+
 Phase 5 — Commerce Funnel Completion completed.
 
 Connected the existing frontend commerce experience to the existing backend

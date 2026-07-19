@@ -37,7 +37,7 @@ export function ErrorState({
       )}
       {onRetry && (
         <Button variant="outline" size="sm" onClick={onRetry}>
-          <RotateCcw className="mr-2 size-4" />
+          <RotateCcw className="me-2 size-4" />
           {retryLabel}
         </Button>
       )}

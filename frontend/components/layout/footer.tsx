@@ -126,7 +126,7 @@ export function Footer({ locale, dictionary }: FooterProps) {
         {/* Bottom Section */}
         <div className={cn(
           "flex flex-col md:flex-row md:items-center md:justify-between gap-4",
-          isRTL && "text-right"
+          isRTL && "text-end"
         )}>
           <p className={cn(textVariants({ variant: "bodySm" }), "text-muted-foreground")}>
             {layout.footer.copyright.replace("{year}", String(year))}

@@ -147,7 +147,7 @@ export function Header({ locale, dictionary }: HeaderProps) {
                 className="text-muted-foreground relative"
               >
                 <ShoppingCart aria-hidden="true" />
-                {cart.items.length > 0 && <span className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full" />}
+                {cart.items.length > 0 && <span className="absolute top-2 end-2 w-2 h-2 bg-primary rounded-full" />}
               </Button>
             </Link>
 

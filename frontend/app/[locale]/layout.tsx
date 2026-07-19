@@ -6,6 +6,8 @@ import { SiteShell } from "@/components/layout/site-shell";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { isValidLocale, locales, type Locale } from "@/i18n/config";
 import { getLocaleHtmlAttributes } from "@/components/i18n/locale-html-attributes";
+import { fontVariables } from "@/lib/fonts";
+import "../globals.css";
 
 export const metadata: Metadata = {
   title: {
@@ -36,12 +38,22 @@ export default async function LocaleLayout({
 
   const locale = rawLocale as Locale;
   const dictionary = await getDictionary(locale);
+  const { lang, dir } = getLocaleHtmlAttributes({ locale });
 
   return (
-    <AppProviders locale={locale}>
-      <SiteShell locale={locale} dictionary={dictionary}>
-        {children}
-      </SiteShell>
-    </AppProviders>
+    <html lang={lang} dir={dir} className={`${fontVariables} antialiased`}>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta httpEquiv="x-ua-compatible" content="ie=edge" />
+        <meta name="theme-color" content="#000000" />
+      </head>
+      <body>
+        <AppProviders locale={locale}>
+          <SiteShell locale={locale} dictionary={dictionary}>
+            {children}
+          </SiteShell>
+        </AppProviders>
+      </body>
+    </html>
   );
 }

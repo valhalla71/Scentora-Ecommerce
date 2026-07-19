@@ -23,7 +23,7 @@ export function ShippingMethodSelector({
           key={option.id}
           onClick={() => onSelect(option.id)}
           className={cn(
-            "w-full text-left rounded-lg border-2 p-4 transition-all",
+            "w-full text-start rounded-lg border-2 p-4 transition-all",
             selected === option.id
               ? "border-primary bg-primary/5"
               : "border-border/60 bg-card hover:border-primary/30"
@@ -69,7 +69,7 @@ export function PaymentMethodSelector({
           key={method.id}
           onClick={() => onSelect(method.id)}
           className={cn(
-            "w-full text-left rounded-lg border-2 p-4 transition-all flex items-center gap-3",
+            "w-full text-start rounded-lg border-2 p-4 transition-all flex items-center gap-3",
             selected === method.id
               ? "border-primary bg-primary/5"
               : "border-border/60 bg-card hover:border-primary/30"
@@ -95,7 +95,7 @@ export function PaymentMethodSelector({
       ))}
       {onAddNew && (
         <Button variant="outline" className="w-full" onClick={onAddNew}>
-          <ShoppingBag className="w-4 h-4 mr-2" />
+          <ShoppingBag className="w-4 h-4 me-2" />
           Add Payment Method
         </Button>
       )}

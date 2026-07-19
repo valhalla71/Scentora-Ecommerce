@@ -1,6 +1,4 @@
-import { fontVariables } from "@/lib/fonts";
 import type { Metadata } from "next";
-import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Scentora | Premium Perfumes & Fragrances",
@@ -33,15 +31,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en" dir="ltr" className={`${fontVariables} antialiased`}>
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta httpEquiv="x-ua-compatible" content="ie=edge" />
-        <meta name="theme-color" content="#000000" />
-        <link rel="canonical" href="https://scentora.com" />
-      </head>
-      <body>{children}</body>
-    </html>
-  );
+  return <>{children}</>;
 }
