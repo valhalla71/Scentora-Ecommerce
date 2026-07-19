@@ -1,7 +1,10 @@
 "use client";
 
+import Link from "next/link";
+
 import { useCommerce } from "@/components/providers/commerce-provider";
 import { Button } from "@/components/ui/button";
+import { useLocale } from "@/hooks/use-locale";
 import { calculateSubtotal, calculateTax, calculateTotal } from "@/lib/cart";
 import { textVariants } from "@/lib/design-system/typography";
 import { cn } from "@/lib/utils";
@@ -31,6 +34,7 @@ export function CartContent({ labels }: { labels: CartLabels }) {
     removeCartItem,
     canDecrementQuantity,
   } = useCommerce();
+  const locale = useLocale();
   const { items } = cart;
   const subtotalAmount = calculateSubtotal(items);
   const taxAmount = calculateTax(subtotalAmount);
@@ -47,7 +51,9 @@ export function CartContent({ labels }: { labels: CartLabels }) {
         <p className={cn(textVariants({ variant: "body" }), "mb-6 text-muted-foreground")}>
           {user ? labels.empty : "Please sign in to view your cart."}
         </p>
-        <Button variant="default" size="lg">{labels.continueShopping}</Button>
+        <Link href={`/${locale}/catalog`}>
+          <Button variant="default" size="lg">{labels.continueShopping}</Button>
+        </Link>
       </div>
     );
   }
@@ -130,8 +136,12 @@ export function CartContent({ labels }: { labels: CartLabels }) {
           <span className={cn(textVariants({ variant: "h3" }), "text-primary")}>${totalAmount.toFixed(2)}</span>
         </div>
         <div className="space-y-3">
-          <Button variant="default" size="lg" className="w-full">{labels.checkout}</Button>
-          <Button variant="outline" size="lg" className="w-full">{labels.continueShopping}</Button>
+          <Link href={`/${locale}/checkout`} className="block">
+            <Button variant="default" size="lg" className="w-full">{labels.checkout}</Button>
+          </Link>
+          <Link href={`/${locale}/catalog`} className="block">
+            <Button variant="outline" size="lg" className="w-full">{labels.continueShopping}</Button>
+          </Link>
         </div>
       </div>
     </div>

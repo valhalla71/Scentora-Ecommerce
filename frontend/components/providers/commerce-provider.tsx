@@ -12,6 +12,7 @@ import {
   createUsersApi,
   type Category,
   type LoginInput,
+  type PaymentMethodCode,
   type RegisterInput,
   type UserProfile,
 } from "@/lib/api";
@@ -20,6 +21,12 @@ const session = createSessionAuthSessionStore();
 const foundation = createApiFoundation({ session });
 const commerceApi = createCommerceApi(foundation.client);
 const usersApi = createUsersApi(foundation.client);
+
+type PlacedOrder = {
+  orderId: string;
+  orderNumber: string;
+  total: number;
+};
 
 type CommerceContextValue = {
   products: Product[];
@@ -41,6 +48,7 @@ type CommerceContextValue = {
   addToCart(productId: string, quantity?: number): Promise<void>;
   incrementCartItem(productId: string): Promise<void>;
   removeCartItem(productId: string): Promise<void>;
+  placeOrder(input: { paymentMethod: PaymentMethodCode }): Promise<PlacedOrder>;
 };
 
 const CommerceContext = createContext<CommerceContextValue | null>(null);
@@ -168,6 +176,40 @@ export function CommerceProvider({ children }: { children: React.ReactNode }) {
     [loadCart, user],
   );
 
+  const placeOrder = useCallback(
+    async ({ paymentMethod }: { paymentMethod: PaymentMethodCode }): Promise<PlacedOrder> => {
+      if (!user) {
+        throw new ApiError("Please sign in to complete checkout.", {
+          status: 401,
+          code: "UNAUTHENTICATED",
+        });
+      }
+      if (cartActionInFlight.current) {
+        throw new ApiError("Please wait for the current cart action to finish.", {
+          status: 409,
+          code: "CART_BUSY",
+        });
+      }
+      cartActionInFlight.current = true;
+      setCartError(null);
+      try {
+        const order = await commerceApi.createOrder();
+        const payment = await commerceApi.createPayment({
+          orderId: order.id,
+          paymentType: "GATEWAY",
+          paymentMethod,
+          amount: order.total,
+        });
+        await commerceApi.processPayment(payment.id);
+        await loadCart();
+        return { orderId: order.id, orderNumber: order.orderNumber, total: order.total };
+      } finally {
+        cartActionInFlight.current = false;
+      }
+    },
+    [loadCart, user],
+  );
+
   const value = useMemo<CommerceContextValue>(
     () => ({
       products,
@@ -200,6 +242,7 @@ export function CommerceProvider({ children }: { children: React.ReactNode }) {
         runCartAction(productId, () => commerceApi.addCartItem(productId, 1)),
       removeCartItem: (productId) =>
         runCartAction(productId, () => commerceApi.removeCartItem(productId)),
+      placeOrder,
     }),
     [
       actionProductId,
@@ -210,6 +253,7 @@ export function CommerceProvider({ children }: { children: React.ReactNode }) {
       catalogError,
       catalogLoading,
       categories,
+      placeOrder,
       products,
       runCartAction,
       sessionError,

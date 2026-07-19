@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
@@ -11,11 +12,19 @@ import { cn } from "@/lib/utils";
 import { spacing } from "@/lib/design-system/tokens";
 import { textVariants } from "@/lib/design-system/typography";
 import type { CommonDictionary } from "@/i18n/types";
+import { useCommerce } from "@/components/providers/commerce-provider";
+import { useLocale } from "@/hooks/use-locale";
+import { ApiError, type PaymentMethodCode } from "@/lib/api";
 
 interface CheckoutFormProps {
   dictionary: CommonDictionary;
-  onSubmit?: () => void;
 }
+
+/** Maps this form's payment method options to the backend PaymentMethodEnum. */
+const PAYMENT_METHOD_MAP: Record<string, PaymentMethodCode> = {
+  creditCard: "CREDIT_CARD",
+  paypal: "PAYPAL",
+};
 
 interface FormData {
   firstName: string;
@@ -32,7 +41,10 @@ interface FormData {
   agreeTerms: boolean;
 }
 
-export function CheckoutForm({ dictionary, onSubmit }: CheckoutFormProps) {
+export function CheckoutForm({ dictionary }: CheckoutFormProps) {
+  const router = useRouter();
+  const locale = useLocale();
+  const { placeOrder } = useCommerce();
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
@@ -50,6 +62,7 @@ export function CheckoutForm({ dictionary, onSubmit }: CheckoutFormProps) {
   });
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, boolean>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const steps = ["Shipping", "Payment", "Review"];
 
@@ -105,9 +118,17 @@ export function CheckoutForm({ dictionary, onSubmit }: CheckoutFormProps) {
     if (!validateStep()) return;
 
     setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsSubmitting(false);
-    onSubmit?.();
+    setSubmitError(null);
+    try {
+      const paymentMethod = PAYMENT_METHOD_MAP[formData.paymentMethod] ?? "CREDIT_CARD";
+      const order = await placeOrder({ paymentMethod });
+      router.push(
+        `/${locale}/order-success?order=${encodeURIComponent(order.orderNumber)}&total=${order.total}`,
+      );
+    } catch (error) {
+      setSubmitError(error instanceof ApiError ? error.message : dictionary.error);
+      setIsSubmitting(false);
+    }
   };
 
   const { checkout } = dictionary;
@@ -347,6 +368,12 @@ export function CheckoutForm({ dictionary, onSubmit }: CheckoutFormProps) {
             )}
           </div>
         </div>
+      )}
+
+      {submitError && (
+        <p className="text-sm text-destructive" role="alert">
+          {submitError}
+        </p>
       )}
 
       {/* Navigation Buttons */}

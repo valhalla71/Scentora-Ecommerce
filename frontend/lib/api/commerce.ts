@@ -45,7 +45,68 @@ type BackendCart = {
   }>;
 } | null;
 
+type BackendOrder = {
+  id: string;
+  orderNumber: string;
+  subtotal: string | number;
+  tax: string | number;
+  shippingCost: string | number;
+  total: string | number;
+  status: string;
+};
+
+type BackendPayment = {
+  id: string;
+  orderId: string;
+  status: string;
+  amount: string | number;
+};
+
 export type Category = Pick<BackendCategory, "id" | "name" | "slug" | "description" | "image">;
+
+/** Mirrors the backend PaymentTypeEnum (payment/dto/create-payment.dto.ts). */
+export type PaymentTypeCode = "GATEWAY" | "WALLET" | "MIXED";
+
+/** Mirrors the backend PaymentMethodEnum (payment/dto/create-payment.dto.ts). */
+export type PaymentMethodCode = "CREDIT_CARD" | "DEBIT_CARD" | "PAYPAL" | "BANK_TRANSFER";
+
+export type CreatedOrder = {
+  id: string;
+  orderNumber: string;
+  subtotal: number;
+  tax: number;
+  shippingCost: number;
+  total: number;
+  status: string;
+};
+
+export type CreatedPayment = {
+  id: string;
+  orderId: string;
+  status: string;
+  amount: number;
+};
+
+function mapOrder(order: BackendOrder): CreatedOrder {
+  return {
+    id: order.id,
+    orderNumber: order.orderNumber,
+    subtotal: Number(order.subtotal),
+    tax: Number(order.tax),
+    shippingCost: Number(order.shippingCost),
+    total: Number(order.total),
+    status: order.status,
+  };
+}
+
+function mapPayment(payment: BackendPayment): CreatedPayment {
+  return {
+    id: payment.id,
+    orderId: payment.orderId,
+    status: payment.status,
+    amount: Number(payment.amount),
+  };
+}
 
 function attributeValues(product: BackendProduct, names: string[]): string[] {
   const normalizedNames = names.map((name) => name.toLowerCase());
@@ -136,6 +197,38 @@ export function createCommerceApi(client: ApiClient) {
 
     async removeCartItem(productId: string): Promise<void> {
       await client.delete<ApiEnvelope<unknown>>(`/cart/items/${productId}`, { auth: true });
+    },
+
+    async createOrder(addressId?: string): Promise<CreatedOrder> {
+      const response = await client.post<ApiEnvelope<BackendOrder>>(
+        "/orders",
+        addressId ? { addressId } : {},
+        { auth: true },
+      );
+      return mapOrder(unwrapEnvelope(response));
+    },
+
+    async createPayment(input: {
+      orderId: string;
+      paymentType: PaymentTypeCode;
+      paymentMethod?: PaymentMethodCode;
+      amount: number;
+    }): Promise<CreatedPayment> {
+      const response = await client.post<ApiEnvelope<BackendPayment>>(
+        "/payments",
+        input,
+        { auth: true },
+      );
+      return mapPayment(unwrapEnvelope(response));
+    },
+
+    async processPayment(paymentId: string): Promise<CreatedPayment> {
+      const response = await client.post<ApiEnvelope<BackendPayment>>(
+        "/payments/process",
+        { paymentId },
+        { auth: true },
+      );
+      return mapPayment(unwrapEnvelope(response));
     },
   };
 }

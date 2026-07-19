@@ -8,7 +8,16 @@ import { ApiClient, type ApiClientOptions } from "./client";
 
 export { API_BASE_URL } from "./config";
 export { ApiError } from "./error";
-export { createCommerceApi, mapProduct, type Category, type CommerceApi } from "./commerce";
+export {
+  createCommerceApi,
+  mapProduct,
+  type Category,
+  type CommerceApi,
+  type CreatedOrder,
+  type CreatedPayment,
+  type PaymentMethodCode,
+  type PaymentTypeCode,
+} from "./commerce";
 export { type ApiEnvelope, unwrapEnvelope } from "./contracts";
 export { createUsersApi, type UserProfile } from "./users";
 export {

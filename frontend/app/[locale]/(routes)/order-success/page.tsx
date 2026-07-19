@@ -1,15 +1,31 @@
 import { CheckCircle2, Package, Home } from "lucide-react";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 import { Container } from "@/components/layout/container";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { isValidLocale, type Locale } from "@/i18n/config";
 import { textVariants } from "@/lib/design-system/typography";
 import { cn } from "@/lib/utils";
 import { spacing } from "@/lib/design-system/tokens";
 
-export default function OrderSuccessPage() {
-  const orderId = "ORD-2024-123456";
+type OrderSuccessPageProps = {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ order?: string; total?: string }>;
+};
+
+export default async function OrderSuccessPage({ params, searchParams }: OrderSuccessPageProps) {
+  const { locale: rawLocale } = await params;
+
+  if (!isValidLocale(rawLocale)) {
+    notFound();
+  }
+
+  const locale = rawLocale as Locale;
+  const { order, total } = await searchParams;
+  const orderId = order ?? "—";
+  const orderTotal = total ? Number(total) : null;
   const orderDate = new Date().toLocaleDateString();
 
   return (
@@ -61,7 +77,7 @@ export default function OrderSuccessPage() {
             </CardHeader>
             <CardContent>
               <p className={cn(textVariants({ variant: "h3" }), "text-primary")}>
-                $249.99
+                {orderTotal !== null ? `$${orderTotal.toFixed(2)}` : "—"}
               </p>
             </CardContent>
           </Card>
@@ -106,18 +122,18 @@ export default function OrderSuccessPage() {
 
         {/* Actions */}
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <Link href="/catalog">
+          <Link href={`/${locale}/catalog`}>
             <Button variant="outline" className="gap-2">
               Continue Shopping
             </Button>
           </Link>
-          <Link href="/account/orders">
+          <Link href={`/${locale}/account/orders`}>
             <Button variant="default" className="gap-2">
               <Package className="w-4 h-4" />
               Track Order
             </Button>
           </Link>
-          <Link href="/">
+          <Link href={`/${locale}`}>
             <Button variant="ghost" className="gap-2">
               <Home className="w-4 h-4" />
               Home
